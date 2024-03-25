@@ -1,0 +1,6 @@
+@wheel_wise_HostAddress = http://localhost:5242
+
+GET {{wheel_wise_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
