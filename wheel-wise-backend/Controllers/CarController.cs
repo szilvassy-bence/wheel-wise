@@ -22,6 +22,13 @@ public class CarController : ControllerBase
         return Ok(repository.GetCarById(id));
     }
 
+    /*[HttpGet]
+    public ActionResult<IEnumerable<Car>> FilterCars(FilterModel filterModel)
+    {
+        var repository = new CarRepository();
+        
+    }*/
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -9,7 +9,7 @@ public enum CarType
     RLX,
     TLX,
     
-    // Alfa Romeo
+    /*// Alfa Romeo
     Giulia,
     Stelvio,
     Giulietta,
@@ -329,5 +329,5 @@ public enum CarType
     S90_Volvo,
     XC40_Volvo,
     XC60_Volvo,
-    XC90_Volvo
+    XC90_Volvo*/
 }
