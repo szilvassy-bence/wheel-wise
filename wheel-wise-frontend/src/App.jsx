@@ -2,13 +2,13 @@ import {useEffect, useState} from 'react'
 import './App.css'
 
 function App() {
-    const [allCarData, setAllCarData] = useState([]);
+    const [allCarData, setAllCarData] = useState(null);
     const fetchCarData = async () => {
         try {
-            const response = await fetch('http://localhost:5242/api/Car');
+            const response = await fetch('/api/Car');
             const data = await response.json();
             setAllCarData(data);
-            Console.log(`$data is ${data}`)
+            console.log(`$data is ${data[0].brand}`)
         } catch (error) {
             console.error('Error fetching car data', error);
         }
@@ -19,11 +19,10 @@ useEffect(() => {
     fetchCarData();
 }, []);
 
-return
-(
+return(
     <div>
         <h1>Car Data</h1>
-        {carData ? (
+        {allCarData ? (
             <ul>
                 {allCarData.map((car) => (
                     <li>{car.brand}</li>

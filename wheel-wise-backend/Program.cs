@@ -16,6 +16,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("CorsPolicy");
 }
 
 FilterModel filterModel = new FilterModel { Color = "white", Type = "Valami", PriceRange = new PriceRange{Max = 100000}};
