@@ -7,12 +7,4 @@ public class User
     public string Password { get; set; }
     public string Email { get; set; }
     public int ZipCode { get; set; }
-
-    private IList<Car> _cars;
-    private IList<Car> _favoriteAds;
-
-    public IEnumerable<Car> GetCars()
-    {
-        return _cars;
-    }
 }

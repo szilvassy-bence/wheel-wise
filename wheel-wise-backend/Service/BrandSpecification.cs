@@ -12,8 +12,8 @@ public class BrandSpecification : ISpecification<Car>
         _brand = brand;
     }
 
-    public bool IsSatisfied(Car product)
+    /*public bool IsSatisfied(Car product)
     {
         return product.Brand == _brand;
-    }
+    }*/
 }

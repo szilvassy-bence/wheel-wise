@@ -11,8 +11,8 @@ public class TypeSpecification : ISpecification<Car>
         _type = type;
     }
 
-    public bool IsSatisfied(Car product)
+    /*public bool IsSatisfied(Car product)
     {
         return product.CarType == _type;
-    }
+    }*/
 }

@@ -15,10 +15,10 @@ public class CarRepository
 
     public CarRepository()
     {
-        _cars = new List<Car>()
+        /*_cars = new List<Car>()
         {
             new Car{Brand = "audi", Color = "balck", CarType = "valami", Price = 200000},
-        };
+        };*/
     }
 
     public IEnumerable<Car> GetCars()

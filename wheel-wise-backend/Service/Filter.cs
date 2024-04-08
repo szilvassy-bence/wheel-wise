@@ -4,7 +4,7 @@ namespace wheel_wise.Service;
 
 public class Filter : IFilter<Car>
 {
-    public IEnumerable<Car> FilterProducts(IEnumerable<Car> products, ISpecification<Car> spec)
+    /*public IEnumerable<Car> FilterProducts(IEnumerable<Car> products, ISpecification<Car> spec)
     {
         foreach (var p in products)
         {
@@ -13,6 +13,6 @@ public class Filter : IFilter<Car>
                 yield return p;
             }
         }
-    }
+    }*/
     
 }
