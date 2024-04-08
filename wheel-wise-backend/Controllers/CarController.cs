@@ -37,7 +37,7 @@ public class CarController : ControllerBase
         var repository = new CarRepository();
         repository.PostCar(car);
         var index = repository.PostCar(car);
-        car.Id = index;
+        //car.Id = index;
         return CreatedAtAction(nameof(PostCar), new { id = index }, car);
         //return Ok(repository.PostCar(car));
     }

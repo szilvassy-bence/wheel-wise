@@ -4,7 +4,7 @@ public class Car
 {
     // Required properties
     public int Id { get; init; }
-    public string Color { get; set; }
+    public Color Color { get; set; }
     public int Year { get; set; }
     public decimal Price { get; set; }
     public int Mileage { get; set; }

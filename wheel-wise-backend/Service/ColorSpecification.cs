@@ -12,8 +12,8 @@ public class ColorSpecification : ISpecification<Car>
     }
 
 
-    public bool IsSatisfied(Car product)
+    /*public bool IsSatisfied(Car product)
     {
         return product.Color == _color;
-    }
+    }*/
 }
