@@ -3,6 +3,8 @@ using wheel_wise.Data;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.AdvertisementRepo;
 using wheel_wise.Service.Repository.TypeRepo;
+using wheel_wise.Service.Repository.ColorRepo;
+using wheel_wise.Service.Repository.FuelTypeRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WheelWiseContext>();
 builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
 builder.Services.AddScoped<ITypeRepository, TypeRepository>();
+builder.Services.AddScoped<IColorRepository, ColorRepository>();
+builder.Services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
 
 var app = builder.Build();
 

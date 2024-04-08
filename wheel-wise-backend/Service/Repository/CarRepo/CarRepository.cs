@@ -1,5 +1,7 @@
 using System.Data;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using wheel_wise.Data;
 using wheel_wise.Model;
 using wheel_wise.Service;
 using wheel_wise.Model;
@@ -9,69 +11,40 @@ namespace wheel_wise.Service.Repository.CarRepo;
 using Microsoft.AspNetCore.Mvc;
 
 
-public class CarRepository
+public class CarRepository: ICarRepository
 {
+    private WheelWiseContext _dbContext;
 
-    private IList<Car> _cars;
-
-    public CarRepository()
+    CarRepository(WheelWiseContext wheelWiseContext)
     {
-        /*_cars = new List<Car>()
-        {
-            new Car{Brand = "audi", Color = "balck", CarType = "valami", Price = 200000},
-        };*/
+        _dbContext = wheelWiseContext;
+    }
+    
+    public async Task<IEnumerable<Car>> GetAll()
+    {
+        return await _dbContext.Cars.ToListAsync();
+    }
+    
+    public async Task<Car?> GetById(int id)
+    {
+        return await _dbContext.Cars.FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public IEnumerable<Car> GetCars()
+    public async void Add(Car car)
+    {
+        await _dbContext.AddAsync(car);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async void Delete(Car car)
     { 
-        
-        return _cars;
+        _dbContext.Remove(car);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Car GetCarById(int id)
+    public async void Update(Car car)
     {
-        return _cars.First(x => x.Id == id);
+        _dbContext.Update(car);
+        await _dbContext.SaveChangesAsync();
     }
-
-    public IEnumerable<Car> FilterCars(FilterModel filterModel)
-    {
-        List<ISpecification<Car>> carSpecifications = new List<ISpecification<Car>>();
-        PropertyInfo[] properties = typeof(FilterModel).GetProperties();
-        
-        if (filterModel.Brand != null)
-        {
-            carSpecifications.Add(new BrandSpecification(filterModel.Brand));
-        }
-        if (filterModel.Type != null)
-        {
-            carSpecifications.Add(new TypeSpecification(filterModel.Type));
-        }
-        if (filterModel.Color != null)
-        {
-            carSpecifications.Add(new ColorSpecification(filterModel.Color));
-        }
-        if (filterModel.PriceRange != null)
-        {
-            carSpecifications.Add(new PriceSpecification(filterModel.PriceRange));
-        }
-
-        return new List<Car>();
-    }
-
-    
-    public int PostCar(Car car)
-    {
-        return 0;
-    }
-
-    public int PutCarById(int id, Car car)
-    {
-        return 0;
-    }
-
-    public void DeleteCarById(int id)
-    {
-        return;
-    }
-    
 }
