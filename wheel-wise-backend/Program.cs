@@ -2,9 +2,12 @@ using System.Reflection;
 using wheel_wise.Data;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.AdvertisementRepo;
+using wheel_wise.Service.Repository.CarRepo;
 using wheel_wise.Service.Repository.CarTypeRepo;
 using wheel_wise.Service.Repository.ColorRepo;
+using wheel_wise.Service.Repository.EquipmentRepo;
 using wheel_wise.Service.Repository.FuelTypeRepo;
+using wheel_wise.Service.Repository.TransmissionRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,10 @@ builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
 builder.Services.AddScoped<ICarTypeRepository, CarTypeRepository>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
 builder.Services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
+builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<ITransmissionRepository, TransmissionRepository>();
+builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+
 
 var app = builder.Build();
 
