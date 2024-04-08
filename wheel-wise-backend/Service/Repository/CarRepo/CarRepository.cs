@@ -2,8 +2,9 @@ using System.Data;
 using System.Reflection;
 using wheel_wise.Model;
 using wheel_wise.Service;
+using wheel_wise.Model;
 
-namespace wheel_wise.Repository;
+namespace wheel_wise.Service.Repository.CarRepo;
 
 using Microsoft.AspNetCore.Mvc;
 

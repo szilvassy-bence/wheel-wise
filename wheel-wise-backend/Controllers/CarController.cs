@@ -1,6 +1,7 @@
 using wheel_wise.Model;
-using wheel_wise.Repository;
+using wheel_wise.Service.Repository;
 using Microsoft.AspNetCore.Mvc;
+using wheel_wise.Service.Repository.CarRepo;
 
 namespace wheel_wise.Controllers;
 

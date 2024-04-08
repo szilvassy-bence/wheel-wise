@@ -1,5 +1,7 @@
 using System.Reflection;
+using wheel_wise.Data;
 using wheel_wise.Model;
+using wheel_wise.Service.Repository.AdvertisementRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<WheelWiseContext>();
+builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
 
 var app = builder.Build();
 
