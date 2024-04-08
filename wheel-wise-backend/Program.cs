@@ -2,7 +2,7 @@ using System.Reflection;
 using wheel_wise.Data;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.AdvertisementRepo;
-using wheel_wise.Service.Repository.TypeRepo;
+using wheel_wise.Service.Repository.CarTypeRepo;
 using wheel_wise.Service.Repository.ColorRepo;
 using wheel_wise.Service.Repository.FuelTypeRepo;
 
@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WheelWiseContext>();
 builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
-builder.Services.AddScoped<ITypeRepository, TypeRepository>();
+builder.Services.AddScoped<ICarTypeRepository, CarTypeRepository>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
 builder.Services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
 

@@ -55,7 +55,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 1,
                             CarId = 1,
-                            CreatedAt = new DateTime(2024, 4, 8, 13, 47, 47, 713, DateTimeKind.Local).AddTicks(2657),
+                            CreatedAt = new DateTime(2024, 4, 8, 14, 54, 45, 230, DateTimeKind.Local).AddTicks(4623),
                             Highlighted = false
                         });
                 });
@@ -67,6 +67,9 @@ namespace wheel_wise.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarTypeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ColorId")
                         .HasColumnType("int");
@@ -89,13 +92,12 @@ namespace wheel_wise.Migrations
                     b.Property<int>("TransmissionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarTypeId");
 
                     b.HasIndex("ColorId");
 
@@ -103,14 +105,13 @@ namespace wheel_wise.Migrations
 
                     b.HasIndex("TransmissionId");
 
-                    b.HasIndex("TypeId");
-
                     b.ToTable("Cars");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CarTypeId = 1,
                             ColorId = 1,
                             FuelTypeId = 1,
                             Mileage = 15000,
@@ -118,12 +119,12 @@ namespace wheel_wise.Migrations
                             Price = 20000m,
                             Status = 1,
                             TransmissionId = 1,
-                            TypeId = 1,
                             Year = 2010
                         },
                         new
                         {
                             Id = 2,
+                            CarTypeId = 2,
                             ColorId = 2,
                             FuelTypeId = 2,
                             Mileage = 15000,
@@ -131,8 +132,42 @@ namespace wheel_wise.Migrations
                             Price = 20000m,
                             Status = 2,
                             TransmissionId = 2,
-                            TypeId = 2,
                             Year = 2010
+                        });
+                });
+
+            modelBuilder.Entity("wheel_wise.Model.CarType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Types");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Brand = "Opel",
+                            Model = "Astra"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Brand = "Renault",
+                            Model = "Clio"
                         });
                 });
 
@@ -150,7 +185,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Color");
+                    b.ToTable("Colors");
 
                     b.HasData(
                         new
@@ -219,7 +254,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuelType");
+                    b.ToTable("FuelTypes");
 
                     b.HasData(
                         new
@@ -248,7 +283,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Transmission");
+                    b.ToTable("Transmissions");
 
                     b.HasData(
                         new
@@ -260,41 +295,6 @@ namespace wheel_wise.Migrations
                         {
                             Id = 2,
                             Name = "Automatic"
-                        });
-                });
-
-            modelBuilder.Entity("wheel_wise.Model.Type", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Types");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Brand = "Opel",
-                            Model = "Astra"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Brand = "Renault",
-                            Model = "Clio"
                         });
                 });
 
@@ -345,6 +345,12 @@ namespace wheel_wise.Migrations
 
             modelBuilder.Entity("wheel_wise.Model.Car", b =>
                 {
+                    b.HasOne("wheel_wise.Model.CarType", "CarType")
+                        .WithMany()
+                        .HasForeignKey("CarTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("wheel_wise.Model.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId")
@@ -363,19 +369,13 @@ namespace wheel_wise.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("wheel_wise.Model.Type", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("CarType");
 
                     b.Navigation("Color");
 
                     b.Navigation("FuelType");
 
                     b.Navigation("Transmission");
-
-                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("wheel_wise.Model.Equipment", b =>

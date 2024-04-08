@@ -15,7 +15,7 @@ public class Car
     public Status Status { get; set; }
     public int TransmissionId { get; set; }
     public Transmission Transmission { get; set; } 
-    public int TypeId { get; init; }
-    public Type Type { get; init; }
+    public int CarTypeId { get; init; }
+    public CarType CarType { get; init; }
     public ICollection<Equipment> Equipments { get; set; }
 }

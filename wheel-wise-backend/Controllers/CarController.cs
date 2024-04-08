@@ -9,19 +9,19 @@ namespace wheel_wise.Controllers;
 [Route("api/[controller]")]
 public class CarController : ControllerBase
 {
-    [HttpGet]
+    /*[HttpGet]
     public ActionResult<IEnumerable<Car>> GetCars()
     {
         var repository = new CarRepository();
         return Ok(repository.GetCars());
-    }
+    }*/
 
-    [HttpGet("{id}")]
+    /*[HttpGet("{id}")]
     public ActionResult<Car> GetCarById(int id)
     {
         var repository = new CarRepository();
         return Ok(repository.GetCarById(id));
-    }
+    }*/
 
     /*[HttpGet]
     public ActionResult<IEnumerable<Car>> FilterCars(FilterModel filterModel)
@@ -30,7 +30,7 @@ public class CarController : ControllerBase
         
     }*/
 
-    [HttpPost]
+   /* [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ActionResult<Car> PostCar(Car car)
@@ -41,9 +41,9 @@ public class CarController : ControllerBase
         //car.Id = index;
         return CreatedAtAction(nameof(PostCar), new { id = index }, car);
         //return Ok(repository.PostCar(car));
-    }
+    }*/
 
-    [HttpPut("{id}")]
+    /*[HttpPut("{id}")]
     public ActionResult<Car> PutCarById(int id, Car car)
     {
         var repository = new CarRepository();
@@ -56,5 +56,5 @@ public class CarController : ControllerBase
         var repository = new CarRepository();
         repository.DeleteCarById(id);
         return Ok();
-    }
+    }*/
 }
