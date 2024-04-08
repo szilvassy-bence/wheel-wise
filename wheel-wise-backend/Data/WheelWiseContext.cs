@@ -10,6 +10,7 @@ public class WheelWiseContext : DbContext
     public DbSet<Car> Cars { get; set; }
     public DbSet<Equipment> Equipments { get; set; }
     public DbSet<Type> Types { get; set; }
+    public DbSet<Transmission> Transmissions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
