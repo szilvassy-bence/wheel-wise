@@ -6,7 +6,7 @@ namespace wheel_wise.Service.Repository.FuelTypeRepo;
 
 public class FuelTypeRepository : IFuelTypeRepository
 {
-    private readonly WheelWiseContext _dbContext;
+    private WheelWiseContext _dbContext;
 
     public FuelTypeRepository(WheelWiseContext context)
     {

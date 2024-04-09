@@ -1,4 +1,4 @@
-namespace wheel_wise.Service;
+namespace wheel_wise.Service.Filters;
 
 public interface IFilter<T>
 {
