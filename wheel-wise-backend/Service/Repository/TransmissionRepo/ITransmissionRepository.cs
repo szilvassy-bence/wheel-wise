@@ -7,7 +7,8 @@ public interface ITransmissionRepository
     Task<IEnumerable<Transmission>> GetAll();
     Task<Transmission?> GetByName(string name);
 
-    void Add(Transmission transmission);
-    void Delete(Transmission transmission);
-    void Update(Transmission transmission);
+    Task<Transmission?> GetById(int id); 
+    Task Add(Transmission transmission);
+    Task Delete(Transmission transmission);
+    Task Update(Transmission transmission);
 }

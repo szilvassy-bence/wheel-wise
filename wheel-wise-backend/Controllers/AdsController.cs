@@ -56,8 +56,9 @@ public class AdsController : ControllerBase
         var adToUpdate = await _advertisementRepository.GetById(id);
         if (adToUpdate is null)
         {
-            _advertisementRepository.Update(ad);
+            return NotFound();
         }
+        _advertisementRepository.Update(ad);
         return NoContent();
     }
 
