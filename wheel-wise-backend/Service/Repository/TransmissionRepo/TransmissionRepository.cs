@@ -8,7 +8,7 @@ public class TransmissionRepository : ITransmissionRepository
 {
     private WheelWiseContext _dbContext;
 
-    TransmissionRepository(WheelWiseContext wheelWiseContext)
+    public TransmissionRepository(WheelWiseContext wheelWiseContext)
     {
         _dbContext = wheelWiseContext;
     }

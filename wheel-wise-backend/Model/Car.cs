@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
 namespace wheel_wise.Model;
 
 public class Car
@@ -7,6 +10,9 @@ public class Car
     public int ColorId { get; init; }
     public Color Color { get; set; }
     public int Year { get; set; }
+    
+    //[Column(TypeName = "decimal(5, 2)")]
+    [Precision(20,10)]
     public decimal Price { get; set; }
     public int Mileage { get; set; }
     public int Power { get; set; }

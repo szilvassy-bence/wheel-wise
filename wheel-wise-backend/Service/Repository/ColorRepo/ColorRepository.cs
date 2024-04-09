@@ -6,7 +6,7 @@ namespace wheel_wise.Service.Repository.ColorRepo;
 
 public class ColorRepository : IColorRepository
 {
-    private readonly WheelWiseContext _dbContext;
+    private WheelWiseContext _dbContext;
 
     public ColorRepository(WheelWiseContext context)
     {

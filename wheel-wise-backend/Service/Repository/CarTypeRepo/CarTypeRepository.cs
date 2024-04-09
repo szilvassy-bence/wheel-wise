@@ -15,12 +15,12 @@ public class CarTypeRepository : ICarTypeRepository
 
     public async Task<IEnumerable<CarType>> GetAll()
     {
-        return await _dbContext.Types.ToListAsync();
+        return await _dbContext.CarTypes.ToListAsync();
     }
     
     public async Task<CarType>? GetByCarModel(string brand,string model)
     {
-        return (await _dbContext.Types.FirstOrDefaultAsync(c => (c.Model == model && c.Brand == brand)))!;
+        return (await _dbContext.CarTypes.FirstOrDefaultAsync(c => (c.Model == model && c.Brand == brand)))!;
     }
 
     public async void Add(CarType carCarTypes)

@@ -8,7 +8,7 @@ public class WheelWiseContext : DbContext
     public DbSet<Advertisement> Advertisements { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Equipment> Equipments { get; set; }
-    public DbSet<CarType> Types { get; set; }
+    public DbSet<CarType> CarTypes { get; set; }
     public DbSet<Transmission> Transmissions { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<FuelType> FuelTypes { get; set; }
@@ -23,22 +23,33 @@ public class WheelWiseContext : DbContext
     {
         var equipment1 = new Equipment { Id = 1, Type = "Technical", Name = "AC" };
         var equipment2 = new Equipment { Id = 2, Type = "Comfort", Name = "SeatHeating" };
-        
+
         modelBuilder.Entity<CarType>().HasData(new CarType { Id = 1, Brand = "Opel", Model = "Astra" },
             new CarType { Id = 2, Brand = "Renault", Model = "Clio" });
         modelBuilder.Entity<Equipment>().HasData(equipment1, equipment2);
-        modelBuilder.Entity<Color>().HasData(new Color { Id = 1, Name = "White" }, new Color { Id = 2, Name = "Black" });
-        modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 1, Name = "Diesel" }, new FuelType { Id = 2, Name = "Petrol" });
-        modelBuilder.Entity<Transmission>().HasData(new Transmission { Id = 1, Name = "Manual" }, new FuelType { Id = 2, Name = "Automatic" });
+        modelBuilder.Entity<Color>()
+            .HasData(new Color { Id = 1, Name = "White" }, new Color { Id = 2, Name = "Black" });
+        modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 1, Name = "Diesel" },
+            new FuelType { Id = 2, Name = "Petrol" });
+        modelBuilder.Entity<Transmission>().HasData(new Transmission { Id = 1, Name = "Manual" },
+            new FuelType { Id = 2, Name = "Automatic" });
         modelBuilder.Entity<Car>().HasData(new Car
         {
             Id = 1, ColorId = 1, Year = 2010, Price = 20000m, Mileage = 15000, Power = 100,
             FuelTypeId = 1, Status = Status.Used, TransmissionId = 1, CarTypeId = 1
-        },  new Car { Id = 2, ColorId = 2, Year = 2010, Price = 20000m, Mileage = 15000, Power = 100,
-        FuelTypeId = 2, Status = Status.Broken, TransmissionId = 2, CarTypeId = 2 });
+        }, new Car
+        {
+            Id = 2, ColorId = 2, Year = 2010, Price = 20000m, Mileage = 15000, Power = 100,
+            FuelTypeId = 2, Status = Status.Broken, TransmissionId = 2, CarTypeId = 2
+        });
         modelBuilder.Entity<Advertisement>().HasData(new Advertisement
         {
             Id = 1, CreatedAt = DateTime.Now, Highlighted = false, CarId = 1
         });
+
+        // Unidirectional many-to-many
+        modelBuilder.Entity<Car>()
+            .HasMany(e => e.Equipments)
+            .WithMany();
     }
 }

@@ -1,6 +1,6 @@
 using wheel_wise.Model;
 
-namespace wheel_wise.Service;
+namespace wheel_wise.Service.Filters;
 
 public class PriceSpecification : ISpecification<Car>
 {
