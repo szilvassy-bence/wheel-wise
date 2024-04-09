@@ -8,7 +8,7 @@ public interface ICarTypeRepository
     Task<CarType>? GetByCarModel(string brand, string model);
 
     Task<CarType>? GeById(int id);
-    void Add(CarType carCarType);
-    void Delete(CarType carCarType);
-    void Update(CarType carCarType);
+    Task Add(CarType carCarType);
+    Task Delete(CarType carCarType);
+    Task Update(CarType carCarType);
 }

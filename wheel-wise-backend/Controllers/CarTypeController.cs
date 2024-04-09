@@ -11,7 +11,7 @@ public class CarTypeController: ControllerBase
     private ILogger<CarTypeController> _logger;
     private ICarTypeRepository _carTypeRepository;
 
-    CarTypeController(ILogger<CarTypeController> logger, ICarTypeRepository carTypeRepository)
+    public CarTypeController(ILogger<CarTypeController> logger, ICarTypeRepository carTypeRepository)
     {
         _logger = logger;
         _carTypeRepository = carTypeRepository;
@@ -31,8 +31,10 @@ public class CarTypeController: ControllerBase
             return StatusCode(500, "An error occured while trying to list all car types.");
         }
     }
+    
+    //getbyid endpoint needed!!
 
-    [HttpGet("/getbybrandandcolor/{brand}/{color}")]
+    [HttpGet("getbybrandandcolor/{brand}/{color}")]
     public async Task<IActionResult> GetByBrand(string brand, string model)
     {
         try
@@ -52,17 +54,17 @@ public class CarTypeController: ControllerBase
         }
     }
 
-    [HttpPost("/add")]
+    [HttpPost]
     public async Task<IActionResult> AddCarType(CarType carType)
     {
         try
         {
             _carTypeRepository.Add(carType);
-            bool carTypeAdded = await _carTypeRepository.GetByCarModel(carType.Brand, carType.Model) != null;
+            /*bool carTypeAdded = await _carTypeRepository.GetByCarModel(carType.Brand, carType.Model) != null;
             if (!carTypeAdded)
             {
                 throw new NullReferenceException("Car type wasn't added!");
-            }
+            }*/
             return Ok($"{carType} added");
         }
         catch (Exception e)
@@ -72,7 +74,7 @@ public class CarTypeController: ControllerBase
         }
     }
 
-    [HttpPost("/delete/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCarType(int id)
     {
         try
@@ -84,7 +86,7 @@ public class CarTypeController: ControllerBase
             }
 
             _carTypeRepository.Delete(carType);
-            return Ok("Car type deleted successfully!");
+            return NoContent();
 
         }
         catch (Exception e)

@@ -30,7 +30,7 @@ public class TransmissionRepository : ITransmissionRepository
 
     public async Task Add(Transmission transmission)
     {
-        await _dbContext.AddAsync(transmission);
+        _dbContext.Add(transmission);
         await _dbContext.SaveChangesAsync();
     }
 

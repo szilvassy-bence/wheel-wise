@@ -30,19 +30,19 @@ public class CarRepository: ICarRepository
         return await _dbContext.Cars.FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async void Add(Car car)
+    public async Task Add(Car car)
     {
-        await _dbContext.AddAsync(car);
+        _dbContext.Add(car);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async void Delete(Car car)
+    public async Task Delete(Car car)
     { 
         _dbContext.Remove(car);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async void Update(Car car)
+    public async Task Update(Car car)
     {
         _dbContext.Update(car);
         await _dbContext.SaveChangesAsync();

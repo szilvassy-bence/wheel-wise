@@ -20,13 +20,13 @@ public class AdsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Advertisement>>> GetAds()
+    public async Task<ActionResult<IEnumerable<Advertisement>>> GetAll()
     {
         return Ok(await _advertisementRepository.GetAll());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Advertisement>> GetAdById(int id)
+    public async Task<ActionResult<Advertisement>> GetById(int id)
     {
         var ad = await _advertisementRepository.GetById(id);
         if (ad == null)
@@ -43,7 +43,7 @@ public class AdsController : ControllerBase
     public async Task<ActionResult<Advertisement>> PostAd(Advertisement ad)
     {
         _advertisementRepository.Add(ad);
-        return CreatedAtAction(nameof(GetAds), new { id = ad.Id }, ad);
+        return CreatedAtAction(nameof(GetAll), new { id = ad.Id }, ad);
     }
 
     [HttpPut("{id}")]

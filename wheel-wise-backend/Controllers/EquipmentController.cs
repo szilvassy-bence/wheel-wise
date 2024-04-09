@@ -17,7 +17,7 @@ public class EquipmentController : ControllerBase
         _equipmentRepository = equipmentRepository;
     }
 
-    [HttpGet("GetAllEquipment")]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<Equipment>>> GetAllEquipment()
     {
         try
@@ -44,7 +44,7 @@ public class EquipmentController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogInformation(e, "Error adding equipment.");
+            _logger.LogError(e, "Error adding equipment.");
             return StatusCode(500);
         }
     }
@@ -71,8 +71,10 @@ public class EquipmentController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogInformation(e, "Error getting equipment with ID {equipmentId}", equipmentId);
+            _logger.LogError(e, "Error getting equipment with ID {equipmentId}", equipmentId);
             return StatusCode(500, $"Error getting equipment with ID {equipmentId}");
         }
     }
+    
+    //UPDATE NEEDS TO BE ADDED
 }

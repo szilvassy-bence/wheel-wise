@@ -23,9 +23,9 @@ public class CarTypeRepository : ICarTypeRepository
         return (await _dbContext.CarTypes.FirstOrDefaultAsync(c => (c.Model == model && c.Brand == brand)))!;
     }
 
-    public async void Add(CarType carCarTypes)
+    public async Task Add(CarType carCarTypes)
     {
-        await _dbContext.AddAsync(carCarTypes);
+        _dbContext.Add(carCarTypes);
         await _dbContext.SaveChangesAsync();
     }
 
@@ -34,13 +34,13 @@ public class CarTypeRepository : ICarTypeRepository
         return await _dbContext.CarTypes.FirstOrDefaultAsync(x => x.Id == id);
     }
     
-    public async void Delete(CarType carCarTypes)
+    public async Task Delete(CarType carCarTypes)
     {
         _dbContext.Remove(carCarTypes);
         await _dbContext.SaveChangesAsync();
     }
     
-    public async void Update(CarType carCarTypes)
+    public async Task Update(CarType carCarTypes)
     {
         _dbContext.Update(carCarTypes);
         await _dbContext.SaveChangesAsync();

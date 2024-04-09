@@ -17,7 +17,7 @@ public class FuelTypeController : ControllerBase
         _fuelTypeRepository = fuelTypeRepository;
     }
 
-    [HttpGet("GetAllFuelType")]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<FuelType>>> GetAllFuelType()
     {
         try
@@ -28,7 +28,7 @@ public class FuelTypeController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogInformation(e, "Error getting all fuel types.");
+            _logger.LogError(e, "Error getting all fuel types.");
             return NotFound("Error getting all fuel types.");
         }
     }
@@ -44,7 +44,7 @@ public class FuelTypeController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogInformation(e, "Error adding fuelType.");
+            _logger.LogError(e, "Error adding fuelType.");
             return StatusCode(500);
         }
     }
@@ -71,7 +71,7 @@ public class FuelTypeController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogInformation(e, "Error getting fuelType with ID {fuelTypeId}", fuelTypeId);
+            _logger.LogError(e, "Error getting fuelType with ID {fuelTypeId}", fuelTypeId);
             return StatusCode(500, $"Error getting fuelType with ID {fuelTypeId}");
         }
     }

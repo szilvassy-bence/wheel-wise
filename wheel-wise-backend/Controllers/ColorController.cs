@@ -11,7 +11,7 @@ public class ColorController : ControllerBase
     private ILogger<ColorController> _logger;
     private IColorRepository _colorRepository;
 
-    ColorController(ILogger<ColorController> logger, IColorRepository colorRepository)
+    public ColorController(ILogger<ColorController> logger, IColorRepository colorRepository)
     {
         _logger = logger;
         _colorRepository = colorRepository;
@@ -32,7 +32,7 @@ public class ColorController : ControllerBase
         }
     }
 
-    [HttpGet("/getbyname/{name}")]
+    [HttpGet("getbyname/{name}")]
     public async Task<IActionResult> GetByName(string name)
     {
         try
@@ -52,7 +52,7 @@ public class ColorController : ControllerBase
         }
     }
 
-    [HttpPost("/add")]
+    [HttpPost]
     public async Task<IActionResult> AddColor(Color color)
     {
         try
@@ -73,7 +73,7 @@ public class ColorController : ControllerBase
         }
     }
 
-    [HttpPost("/delete/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteColor(int id)
     {
         try
@@ -85,7 +85,7 @@ public class ColorController : ControllerBase
             }
 
             _colorRepository.Delete(color);
-            return Ok("Color deleted successfully!");
+            return NoContent();
 
         }
         catch (Exception e)
