@@ -17,6 +17,11 @@ public class ColorRepository : IColorRepository
     {
         return await _dbContext.Colors.ToListAsync();
     }
+    
+    public async Task<Color?> GeById(int id)
+    {
+        return await _dbContext.Colors.FirstOrDefaultAsync(x => x.Id == id);
+    }
 
     public async Task<Color> GetByName(string colorName)
     {
