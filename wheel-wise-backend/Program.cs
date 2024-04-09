@@ -25,7 +25,6 @@ builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<ITransmissionRepository, TransmissionRepository>();
 builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

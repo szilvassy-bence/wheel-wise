@@ -22,6 +22,11 @@ public class FuelTypeRepository : IFuelTypeRepository
     {
         return await _dbContext.FuelTypes.FirstOrDefaultAsync(x => x.Name == fuelTypeName);
     }
+    
+    public async Task<FuelType?> GetById(int fuelTypeId)
+    {
+        return await _dbContext.FuelTypes.FindAsync(fuelTypeId);
+    }
 
     public async Task Add(FuelType fuelType)
     {

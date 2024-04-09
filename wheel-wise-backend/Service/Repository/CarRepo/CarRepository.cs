@@ -15,7 +15,7 @@ public class CarRepository: ICarRepository
 {
     private WheelWiseContext _dbContext;
 
-    CarRepository(WheelWiseContext wheelWiseContext)
+    public CarRepository(WheelWiseContext wheelWiseContext)
     {
         _dbContext = wheelWiseContext;
     }
