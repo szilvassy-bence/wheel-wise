@@ -22,6 +22,11 @@ public class EquipmentRepository : IEquipmentRepository
     {
         return await _dbContext.Equipments.FirstOrDefaultAsync(x => x.Name == equipmentName);
     }
+    
+    public async Task<Equipment?> GetById(int equipmentId)
+    {
+        return await _dbContext.Equipments.FindAsync(equipmentId);
+    }
 
     public async Task Add(Equipment equipment)
     {

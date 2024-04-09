@@ -6,6 +6,8 @@ public interface ICarTypeRepository
 {
     Task<IEnumerable<CarType>> GetAll();
     Task<CarType>? GetByCarModel(string brand, string model);
+
+    Task<CarType>? GeById(int id);
     void Add(CarType carCarType);
     void Delete(CarType carCarType);
     void Update(CarType carCarType);

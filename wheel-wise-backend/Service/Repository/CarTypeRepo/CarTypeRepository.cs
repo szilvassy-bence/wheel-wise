@@ -28,6 +28,11 @@ public class CarTypeRepository : ICarTypeRepository
         await _dbContext.AddAsync(carCarTypes);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<CarType?> GeById(int id)
+    {
+        return await _dbContext.CarTypes.FirstOrDefaultAsync(x => x.Id == id);
+    }
     
     public async void Delete(CarType carCarTypes)
     {
