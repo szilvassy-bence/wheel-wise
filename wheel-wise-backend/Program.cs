@@ -25,7 +25,6 @@ builder.Services.AddScoped<ITransmissionRepository, TransmissionRepository>();
 builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddDbContext<WheelWiseContext>();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
