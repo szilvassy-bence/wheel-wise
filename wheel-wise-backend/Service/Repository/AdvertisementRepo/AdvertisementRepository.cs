@@ -15,7 +15,14 @@ public class AdvertisementRepository : IAdvertisementRepository
 
     public async Task<IEnumerable<Advertisement>> GetAll()
     {
-        return await _dbContext.Advertisements.Include(c => c.Car).ToListAsync();
+        return await _dbContext.Advertisements
+            .Include(c => c.Car)
+            .Include(x => x.Car.CarType)
+            .Include(x => x.Car.Transmission)
+            .Include(x => x.Car.FuelType)
+            .Include(x => x.Car.Equipments)
+            .Include(x => x.Car.Color)
+            .ToListAsync();
     }
 
     public async Task<Advertisement?> GetById(int id)
@@ -35,9 +42,22 @@ public class AdvertisementRepository : IAdvertisementRepository
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task Update( Advertisement advertisement)
+    // ask mentors about update
+    // https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/update-related-data?view=aspnetcore-8.0
+    // https://learn.microsoft.com/en-us/training/modules/build-web-api-aspnet-core/8-exercise-implement-crud
+    public async Task Update(Advertisement advertisement)
     {
         _dbContext.Advertisements.Update(advertisement);
         await _dbContext.SaveChangesAsync();
+    }
+    
+    public async Task UpdateById(int id, Advertisement advertisement)
+    {
+        var ad = await _dbContext.Advertisements.FindAsync(id);
+        if (ad != null)
+        {
+            ad.Highlighted = advertisement.Highlighted;
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

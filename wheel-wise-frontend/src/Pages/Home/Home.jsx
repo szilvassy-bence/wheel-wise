@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import CardAd from '../../Components/Advertisement/CardAd';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import AdvertisementList from "../../Components/AdvertisementList"
 
 function Home() {
     const [allAdData, setAllAdData] = useState(null);
@@ -14,7 +15,7 @@ function Home() {
             const response = await fetch('/api/Ads');
             const data = await response.json();
             setAllAdData(data);
-            console.log(`$data is ${data[0].car.year}`)
+            console.log(data);
         } catch (error) {
             console.error('Error fetching advertisement data', error);
         }
@@ -32,37 +33,21 @@ function Home() {
         navigate(`/advertisement/${id}`);
     }
 
-    return (
-        <Container fluid>
+    return (<Container fluid>
             <div>
-                <h1>Advertisements</h1>
+                {/* big banner comes here */}
                 {allAdData ? (
-                    <Row>
-                        {allAdData.map((ad) => (
-                            <Col md="6" xl="3"><CardAd ad={ad} handleClick={handleClick}></CardAd></Col>
-                        ))}
-                        {allAdData.map((ad) => (
-                            <Col md="6" xl="3">{ad.car.year}</Col>
-                        ))}
-                        {allAdData.map((ad) => (
-                            <Col md="6" xl="3">{ad.car.year}</Col>
-                        ))}
-                        {allAdData.map((ad) => (
-                            <Col md="6" xl="3">{ad.car.year}</Col>
-                        ))}
-                        {allAdData.map((ad) => (
-                            <Col md="6" xl="3">{ad.car.year}</Col>
-                        ))}
-                        {allAdData.map((ad) => (
-                            <Col md="6" xl="3">{ad.car.year}</Col>
-                        ))}
-                    </Row>
-                ) : (
+                    
+                    <AdvertisementList allAdData={allAdData} handleClick={handleClick} title={"Advertisement"}/>
+                    )
+                    :
+                    (
                     <p>Loading...</p>
-                )}
+                    )}
+
             </div>
-        </Container>
-    )
+        </Container>)
 }
+
 export default Home
 
