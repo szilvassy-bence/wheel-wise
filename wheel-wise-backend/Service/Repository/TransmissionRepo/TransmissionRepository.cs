@@ -30,19 +30,20 @@ public class TransmissionRepository : ITransmissionRepository
 
     public async Task Add(Transmission transmission)
     {
-        _dbContext.Add(transmission);
+        _dbContext.Transmissions.Add(transmission);
         await _dbContext.SaveChangesAsync();
     }
 
     public async Task Delete(Transmission transmission)
     {
-        _dbContext.Remove(transmission);
+        _dbContext.Transmissions.Remove(transmission);
+        Console.WriteLine(_dbContext.Entry(transmission).State);
         await _dbContext.SaveChangesAsync();
     }
 
     public async Task Update(Transmission transmission)
     {
-        _dbContext.Update(transmission);
+        _dbContext.Transmissions.Update(transmission);
         await _dbContext.SaveChangesAsync();
     }
 }

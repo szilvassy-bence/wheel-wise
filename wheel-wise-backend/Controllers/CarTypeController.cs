@@ -65,7 +65,7 @@ public class CarTypeController: ControllerBase
             {
                 throw new NullReferenceException("Car type wasn't added!");
             }*/
-            return Ok($"{carType} added");
+            return CreatedAtAction(nameof(GetAll), new { id = carType.Id }, carType);
         }
         catch (Exception e)
         {

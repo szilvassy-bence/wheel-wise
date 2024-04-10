@@ -18,7 +18,7 @@ public class FuelTypeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<FuelType>>> GetAllFuelType()
+    public async Task<ActionResult<IEnumerable<FuelType>>> GetAll()
     {
         try
         {
@@ -40,7 +40,7 @@ public class FuelTypeController : ControllerBase
         {
             _logger.LogInformation("Adding fuelType to repo.");
             await _fuelTypeRepository.Add(fuelType);
-            return Ok();
+            return CreatedAtAction(nameof(GetAll), new { id = fuelType.Id }, fuelType);
         }
         catch (Exception e)
         {

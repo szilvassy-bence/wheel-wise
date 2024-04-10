@@ -64,7 +64,7 @@ public class ColorController : ControllerBase
                 throw new NullReferenceException("Color wasn't added!");
             }
 
-            return Ok($"{color.Name} added");
+            return CreatedAtAction(nameof(GetAll), new { id = color.Id }, color);
         }
         catch (Exception e)
         {

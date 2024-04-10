@@ -26,7 +26,7 @@ public class TransmissionController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Transmission>> GetById(int id)
     {
-        var transmission = _transmissionRepository.GetById(id);
+        var transmission = await _transmissionRepository.GetById(id);
         if (transmission == null)
         {
             return NotFound($"Transmission with id: {id} was not found.");
@@ -50,11 +50,12 @@ public class TransmissionController : ControllerBase
             return BadRequest();
         }
 
-        var transmissionToUpdate = _transmissionRepository.GetById(id);
-        if (transmission is null)
+        var transmissionToUpdate = await _transmissionRepository.GetById(id);
+        if (transmissionToUpdate is null)
         {
             return NotFound();
         }
+        
         await _transmissionRepository.Update(transmission);
         return NoContent();
     }

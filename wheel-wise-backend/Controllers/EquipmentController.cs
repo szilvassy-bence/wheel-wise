@@ -18,7 +18,7 @@ public class EquipmentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Equipment>>> GetAllEquipment()
+    public async Task<ActionResult<IEnumerable<Equipment>>> GetAll()
     {
         try
         {
@@ -40,7 +40,7 @@ public class EquipmentController : ControllerBase
         {
             _logger.LogInformation("Adding equipment to repo.");
             await _equipmentRepository.Add(equipment);
-            return Ok();
+            return CreatedAtAction(nameof(GetAll), new { id = equipment.Id }, equipment);
         }
         catch (Exception e)
         {

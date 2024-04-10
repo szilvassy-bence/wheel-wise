@@ -18,27 +18,26 @@ public class AdvertisementRepository : IAdvertisementRepository
         return await _dbContext.Advertisements.ToListAsync();
     }
 
-    public async Task<Advertisement>? GetById(int id)
+    public async Task<Advertisement?> GetById(int id)
     {
         return await _dbContext.Advertisements.FindAsync(id);
     }
 
     public async Task Add(Advertisement advertisement)
     {
-        _dbContext.Add(advertisement);
+        _dbContext.Advertisements.Add(advertisement);
         await _dbContext.SaveChangesAsync();
     }
     
     public async Task Delete(Advertisement advertisement)
     {
-        _dbContext.Remove(advertisement);
+        _dbContext.Advertisements.Remove(advertisement);
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task Update(Advertisement advertisement)
+    public async Task Update( Advertisement advertisement)
     {
-        
-        _dbContext.Update(advertisement);
+        _dbContext.Advertisements.Update(advertisement);
         await _dbContext.SaveChangesAsync();
     }
 }

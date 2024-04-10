@@ -1,6 +1,7 @@
 using wheel_wise.Model;
 using wheel_wise.Service.Repository;
 using Microsoft.AspNetCore.Mvc;
+using wheel_wise.ActionFilters;
 using wheel_wise.Service.Repository.AdvertisementRepo;
 using wheel_wise.Service.Repository.CarRepo;
 
@@ -37,15 +38,15 @@ public class AdsController : ControllerBase
         return Ok(ad);
     }
 
+    [WarningFilter("Info")]
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Advertisement>> PostAd(Advertisement ad)
     {
-        _advertisementRepository.Add(ad);
+        await _advertisementRepository.Add(ad);
         return CreatedAtAction(nameof(GetAll), new { id = ad.Id }, ad);
     }
 
+    [WarningFilter("Info")]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutAdById(int id, Advertisement ad)
     {
@@ -53,13 +54,23 @@ public class AdsController : ControllerBase
         {
             return BadRequest();
         }
-        var adToUpdate = await _advertisementRepository.GetById(id);
-        if (adToUpdate is null)
+
+        try
         {
-            return NotFound();
+            var adToUpdate = await _advertisementRepository.GetById(id);
+            if (adToUpdate is null)
+            {
+                return NotFound();
+            }
+            
+            await _advertisementRepository.Update(ad);
+            return NoContent();
         }
-        _advertisementRepository.Update(ad);
-        return NoContent();
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     [HttpDelete("{id}")]
