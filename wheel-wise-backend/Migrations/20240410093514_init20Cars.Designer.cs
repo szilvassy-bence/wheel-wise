@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wheel_wise.Data;
 
@@ -11,9 +12,11 @@ using wheel_wise.Data;
 namespace wheel_wise.Migrations
 {
     [DbContext(typeof(WheelWiseContext))]
-    partial class WheelWiseContextModelSnapshot : ModelSnapshot
+    [Migration("20240410093514_init20Cars")]
+    partial class init20Cars
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,133 +73,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 1,
                             CarId = 1,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(784),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CarId = 2,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(842),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CarId = 3,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(846),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CarId = 4,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(849),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CarId = 5,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(852),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CarId = 6,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(855),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CarId = 7,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(858),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CarId = 8,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(861),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CarId = 9,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(864),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CarId = 10,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(867),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CarId = 11,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(870),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CarId = 12,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(873),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CarId = 13,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(876),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CarId = 14,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(879),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CarId = 15,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(882),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CarId = 16,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(885),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 17,
-                            CarId = 17,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(888),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 18,
-                            CarId = 18,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(891),
-                            Highlighted = false
-                        },
-                        new
-                        {
-                            Id = 19,
-                            CarId = 19,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 37, 6, 963, DateTimeKind.Local).AddTicks(893),
+                            CreatedAt = new DateTime(2024, 4, 10, 11, 35, 14, 364, DateTimeKind.Local).AddTicks(4470),
                             Highlighted = false
                         });
                 });
