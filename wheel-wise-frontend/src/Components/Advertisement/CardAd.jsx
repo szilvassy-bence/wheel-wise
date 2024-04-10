@@ -1,20 +1,24 @@
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 
-function Advertisement({ad}){
+
+function CardAd({ad,handleClick}){
+
 
     return (
         <>
-          <Card>
+          <Card id={ad.id}>
             <Card.Img variant="top" src="" />
             <Card.Body>
               <Card.Text>
                 {ad.car.year}
               </Card.Text>
+              <Button id={ad.id} onClick={handleClick} variant="primary">See Advertisement</Button>
             </Card.Body>
           </Card>
         </>
       );
 }
 
-export default Advertisement
+export default CardAd
