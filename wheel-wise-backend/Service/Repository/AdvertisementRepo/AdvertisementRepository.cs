@@ -15,7 +15,7 @@ public class AdvertisementRepository : IAdvertisementRepository
 
     public async Task<IEnumerable<Advertisement>> GetAll()
     {
-        return await _dbContext.Advertisements.ToListAsync();
+        return await _dbContext.Advertisements.Include(c => c.Car).ToListAsync();
     }
 
     public async Task<Advertisement?> GetById(int id)
