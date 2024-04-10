@@ -1,39 +1,19 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './Pages/Home/Home.jsx'
 
-function App() {
-    const [allCarData, setAllCarData] = useState(null);
-    const fetchCarData = async () => {
-        try {
-            const response = await fetch('/api/Car');
-            const data = await response.json();
-            setAllCarData(data);
-            console.log(`$data is ${data[0].brand}`)
-        } catch (error) {
-            console.error('Error fetching car data', error);
-        }
-    }
+function App({ routes }) {
 
-
-useEffect(() => {
-    fetchCarData();
-}, []);
-
-return(
-    <div>
-        <h1>Car Data</h1>
-        {allCarData ? (
-            <ul>
-                {allCarData.map((car) => (
-                    <li>{car.brand}</li>
-                ))}
-            </ul>
-        ) : (
-            <p>Loading...</p>
-        )}
-    </div>
-)
-    
+    return (
+        <>
+            <BrowserRouter>
+                <Routes>    
+                        <Route index element={<Home />} />          
+                </Routes>
+            </BrowserRouter>
+        </>
+    )
 }
 
 export default App
