@@ -63,7 +63,7 @@ public class AdsController : ControllerBase
                 return NotFound();
             }
             
-            await _advertisementRepository.UpdateById(id, ad);
+            await _advertisementRepository.Update(ad);
             return NoContent();
         }
         catch (Exception e)

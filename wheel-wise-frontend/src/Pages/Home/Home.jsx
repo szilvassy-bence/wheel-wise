@@ -5,6 +5,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import AdvertisementList from "../../Components/AdvertisementList"
+import AdFilter from "../../Components/AdFilter/index.js";
+
 
 function Home() {
     const [allAdData, setAllAdData] = useState(null);
@@ -36,6 +38,7 @@ function Home() {
     return (<Container fluid>
             <div>
                 {/* big banner comes here */}
+                <AdFilter/>
                 {allAdData ? (
                     
                     <AdvertisementList allAdData={allAdData} handleClick={handleClick} title={"Advertisement"}/>
