@@ -27,7 +27,14 @@ public class AdvertisementRepository : IAdvertisementRepository
 
     public async Task<Advertisement?> GetById(int id)
     {
-        return await _dbContext.Advertisements.FindAsync(id);
+        return await _dbContext.Advertisements
+            .Include(c => c.Car)
+            .Include(x => x.Car.CarType)
+            .Include(x => x.Car.Transmission)
+            .Include(x => x.Car.FuelType)
+            .Include(x => x.Car.Equipments)
+            .Include(x => x.Car.Color)
+            .FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public async Task Add(Advertisement advertisement)
