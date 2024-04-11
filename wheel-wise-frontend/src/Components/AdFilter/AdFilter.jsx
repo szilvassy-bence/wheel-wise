@@ -7,6 +7,15 @@ export default function AdFilter() {
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [carTypeModels, setCarTypeModels] = useState(null);
 
+    const [formData, setFormData] = useState({
+        brand: "",
+        model: "",
+        minPrice: 0,
+        maxPrice: 0,
+        fromYear: "",
+        tillYear: ""
+    })
+
     const fetchCarTypeData = async () => {
         try {
             const response = await fetch('/api/CarType');
@@ -42,8 +51,29 @@ export default function AdFilter() {
     function selectBrand(e) {
         console.log(e.target.value);
         setSelectedBrand(e.target.value);
+        setFormData({...formData, brand: e.target.value})
     }
 
+    function selectModel(e) {
+        console.log(e.target.value);
+        setFormData({...formData, model: e.target.value})
+    }
+    function setMinPrice(e) {
+        console.log(e.target.value);
+        setFormData({...formData, minPrice: e.target.value})
+    }
+    function setMaxPrice(e) {
+        console.log(e.target.value);
+        setFormData({...formData, maxPrice: e.target.value})
+    }
+    function setFromYear(e) {
+        console.log(e.target.value);
+        setFormData({...formData, fromYear: e.target.value})
+    }
+    function setTillYear(e) {
+        console.log(e.target.value);
+        setFormData({...formData, tillYear: e.target.value})
+    }
 
     useEffect(() => {
         console.log(`selected brand: ${selectedBrand}`);
@@ -62,15 +92,9 @@ export default function AdFilter() {
 
     async function submitForm(e) {
         e.preventDefault();
-        //console.log(e.target);
+        console.log(e.target);
 
-        //get the data from the form
-        const form = document.getElementById('filterForm');
-        const formData = new FormData(form);
-        const filter = Object.fromEntries(formData);
-        filter.
-        //newTodo.createdAt = new Date(newTodo.createdAt);
-        console.log(filter);
+        console.log(formData);
 
         //send fetch request to post new book
         /*const response = await fetch('/api/new-todo', {
@@ -84,7 +108,7 @@ export default function AdFilter() {
     return (
         <div>
             {carTypes ? (<Form onSubmit={e =>submitForm(e)} id="filterForm">
-                <Form.Select aria-label="brand" onChange={e => selectBrand(e)}>
+                <Form.Select aria-label="brand" value={formData.brand} onChange={e => selectBrand(e)}>
                     <option>Select Brand</option>
                     {getUniqueBrands().map(b => (
                         <option key={b} value={b}>{b}</option>
@@ -92,7 +116,7 @@ export default function AdFilter() {
                     }
                 </Form.Select>
                 {selectedBrand != null && carTypeModels != null ? (
-                        <Form.Select aria-label="model">
+                        <Form.Select aria-label="model" value={formData.model} onChange={e => selectModel(e)}>
                             <option>Select Model</option>
                             {carTypeModels.map(m => (
                                 <option key={m} value={m}>{m}</option>
@@ -107,27 +131,27 @@ export default function AdFilter() {
                 }
                 <Form.Label htmlFor="minimumPriceInput">Minimum Price</Form.Label>
                 <Form.Control
-                    type="text"
-                    id="minPriceControl"
+                    type="number"
+                    id="minimumPriceInput"
                     aria-describedby="mincarprice"
+                    value={formData.minPrice}
+                    onChange={e => setMinPrice(e)}
                 />
-                <Form.Text id="minimumPriceInput" value="" muted placeholder="Minimum Price">
-                </Form.Text>
                 <Form.Label htmlFor="maximumPriceInput">Maximum Price</Form.Label>
                 <Form.Control
-                    type="text"
-                    id="maxPriceControl"
+                    type="number"
+                    id="maximumPriceInput"
                     aria-describedby="maxcarprice"
+                    value={formData.maxPrice}
+                    onChange={e => setMaxPrice(e)}
                 />
-                <Form.Text id="maximumPriceInput" value="" muted placeholder="Maximum Price">
-                </Form.Text>
-                <Form.Select aria-label="fromyear">
+                <Form.Select aria-label="fromyear" value={formData.fromYear} onChange={e => setFromYear(e)}>
                     <option>From</option>
                     {yearCounter().map(year => (
                         <option key={year} value={year}>{year}</option>))
                     }
                 </Form.Select>
-                <Form.Select aria-label="tillyear">
+                <Form.Select aria-label="tillyear" value={formData.tillYear} onChange={e => setTillYear(e)}>
                     <option>Till</option>
                     {yearCounter().map(year => (
                         <option key={year} value={year}>{year}</option>))

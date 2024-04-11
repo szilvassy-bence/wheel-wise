@@ -33,6 +33,7 @@ function AdvertisementDetail(){
                             <ListGroup.Item>Transmission: {advertisement.car.transmission.name}</ListGroup.Item>
                             <ListGroup.Item>Mileage: {advertisement.car.mileage} KM</ListGroup.Item>
                             <ListGroup.Item>Power: {advertisement.car.power} HP</ListGroup.Item>
+                            <ListGroup.Item>Fuel Type: {advertisement.car.fuelType.name} HP</ListGroup.Item>
                         </ListGroup>
                     </Card.Body>
                 </Card>
