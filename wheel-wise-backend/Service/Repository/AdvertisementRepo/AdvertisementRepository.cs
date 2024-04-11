@@ -54,16 +54,25 @@ public class AdvertisementRepository : IAdvertisementRepository
     // https://learn.microsoft.com/en-us/training/modules/build-web-api-aspnet-core/8-exercise-implement-crud
     public async Task Update(Advertisement advertisement)
     {
+        _dbContext.Advertisements.Include(c => c.Car)
+            .Include(x => x.Car.CarType)
+            .Include(x => x.Car.Transmission)
+            .Include(x => x.Car.FuelType)
+            .Include(x => x.Car.Equipments)
+            .Include(x => x.Car.Color);
+
         _dbContext.Advertisements.Update(advertisement);
         await _dbContext.SaveChangesAsync();
     }
     
     public async Task UpdateById(int id, Advertisement advertisement)
     {
-        var ad = await _dbContext.Advertisements.FindAsync(id);
+        var ad = await _dbContext.Advertisements.Include(c=>c.Car)
+            .FirstOrDefaultAsync(a => a.Id == id);
         if (ad != null)
         {
             ad.Highlighted = advertisement.Highlighted;
+            ad.Car.Mileage = advertisement.Car.Mileage;
             await _dbContext.SaveChangesAsync();
         }
     }

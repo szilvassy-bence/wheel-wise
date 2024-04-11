@@ -27,6 +27,7 @@ function AdvertisementDetail(){
                     <Card.Header>{advertisement.title}</Card.Header>
                     <Card.Body>
                         <ListGroup className="list-group-flush">
+                            <ListGroup.Item>Car Type: {advertisement.car.carType.brand} {advertisement.car.carType.model}</ListGroup.Item>
                             <ListGroup.Item>Year:   {advertisement.car.year}</ListGroup.Item>
                             <ListGroup.Item>Color:  {advertisement.car.color.name}</ListGroup.Item>
                             <ListGroup.Item>Price: {advertisement.car.price} EUR</ListGroup.Item>
