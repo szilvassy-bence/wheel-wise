@@ -2,6 +2,8 @@ namespace wheel_wise.Model;
 
 public class Advertisement
 {
+    //frontend: picture formdata object files, dotnet side: contoller attribute [frombody][fromfile] match with formdata naming
+    //creates and stores binary stream 
     public int Id { get; init; }
     public string Title { get; set; }
     public string Description { get; set; }
