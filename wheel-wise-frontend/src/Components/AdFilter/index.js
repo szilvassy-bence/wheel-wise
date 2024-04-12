@@ -1,3 +1,3 @@
-import AdFilter from "./AdFilter.jsx";
+import AdFilter from "./AdFilter";
 
 export default AdFilter;

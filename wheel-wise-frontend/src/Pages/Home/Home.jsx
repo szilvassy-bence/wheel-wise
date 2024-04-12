@@ -1,11 +1,12 @@
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import CardAd from '../../Components/Advertisement/CardAd';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import CardAd from "../../Components/Advertisement/CardAd";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import AdvertisementList from "../../Components/AdvertisementList"
-import AdFilter from "../../Components/AdFilter/index.js";
+import AdFilter from "../../Components/AdFilter";
+import MainBanner from "../../Components/MainBanner"
 
 
 function Home() {
@@ -14,12 +15,12 @@ function Home() {
 
     const fetchAdData = async () => {
         try {
-            const response = await fetch('/api/Ads');
+            const response = await fetch("/api/Ads");
             const data = await response.json();
             setAllAdData(data);
             console.log(data);
         } catch (error) {
-            console.error('Error fetching advertisement data', error);
+            console.error("Error fetching advertisement data", error);
         }
     }
 
@@ -35,9 +36,10 @@ function Home() {
         navigate(`/advertisement/${id}`);
     }
 
-    return (<Container fluid>
-            <div>
+    return (< >
+            
                 {/* big banner comes here */}
+                <MainBanner/>
                 <AdFilter/>
                 {allAdData ? (
                     
@@ -48,8 +50,8 @@ function Home() {
                     <p>Loading...</p>
                     )}
 
-            </div>
-        </Container>)
+            
+        </>)
 }
 
 export default Home
