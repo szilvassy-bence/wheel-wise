@@ -99,7 +99,7 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
 
         console.log(formData);
 
-        //send fetch request to post new book
+        //send fetch request to send the form
         const response = await fetch("/api/Ads/SimpleForm", {
             method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(formData)
         });
@@ -153,25 +153,25 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
                                     />
                                 </Col>
                                 <Col sm={6} md={4} xxl={2}>
-                                    <Form.Label>Price From</Form.Label>
+                                    <Form.Label>From Year</Form.Label>
                                     <Form.Select
                                         className="quick-form"
                                         aria-label="fromyear"
                                         value={formData.fromYear}
                                         onChange={e => setFromYear(e)}>
-                                        <option>Min Price</option>
+                                        <option>Min Year</option>
                                         {service.yearCounter().map(year => (
                                             <option key={year} value={year}>{year}</option>))}
                                     </Form.Select>
                                 </Col>
                                 <Col sm={6} md={4} xxl={2}>
-                                    <Form.Label>Price Till</Form.Label>
+                                    <Form.Label>Till Year</Form.Label>
                                     <Form.Select
                                         className="quick-form"
                                         aria-label="tillyear"
                                         value={formData.tillYear}
                                         onChange={e => setTillYear(e)}>
-                                        <option>Max Price</option>
+                                        <option>Max Year</option>
                                         {service.yearCounter().map(year => (
                                             <option key={year} value={year}>{year}</option>))}
                                     </Form.Select>

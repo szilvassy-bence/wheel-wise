@@ -32,9 +32,15 @@ function Home() {
 
     // set the min and max prices of the current listing
     useEffect(() => {
-        if (allAdData){
-            setMinPrice(service.getMin(allAdData));
-            setMaxPrice(service.getMax(allAdData));
+        if (allAdData) {
+            const fetchData = async () => {
+                const minPrice = await service.getMin(allAdData);
+                const maxPrice = await service.getMax(allAdData);
+                setMinPrice(minPrice);
+                setMaxPrice(maxPrice);
+            };
+
+            fetchData();
         }
     }, [allAdData]);
 
