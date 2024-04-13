@@ -1,3 +1,7 @@
+.wrapper{
+    background-color: #ecf7ff;
+}
+
 .quick-form.form-control,
 .quick-form.form-select{
     border: none;
@@ -5,7 +9,6 @@
     border-bottom: 2px solid grey;
     transition: border-bottom-color 0.7s ease;
 }
-
 
 .quick-form.form-control:hover,
 .quick-form.form-select:hover{

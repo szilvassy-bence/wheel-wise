@@ -2,7 +2,7 @@ import "./PriceFormRange.css";
 import React, {useRef, useState, useEffect} from "react";
 import Form from "react-bootstrap/Form";
 
-export default function PriceFormRange() {
+export default function PriceFormRange({minPrice, maxPrice}) {
 
     const [sliderThumbLeftPosition, setSliderThumbLeftPosition] = useState(0);
     const [sliderThumbRightPosition, setSliderThumbRightPosition] = useState(100);
@@ -13,6 +13,9 @@ export default function PriceFormRange() {
     var sliderThumbLeftRef = useRef(null);
     var sliderThumbRightRef = useRef(null);
 
+    console.log(minPrice);
+    console.log(maxPrice);
+    
     function setLeftValue() {
         var _this = inputLeftRef.current,
             min = parseInt(_this.min),

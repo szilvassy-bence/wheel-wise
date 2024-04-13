@@ -8,7 +8,7 @@ export default function Layout() {
     return (
         <main>
             <MainNav />
-            <Container>
+            <Container fluid className="content">
                 <Outlet />
             </Container>
         </main>

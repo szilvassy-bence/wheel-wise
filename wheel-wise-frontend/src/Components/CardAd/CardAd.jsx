@@ -1,15 +1,15 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import {ListGroup} from "react-bootstrap";
-
+import "./CardAd.css";
 
 function CardAd({ad, handleClick}) {
-
-
+    
     return (
         <>
-            <Card id={ad.id}>
-                <Card.Img variant="top" src=""/>
+            <Card id={ad.id} className={ad.highlighted ? "highlighted ad-card" : "ad-card"}>
+                {ad.highlighted && <Card.Img className="highlighted-img" variant="top" src="./highlighted.png"/>}
+                <Card.Img variant="top" src="./car.jpg"/>
                 <Card.Body>
                     <Card.Title>{ad.title}</Card.Title>
                         <ListGroup className="list-group-flush">
