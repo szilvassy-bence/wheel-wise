@@ -1,7 +1,7 @@
-namespace wheel_wise.Model;
+namespace wheel_wise.Model.Filters;
 
 public class PriceRange
 {
-    public decimal Min { get; set; } = 0;
-    public decimal Max { get; set; } = Int32.MaxValue;
+    public decimal MinPrice { get; set; } = 0;
+    public decimal MaxPrice { get; set; } = Int32.MaxValue;
 }

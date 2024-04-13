@@ -1,4 +1,4 @@
-namespace wheel_wise.Model;
+namespace wheel_wise.Model.Filters;
 
 public class FilterModel
 {
@@ -7,4 +7,9 @@ public class FilterModel
     public string? Color { get; set; }
 
     public PriceRange? PriceRange { get; set; }
+
+    public override string ToString()
+    {
+        return $"{nameof(Brand)}: {Brand}, {nameof(Type)}: {Type}, {nameof(Color)}: {Color}, {nameof(PriceRange)}: {PriceRange}";
+    }
 }

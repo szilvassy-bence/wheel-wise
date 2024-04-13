@@ -2,6 +2,8 @@ using wheel_wise.Model;
 using wheel_wise.Service.Repository;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.ActionFilters;
+using wheel_wise.Model.Filters;
+using wheel_wise.Service.Filters;
 using wheel_wise.Service.Repository.AdvertisementRepo;
 using wheel_wise.Service.Repository.CarRepo;
 
@@ -84,5 +86,11 @@ public class AdsController : ControllerBase
 
         await _advertisementRepository.Delete(adToDelete);
         return NoContent();
+    }
+
+    [HttpPost("SimpleForm")]
+    public async Task<ActionResult<IEnumerable<Advertisement>>> GetBySimpleFilter([FromBody] SimpleFilter simpleFilter)
+    {
+        return Ok(await _advertisementRepository.GetBySimpleFilter(simpleFilter));
     }
 }

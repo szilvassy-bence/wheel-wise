@@ -2,11 +2,11 @@ using wheel_wise.Model;
 
 namespace wheel_wise.Service.Filters;
 
-public class TypeSpecification : ISpecification<Advertisement>
+public class ModelSpecification : ISpecification<Advertisement>
 {
     private readonly string _type;
 
-    public TypeSpecification(string type)
+    public ModelSpecification(string type)
     {
         _type = type;
     }

@@ -2,17 +2,17 @@ using wheel_wise.Model;
 
 namespace wheel_wise.Service.Filters;
 
-public class Filter : IFilter<Car>
+public class Filter : IFilter<Advertisement>
 {
-    /*public IEnumerable<Car> FilterProducts(IEnumerable<Car> products, ISpecification<Car> spec)
+    public IEnumerable<Advertisement> FilterProducts(IEnumerable<Advertisement> ads, ISpecification<Advertisement> spec)
     {
-        foreach (var p in products)
+        foreach (var ad in ads)
         {
-            if (spec.IsSatisfied(p))
+            if (spec.IsSatisfied(ad))
             {
-                yield return p;
+                yield return ad;
             }
         }
-    }*/
+    }
     
 }

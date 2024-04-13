@@ -35,14 +35,14 @@ if (app.Environment.IsDevelopment())
     app.UseCors("CorsPolicy");
 }
 
-FilterModel filterModel = new FilterModel { Color = "white", Type = "Valami", PriceRange = new PriceRange{Max = 100000}};
+/*FilterModel filterModel = new FilterModel { Color = "white", Type = "Valami", PriceRange = new PriceRange{Max = 100000}};
 Console.WriteLine($"{filterModel.Brand} is brand");
 PropertyInfo[] properties = typeof(FilterModel).GetProperties();
 foreach (var property in properties)
 {
     object? value = property.GetValue(filterModel);
     Console.WriteLine($"Property Name: {property.Name}, Value: {value}");
-}
+}*/
 
 
 app.UseHttpsRedirection();
