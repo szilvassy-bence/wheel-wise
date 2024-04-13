@@ -1,8 +1,9 @@
+import "./Layout.css"
 import { Outlet } from "react-router-dom"
 import MainNav from "../../Components/MainNav"
 import Container from "react-bootstrap/Container";
 
-export default function Frame() {
+export default function Layout() {
 
     return (
         <main>

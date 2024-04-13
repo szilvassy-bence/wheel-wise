@@ -1,36 +1,38 @@
-.quick-form.form-control {
+.quick-form.form-control,
+.quick-form.form-select{
     border: none;
     border-radius: 0;
     border-bottom: 2px solid grey;
     transition: border-bottom-color 0.7s ease;
 }
 
-.quick-form.form-select {
-    border: none;
-    border-radius: 0;
-    border-bottom: 2px solid grey;
+
+.quick-form.form-control:hover,
+.quick-form.form-select:hover{
+    border-bottom: 2px solid #FFC470;
 }
 
-.quick-form.form-control:hover {
-    border-bottom: 2px solid green;
+.quick-form.form-control:focus,
+.quick-form.form-select:focus{
+    border-bottom: 2px solid #DD5746;
 }
 
-.quick-form.form-control:focus {
-    border-bottom: 2px solid forestgreen;
-}
-
-.quick-form.form-select:hover {
-    border-bottom: 2px solid green;
-}
-
-.quick-form.form-select:focus {
-    border-bottom: 2px solid forestgreen;
-}
 
 .quick-form:disabled {
     opacity: 0.5;
 }
 
 .form-label {
-    font-style: italic;
+    font-weight: bold;
+    font-size: small;
+}
+
+.btn.submit-btn{
+    background-color: #DD5746;
+    border: none;
+    transition: background-color 0.7s ease-in-out;
+}
+
+.btn.submit-btn:hover{
+    background-color: #8B322C;
 }

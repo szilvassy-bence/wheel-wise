@@ -1,9 +1,12 @@
 import {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col"
-import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import "./AdFilter.css";
+import * as service from "./service.js";
+import CarTypeFormSelect from "../CarTypeFormSelect";
+import PriceFormRange from "../PriceFormRange";
 
 export default function AdFilter() {
     const [carTypes, setCarTypes] = useState(null);
@@ -28,13 +31,6 @@ export default function AdFilter() {
         fetchCarTypeData();
     }, []);
 
-    function yearCounter() {
-        let years = [];
-        for (let i = new Date().getFullYear(); i >= 1900; i--) {
-            years.push(i);
-        }
-        return years;
-    }
 
     function getUniqueBrands() {
         let brands = [];
@@ -49,7 +45,7 @@ export default function AdFilter() {
     function selectBrand(e) {
         console.log(e.target.value);
         setSelectedBrand(e.target.value);
-        if (e.target.value == "Select Brand") {
+        if (e.target.value === "Select Brand") {
             setFormData({...formData, brand: e.target.value, model: "Select Model"})
         } else {
             setFormData({...formData, brand: e.target.value})
@@ -87,7 +83,7 @@ export default function AdFilter() {
             let modelsFilteredByBrands = [];
             console.log(`selected brand: ${selectedBrand}`);
             carTypes.forEach(c => {
-                if (c.brand == selectedBrand) {
+                if (c.brand === selectedBrand) {
                     modelsFilteredByBrands.push(c.model);
                 }
             });
@@ -118,37 +114,17 @@ export default function AdFilter() {
     //Maximum year shouldnt be smaller than minimum
     return (<div className="mt-5">
         <h2>Quick filter</h2>
-            {carTypes ? (
+        {carTypes ? (
                 <Form onSubmit={e => submitForm(e)} id="filterForm">
                     <Row className="mt-2 gy-3">
+                        <CarTypeFormSelect formData={formData} 
+                                           selectBrand={selectBrand}
+                                           selectedBrand={selectedBrand}
+                                           getUniqueBrands={getUniqueBrands}
+                                           carTypeModels={carTypeModels}
+                                           selectModel={selectModel}/>
                         <Col sm={6} md={4} xxl={2}>
-                            <Form.Label>Brand</Form.Label>
-                            <Form.Select
-                                className="quick-form"
-                                aria-label="brand" 
-                                value={formData.brand} 
-                                onChange={e => selectBrand(e)}>
-                                <option>Select Brand</option>
-                                {getUniqueBrands().map(b => (<option key={b} value={b}>{b}</option>))}
-                            </Form.Select>
-                        </Col>
-                        <Col sm={6} md={4} xxl={2}>
-                            <Form.Label>Model</Form.Label>
-                            {(selectedBrand != null && selectedBrand != "Select Brand" ) && carTypeModels != null ? (
-                                <Form.Select
-                                    className="quick-form"
-                                    aria-label="model" 
-                                    value={formData.model} 
-                                    onChange={e => selectModel(e)}>
-                                    <option>Select Model</option>
-                                    {carTypeModels.map(m => (<option key={m} value={m}>{m}</option>))}
-                                </Form.Select>) : (
-                                <Form.Select
-                                    className="quick-form"    
-                                    aria-label="model" 
-                                    disabled={true}>
-                                    <option>Select Model</option>
-                                </Form.Select>)}
+                            <PriceFormRange/>
                         </Col>
                         <Col sm={6} md={4} xxl={2}>
                             <Form.Label htmlFor="minimumPriceInput">Minimum Price</Form.Label>
@@ -174,33 +150,33 @@ export default function AdFilter() {
                         </Col>
                         <Col sm={6} md={4} xxl={2}>
                             <Form.Label>Price From</Form.Label>
-                            <Form.Select 
+                            <Form.Select
                                 className="quick-form"
-                                aria-label="fromyear" 
-                                value={formData.fromYear} 
+                                aria-label="fromyear"
+                                value={formData.fromYear}
                                 onChange={e => setFromYear(e)}>
                                 <option>From</option>
-                                {yearCounter().map(year => (<option key={year} value={year}>{year}</option>))}
+                                {service.yearCounter().map(year => (<option key={year} value={year}>{year}</option>))}
                             </Form.Select>
                         </Col>
                         <Col sm={6} md={4} xxl={2}>
                             <Form.Label>Price Till</Form.Label>
                             <Form.Select
                                 className="quick-form"
-                                aria-label="tillyear" 
-                                value={formData.tillYear} 
+                                aria-label="tillyear"
+                                value={formData.tillYear}
                                 onChange={e => setTillYear(e)}>
                                 <option>Till</option>
-                                {yearCounter().map(year => (<option key={year} value={year}>{year}</option>))}
+                                {service.yearCounter().map(year => (<option key={year} value={year}>{year}</option>))}
                             </Form.Select>
                         </Col>
                     </Row>
-                    <Button className="mt-2" variant="primary" type="submit">
+                    <Button className="submit-btn mt-3" variant="primary" type="submit">
                         Submit
                     </Button>
                 </Form>)
-                :
-                    (<p>Loading...</p>)
-                }
-                </div>)
-                }
+            :
+            (<p>Loading...</p>)
+        }
+    </div>)
+}
