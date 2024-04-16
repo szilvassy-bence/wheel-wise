@@ -110,7 +110,7 @@ public class AdvertisementRepository : IAdvertisementRepository
         }
 
         if (simpleFilter.TillYear == 0 &&
-            simpleFilter.FromYear != 0) // find ads if min year is specified, max year is set to zeto
+            simpleFilter.FromYear != 0) // find ads if min year is specified, max year is set to zero
         {
             YearRange yr = new YearRange { FromYear = simpleFilter.FromYear };
             ISpecification<Advertisement> yearSpecification = new YearSpecification(yr);

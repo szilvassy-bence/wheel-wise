@@ -5,6 +5,10 @@ namespace wheel_wise.Data;
 
 public class WheelWiseContext : DbContext
 {
+    public WheelWiseContext(DbContextOptions<WheelWiseContext> options) : base(options)
+    {
+    }
+
     public DbSet<Advertisement> Advertisements { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Equipment> Equipments { get; set; }
@@ -13,11 +17,13 @@ public class WheelWiseContext : DbContext
     public DbSet<Color> Colors { get; set; }
     public DbSet<FuelType> FuelTypes { get; set; }
 
+    /*
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(
             "Server=localhost,1433;Database=WheelWiseApi;User Id=sa;Password=yourStrong(!)Password;Encrypt=false;");
     }
+    */
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -189,32 +195,32 @@ public class WheelWiseContext : DbContext
             },
             new Advertisement
             {
-                Id = 9, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = false,
+                Id = 9, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = true,
                 CarId = 9
             },
             new Advertisement
             {
-                Id = 10, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = false,
+                Id = 10, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = true,
                 CarId = 10
             },
             new Advertisement
             {
-                Id = 11, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = false,
+                Id = 11, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = true,
                 CarId = 11
             },
             new Advertisement
             {
-                Id = 12, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = false,
+                Id = 12, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = true,
                 CarId = 12
             },
             new Advertisement
             {
-                Id = 13, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = false,
+                Id = 13, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = true,
                 CarId = 13
             },
             new Advertisement
             {
-                Id = 14, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = false,
+                Id = 14, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = true,
                 CarId = 14
             },
             new Advertisement

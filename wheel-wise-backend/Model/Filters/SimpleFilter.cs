@@ -11,6 +11,7 @@ public class SimpleFilter
 
     public override string ToString()
     {
-        return $"{nameof(Brand)}: {Brand}, {nameof(Model)}: {Model}, {nameof(FromYear)}: {FromYear}, {nameof(TillYear)}: {TillYear}, {nameof(MinPrice)}: {MinPrice}, {nameof(MaxPrice)}: {MaxPrice}";
+        return
+            $"{nameof(Brand)}: {Brand}, {nameof(Model)}: {Model}, {nameof(FromYear)}: {FromYear}, {nameof(TillYear)}: {TillYear}, {nameof(MinPrice)}: {MinPrice}, {nameof(MaxPrice)}: {MaxPrice}";
     }
 }

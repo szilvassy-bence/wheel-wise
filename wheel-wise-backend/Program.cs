@@ -1,4 +1,6 @@
 using System.Reflection;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using wheel_wise.Data;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.AdvertisementRepo;
@@ -23,7 +25,7 @@ builder.Services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<ITransmissionRepository, TransmissionRepository>();
 builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
-builder.Services.AddDbContext<WheelWiseContext>();
+AddDbContext();
 
 var app = builder.Build();
 
@@ -35,15 +37,6 @@ if (app.Environment.IsDevelopment())
     app.UseCors("CorsPolicy");
 }
 
-/*FilterModel filterModel = new FilterModel { Color = "white", Type = "Valami", PriceRange = new PriceRange{Max = 100000}};
-Console.WriteLine($"{filterModel.Brand} is brand");
-PropertyInfo[] properties = typeof(FilterModel).GetProperties();
-foreach (var property in properties)
-{
-    object? value = property.GetValue(filterModel);
-    Console.WriteLine($"Property Name: {property.Name}, Value: {value}");
-}*/
-
 
 app.UseHttpsRedirection();
 
@@ -52,3 +45,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void AddDbContext()
+{
+    var conStrBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("WheelWiseContext"));
+    conStrBuilder.Password = builder.Configuration["DbPassword"];
+    var connection = conStrBuilder.ConnectionString;
+    builder.Services.AddDbContext<WheelWiseContext>(options =>
+        options.UseSqlServer(connection));
+}
