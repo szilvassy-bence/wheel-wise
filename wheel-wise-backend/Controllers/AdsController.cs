@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ public class AdsController : ControllerBase
         _advertisementRepository = advertisementRepository;
     }
 
-    [HttpGet]
+    [HttpGet, Authorize]
     public async Task<ActionResult<IEnumerable<Advertisement>>> GetAll()
     {
         return Ok(await _advertisementRepository.GetAll());
