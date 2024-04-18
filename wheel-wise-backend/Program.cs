@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
@@ -20,6 +21,7 @@ using wheel_wise.Service.Repository.TransmissionRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LoadEnvironmentVariables();
 AddServices();
 ConfigureSwagger();
 AddDbContext();
@@ -51,7 +53,8 @@ app.Run();
 
 void AddServices()
 {
-    builder.Services.AddControllers();
+    builder.Services.AddControllers()
+        .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);;
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
     builder.Services.AddScoped<ICarTypeRepository, CarTypeRepository>();
@@ -99,7 +102,7 @@ void ConfigureSwagger()
 void AddDbContext()
 {
     var conStrBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("WheelWiseContext"));
-    conStrBuilder.Password = builder.Configuration["DbPassword"];
+    conStrBuilder.Password = Environment.GetEnvironmentVariable("DB_PASSWORD");
     var connection = conStrBuilder.ConnectionString;
     
     builder.Services.AddDbContext<WheelWiseContext>(options =>
@@ -126,7 +129,7 @@ void AddAuthentication()
                 ValidIssuer = builder.Configuration["TokenValidationParameters:ValidIssuer"],
                 ValidAudience = builder.Configuration["TokenValidationParameters:ValidAudience"],
                 IssuerSigningKey =
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["IssuerSigningKey"]))
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ISSUER_SIGNING_KEY")))
             };
             options.Events = new JwtBearerEvents()
             {
@@ -158,4 +161,12 @@ void AddIdentity()
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<UsersContext>();
+}
+
+void LoadEnvironmentVariables()
+{
+    var root = Directory.GetCurrentDirectory();
+    var dotenv = Path.Combine(root, ".env");
+    DotEnv.Load(dotenv);
+    var config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 }

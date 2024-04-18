@@ -76,6 +76,8 @@ public class AdvertisementRepository : IAdvertisementRepository
         if (ad != null)
         {
             ad.Highlighted = advertisement.Highlighted;
+            _dbContext.ChangeTracker.DetectChanges();
+            Console.WriteLine(_dbContext.ChangeTracker.DebugView.LongView);
             await _dbContext.SaveChangesAsync();
         }
     }
