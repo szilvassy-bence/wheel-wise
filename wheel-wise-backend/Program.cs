@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -114,6 +115,7 @@ void AddAuthentication()
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
+            
             options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ClockSkew = TimeSpan.Zero,
@@ -125,6 +127,18 @@ void AddAuthentication()
                 ValidAudience = builder.Configuration["TokenValidationParameters:ValidAudience"],
                 IssuerSigningKey =
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["IssuerSigningKey"]))
+            };
+            options.Events = new JwtBearerEvents()
+            {
+                OnAuthenticationFailed = (context) =>
+                {
+                    Debug.WriteLine($"Authentication failed. Exception: {context.Exception.Message}");
+                    if (context.Request.Headers.TryGetValue("Authorization", out var token))
+                    {
+                        Debug.WriteLine($"JWT Token: {token}");
+                    }
+                    return Task.CompletedTask;
+                }
             };
         });
 }

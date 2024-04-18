@@ -26,6 +26,7 @@ public class AdsController : ControllerBase
     [HttpGet, Authorize]
     public async Task<ActionResult<IEnumerable<Advertisement>>> GetAll()
     {
+        Console.WriteLine(ModelState.ValidationState);
         return Ok(await _advertisementRepository.GetAll());
     }
 
