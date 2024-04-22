@@ -7,6 +7,7 @@ import AdvertisementList from "../../Components/AdvertisementList"
 import SimpleFilter from "../../Components/SimpleFilter";
 import MainBanner from "../../Components/MainBanner"
 import * as service from "./service.js";
+import Login from "../../Components/Login";
 
 function Home() {
     const [allAdData, setAllAdData] = useState(null);
@@ -56,6 +57,7 @@ function Home() {
         <MainBanner/>
         {allAdData ? (
             <>
+                <Login></Login>
                 <SimpleFilter 
                     setAllAdData={setAllAdData}
                     minPrice={minPrice}

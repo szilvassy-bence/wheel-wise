@@ -6,7 +6,8 @@
 .ad-card{
     position:relative;
 }
-.highlighted-img{
+.card-img-top.highlighted-img{
     position: absolute;
-    left: 90%;
+    right: 0;
+    width: 160px;
 }

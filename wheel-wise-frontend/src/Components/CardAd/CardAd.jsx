@@ -8,7 +8,7 @@ function CardAd({ad, handleClick}) {
     return (
         <>
             <Card id={ad.id} className={ad.highlighted ? "highlighted ad-card" : "ad-card"}>
-                {ad.highlighted && <Card.Img className="highlighted-img" variant="top" src="./highlighted.png"/>}
+                {ad.highlighted && <Card.Img className="highlighted-img" variant="top" src="./highlighted-3.png"/>}
                 <Card.Img variant="top" src="./car.jpg"/>
                 <Card.Body>
                     <Card.Title>{ad.title}</Card.Title>
