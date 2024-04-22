@@ -17,7 +17,7 @@ public class TokenService : ITokenService
         _configuration = configuration;
     }
 
-    private const int ExpirationMinutes = 500;
+    private const int ExpirationMinutes = 30;
 
     public string CreateToken(IdentityUser user)
     {
@@ -56,16 +56,12 @@ public class TokenService : ITokenService
 
     private JwtSecurityToken CreateJwtToken(List<Claim> claims, SigningCredentials credentials, DateTime expiration)
     {
-        Console.WriteLine($"Expiration: {expiration}");
-        Console.WriteLine($"Now: {DateTime.Now}");
-        Console.WriteLine($"Issuer: {_configuration["TokenValidationParameters:ValidIssuer"]}");
         return new(_configuration["TokenValidationParameters:ValidIssuer"], _configuration["TokenValidationParameters:ValidAudience"], claims,
             expires: expiration, signingCredentials: credentials);
     }
 
     private SigningCredentials CreateSigningCredentials()
     {
-        Console.WriteLine(_configuration["IssuerSigningKey"]);
         return new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ISSUER_SIGNING_KEY"))),
             SecurityAlgorithms.HmacSha256);

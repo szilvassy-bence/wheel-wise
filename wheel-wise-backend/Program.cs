@@ -118,7 +118,6 @@ void AddAuthentication()
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
-            
             options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ClockSkew = TimeSpan.Zero,
@@ -131,7 +130,7 @@ void AddAuthentication()
                 IssuerSigningKey =
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ISSUER_SIGNING_KEY")))
             };
-            options.Events = new JwtBearerEvents()
+            /*options.Events = new JwtBearerEvents()
             {
                 OnAuthenticationFailed = (context) =>
                 {
@@ -142,7 +141,7 @@ void AddAuthentication()
                     }
                     return Task.CompletedTask;
                 }
-            };
+            };*/
         });
 }
 

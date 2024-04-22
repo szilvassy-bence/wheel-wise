@@ -23,7 +23,7 @@ public class AdsController : ControllerBase
         _advertisementRepository = advertisementRepository;
     }
 
-    [HttpGet, Authorize]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<Advertisement>>> GetAll()
     {
         Console.WriteLine(ModelState.ValidationState);

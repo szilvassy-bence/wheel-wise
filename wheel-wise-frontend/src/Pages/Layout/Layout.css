@@ -1,3 +1,6 @@
-.container-fluid.content{
+
+
+#main-content{
     padding:0;
+    width: 100%;
 }

@@ -48,12 +48,12 @@ export default function Layout() {
 
     return (
         <AuthContext.Provider value={value}>
-            <main>
+    
                 <MainNav/>
-                <Container fluid className="content">
+                <div id="main-content">
                     <Outlet/>
-                </Container>
-            </main>
+                </div>
+
         </AuthContext.Provider>
     )
 }
