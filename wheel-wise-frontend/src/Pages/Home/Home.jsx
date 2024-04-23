@@ -1,32 +1,49 @@
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import CardAd from '../../Components/Advertisement/CardAd';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import AdvertisementList from "../../Components/AdvertisementList"
-import AdFilter from "../../Components/AdFilter/index.js";
-
+import SimpleFilter from "../../Components/SimpleFilter";
+import MainBanner from "../../Components/MainBanner"
+import * as service from "./service.js";
+import Login from "../../Components/Login";
 
 function Home() {
     const [allAdData, setAllAdData] = useState(null);
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(0);
     const navigate = useNavigate();
 
     const fetchAdData = async () => {
         try {
-            const response = await fetch('/api/Ads');
+            const response = await fetch("/api/Ads");
             const data = await response.json();
             setAllAdData(data);
             console.log(data);
         } catch (error) {
-            console.error('Error fetching advertisement data', error);
+            console.error("Error fetching advertisement data", error);
         }
     }
-
-
+    
+    // fetch all car data initially
     useEffect(() => {
         fetchAdData();
     }, []);
+
+    // set the min and max prices of the current listing
+    useEffect(() => {
+        if (allAdData) {
+            const fetchData = async () => {
+                const minPrice = await service.getMin(allAdData);
+                const maxPrice = await service.getMax(allAdData);
+                setMinPrice(minPrice);
+                setMaxPrice(maxPrice);
+            };
+
+            fetchData();
+        }
+    }, [allAdData]);
 
     function handleClick(e) {
         console.log(e.target);
@@ -35,21 +52,27 @@ function Home() {
         navigate(`/advertisement/${id}`);
     }
 
-    return (<Container fluid>
-            <div>
-                {/* big banner comes here */}
-                <AdFilter/>
-                {allAdData ? (
-                    
-                    <AdvertisementList allAdData={allAdData} handleClick={handleClick} title={"Advertisement"}/>
-                    )
-                    :
-                    (
-                    <p>Loading...</p>
-                    )}
+    return (<>
+        {/* big banner comes here */}
+        <MainBanner/>
+        {allAdData ? (
+            <>
+                <Login></Login>
+                <SimpleFilter 
+                    setAllAdData={setAllAdData}
+                    minPrice={minPrice}
+                    maxPrice={maxPrice}
+                />
+                <AdvertisementList allAdData={allAdData} handleClick={handleClick} title={"Advertisement"}/>
+            </>
+                )
+                :
+                (
+                <p>Loading...</p>
+                )}
 
-            </div>
-        </Container>)
+            
+        </>)
 }
 
 export default Home

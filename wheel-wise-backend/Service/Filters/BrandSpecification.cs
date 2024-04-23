@@ -2,7 +2,7 @@ using wheel_wise.Model;
 
 namespace wheel_wise.Service.Filters;
 
-public class BrandSpecification : ISpecification<Car>
+public class BrandSpecification : ISpecification<Advertisement>
 {
     private readonly string _brand;
 
@@ -12,8 +12,8 @@ public class BrandSpecification : ISpecification<Car>
         _brand = brand;
     }
 
-    /*public bool IsSatisfied(Car product)
+    public bool IsSatisfied(Advertisement ad)
     {
-        return product.Brand == _brand;
-    }*/
+        return ad.Car.CarType.Brand == _brand;
+    }
 }

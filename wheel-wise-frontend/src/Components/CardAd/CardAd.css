@@ -1,0 +1,13 @@
+.card.highlighted{
+    border: 1px solid #4793AF;
+    box-shadow: 0 0 10px 10px rgb(139, 50, 44, .1);
+}
+
+.ad-card{
+    position:relative;
+}
+.card-img-top.highlighted-img{
+    position: absolute;
+    right: 0;
+    width: 160px;
+}

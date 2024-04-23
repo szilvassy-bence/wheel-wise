@@ -1,7 +1,7 @@
-import {useParams} from 'react-router-dom'
-import { useEffect, useState } from 'react'; 
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
+import {useParams} from "react-router-dom"
+import { useEffect, useState } from "react"; 
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 
 function AdvertisementDetail(){
     console.log("Advertisement detail page");
@@ -20,10 +20,10 @@ function AdvertisementDetail(){
     }, [id])
 
     return(
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
             {!advertisement && <p>Loading...</p>}
             {advertisement && (
-                <Card id={advertisement.id} style={{ width: '50rem' }} >
+                <Card id={advertisement.id} style={{ width: "50rem" }} >
                     <Card.Header>{advertisement.title}</Card.Header>
                     <Card.Body>
                         <ListGroup className="list-group-flush">

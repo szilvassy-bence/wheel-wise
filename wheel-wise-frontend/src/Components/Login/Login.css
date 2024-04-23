@@ -1,0 +1,21 @@
+#login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 350px;
+}
+
+#login-form input{
+    width: 200px;
+}
+
+#login-form label{
+    display: flex;
+    justify-content: space-between;
+}

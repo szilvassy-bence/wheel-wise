@@ -1,8 +1,9 @@
 using wheel_wise.Model;
+using wheel_wise.Model.Filters;
 
 namespace wheel_wise.Service.Filters;
 
-public class PriceSpecification : ISpecification<Car>
+public class PriceSpecification : ISpecification<Advertisement>
 {
     private readonly PriceRange _priceRange;
 
@@ -11,8 +12,8 @@ public class PriceSpecification : ISpecification<Car>
         _priceRange = priceRange;
     }
 
-    public bool IsSatisfied(Car product)
+    public bool IsSatisfied(Advertisement ad)
     {
-        return product.Price >= _priceRange.Min && product.Price <= _priceRange.Max;
+        return ad.Car.Price >= _priceRange.MinPrice && ad.Car.Price <= _priceRange.MaxPrice;
     }
 }
