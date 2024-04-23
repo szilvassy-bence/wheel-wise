@@ -1,6 +1,5 @@
 import "./PriceFormRange.css";
 import React, {useRef, useState, useEffect} from "react";
-import Form from "react-bootstrap/Form";
 
 export default function PriceFormRange({minPrice, maxPrice}) {
 
@@ -90,38 +89,37 @@ export default function PriceFormRange({minPrice, maxPrice}) {
     }, [minPrice, maxPrice]);
 
     return (
-        <>
-            <Form.Label>
+        <div id="price-range-div">
+            <label id="price-range-label">
                 Price Range
-            </Form.Label>
-            <div className="middle">
-                <div className="multi-range-slider">
-                    <input
-                        type="range"
-                        id="input-left"
-                        min={minPrice}
-                        max={maxPrice}
-                        value={sliderThumbLeftValue}
-                        ref={inputLeftRef}/>
-                    <input
-                        type="range"
-                        id="input-right"
-                        min={minPrice}
-                        max={maxPrice}
-                        value={sliderThumbRightValue}
-                        ref={inputRightRef}/>
-                    <div className="slider">
-                        <div className="track"></div>
-                        <div className="range-value">
-                            <span className="range-value-left">{sliderThumbLeftValue} Ft</span>
-                            <span className="range-value-right">{sliderThumbRightValue} Ft</span>
-                        </div>
-                        <div className="range" ref={sliderRangeRef}></div>
-                        <div className="thumb left" ref={sliderThumbLeftRef}></div>
-                        <div className="thumb right" ref={sliderThumbRightRef}></div>
+            </label>
+            <div className="multi-range-slider">
+                <input
+                    type="range"
+                    id="input-left"
+                    min={minPrice}
+                    max={maxPrice}
+                    value={sliderThumbLeftValue}
+                    ref={inputLeftRef}/>
+                <input
+                    type="range"
+                    id="input-right"
+                    min={minPrice}
+                    max={maxPrice}
+                    value={sliderThumbRightValue}
+                    ref={inputRightRef}/>
+                <div className="slider">
+                    <div className="track"></div>
+                    <div className="range-value">
+                        <span className="range-value-left">{sliderThumbLeftValue} Ft</span>
+                        <span className="range-value-right">{sliderThumbRightValue} Ft</span>
                     </div>
+                    <div className="range" ref={sliderRangeRef}></div>
+                    <div className="thumb left" ref={sliderThumbLeftRef}></div>
+                    <div className="thumb right" ref={sliderThumbRightRef}></div>
                 </div>
             </div>
-        </>
+        </div>
+
     )
 }

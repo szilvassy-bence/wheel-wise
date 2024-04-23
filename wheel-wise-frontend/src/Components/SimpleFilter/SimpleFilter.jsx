@@ -1,9 +1,4 @@
 import {useEffect, useState} from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import "./SimpleFilter.css";
 import * as service from "./service.js";
 import CarTypeFormSelect from "../CarTypeFormSelect";
@@ -115,74 +110,46 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
 
     //Maximum year shouldnt be smaller than minimum
     return (
-        <Container fluid className="pt-4 pb-4 wrapper">
-            <Container>
-                <h2>Quick filter</h2>
+        <div id="simple-filter-wrapper">
+            <div id="simple-filter-content">
+                <h2>Find your dream car simply!</h2>
                 {carTypes ? (
-                        <Form onSubmit={e => submitForm(e)} id="filterForm">
-                            <Row className="mt-2 gy-3">
+                        <form onSubmit={e => submitForm(e)} >
+                            <div id="simple-filter-form" >
+                                
                                 <CarTypeFormSelect formData={formData}
                                                    selectBrand={selectBrand}
                                                    selectedBrand={selectedBrand}
                                                    getUniqueBrands={getUniqueBrands}
                                                    carTypeModels={carTypeModels}
                                                    selectModel={selectModel}/>
-                                <Col sm={6} md={4} xxl={2}>
-                                    <PriceFormRange minPrice={minPrice} maxPrice={maxPrice}/>
-                                </Col>
-                                <Col sm={6} md={4} xxl={2}>
-                                    <Form.Label htmlFor="minimumPriceInput">Minimum Price</Form.Label>
-                                    <Form.Control
-                                        className="quick-form"
-                                        type="number"
-                                        id="minimumPriceInput"
-                                        aria-describedby="mincarprice"
-                                        value={formData.minPrice}
-                                        onChange={e => setMinPrice(e)}
-                                    />
-                                </Col>
-                                <Col sm={6} md={4} xxl={2}>
-                                    <Form.Label htmlFor="maximumPriceInput">Maximum Price</Form.Label>
-                                    <Form.Control
-                                        className="quick-form"
-                                        type="number"
-                                        id="maximumPriceInput"
-                                        aria-describedby="maxcarprice"
-                                        value={formData.maxPrice}
-                                        onChange={e => setMaxPrice(e)}
-                                    />
-                                </Col>
-                                <Col sm={6} md={4} xxl={2}>
-                                    <Form.Label>From Year</Form.Label>
-                                    <Form.Select
-                                        className="quick-form"
-                                        aria-label="fromyear"
-                                        value={formData.fromYear}
-                                        onChange={e => setFromYear(e)}>
+    
+                                <PriceFormRange minPrice={minPrice} maxPrice={maxPrice}/>
+                                <label className="simple-filter-label simple-filter-items">
+                                    <span>From Year</span>
+                                    <select value={formData.fromYear} className="quick-form" name="from-year"
+                                            placeholder="From year" onChange={e => setFromYear(e)}>
                                         <option>Min Year</option>
                                         {service.yearCounter().map(year => (
                                             <option key={year} value={year}>{year}</option>))}
-                                    </Form.Select>
-                                </Col>
-                                <Col sm={6} md={4} xxl={2}>
-                                    <Form.Label>Till Year</Form.Label>
-                                    <Form.Select
-                                        className="quick-form"
-                                        aria-label="tillyear"
-                                        value={formData.tillYear}
-                                        onChange={e => setTillYear(e)}>
+                                    </select>
+                                </label>
+                                <label className="simple-filter-label simple-filter-items">
+                                    <span>Till Year</span>
+                                    <select value={formData.tillYear} className="quick-form" name="till-year"
+                                            placeholder="Till year" onChange={e => setTillYear(e)}>
                                         <option>Max Year</option>
                                         {service.yearCounter().map(year => (
                                             <option key={year} value={year}>{year}</option>))}
-                                    </Form.Select>
-                                </Col>
-                            </Row>
-                            <Button className="submit-btn mt-3" variant="primary" type="submit">
+                                    </select>
+                                </label>
+                            </div>
+                            <button className="form-submit-btn" type="submit">
                                 Submit
-                            </Button>
-                        </Form>) :
+                            </button>
+                        </form>) :
                     (<p>Loading...</p>)}
-            </Container>
-        </Container>
+            </div>
+        </div>
     )
 }

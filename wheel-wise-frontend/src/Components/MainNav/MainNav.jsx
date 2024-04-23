@@ -92,10 +92,10 @@ export default function MainNav() {
                         </div>
 
                         {isLoginOpen && (
-                            <div className="dropdown-menu-nobs" ref={dropdownRef}>
+                            <div className="dropdown-menu" ref={dropdownRef}>
                                 {user == null ? (
                                     <>
-                                        <h4>Login</h4>
+                                        <h3>Login</h3>
                                         <form id="navigation-login-form" onSubmit={onHeaderLogin}>
                                             <label>
                                                 <span>Email</span>
