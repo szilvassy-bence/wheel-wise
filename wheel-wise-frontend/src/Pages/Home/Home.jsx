@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLoaderData} from "react-router-dom";
 import AdvertisementList from "../../Components/AdvertisementList"
 import SimpleFilter from "../../Components/SimpleFilter";
 import MainBanner from "../../Components/MainBanner"
@@ -11,6 +11,9 @@ function Home() {
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
     const navigate = useNavigate();
+    
+    const ads = useLoaderData();
+    console.log(ads);
 
     const fetchAdData = async () => {
         try {

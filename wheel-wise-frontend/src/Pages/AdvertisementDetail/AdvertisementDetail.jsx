@@ -1,7 +1,6 @@
 import {useParams} from "react-router-dom"
 import { useEffect, useState } from "react"; 
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
+import {useLoaderData} from "react-router-dom";
 
 function AdvertisementDetail(){
     console.log("Advertisement detail page");
@@ -9,32 +8,25 @@ function AdvertisementDetail(){
 
     const {id} = useParams();
 
-
-    useEffect(()=>{
-        async function fetchAd(){
-            const resp = await fetch(`/api/Ads/${id}`);
-            const ad = await resp.json();
-            setAdvertisement(ad);
-        }
-        fetchAd();
-    }, [id])
+    const ad = useLoaderData();
+    console.log(ad);
 
     return(
         <div style={{ display: "flex", justifyContent: "center" }}>
-            {!advertisement && <p>Loading...</p>}
-            {advertisement && (
-                <Card id={advertisement.id} style={{ width: "50rem" }} >
-                    <Card.Header>{advertisement.title}</Card.Header>
+            {!ad && <p>Loading...</p>}
+            {ad && (
+                <Card id={ad.id} style={{ width: "50rem" }} >
+                    <Card.Header>{ad.title}</Card.Header>
                     <Card.Body>
                         <ListGroup className="list-group-flush">
-                            <ListGroup.Item>Car Type: {advertisement.car.carType.brand} {advertisement.car.carType.model}</ListGroup.Item>
-                            <ListGroup.Item>Year:   {advertisement.car.year}</ListGroup.Item>
-                            <ListGroup.Item>Color:  {advertisement.car.color.name}</ListGroup.Item>
-                            <ListGroup.Item>Price: {advertisement.car.price} EUR</ListGroup.Item>
-                            <ListGroup.Item>Transmission: {advertisement.car.transmission.name}</ListGroup.Item>
-                            <ListGroup.Item>Mileage: {advertisement.car.mileage} KM</ListGroup.Item>
-                            <ListGroup.Item>Power: {advertisement.car.power} HP</ListGroup.Item>
-                            <ListGroup.Item>Fuel Type: {advertisement.car.fuelType.name} HP</ListGroup.Item>
+                            <ListGroup.Item>Car Type: {ad.car.carType.brand} {ad.car.carType.model}</ListGroup.Item>
+                            <ListGroup.Item>Year:   {ad.car.year}</ListGroup.Item>
+                            <ListGroup.Item>Color:  {ad.car.color.name}</ListGroup.Item>
+                            <ListGroup.Item>Price: {ad.car.price} EUR</ListGroup.Item>
+                            <ListGroup.Item>Transmission: {ad.car.transmission.name}</ListGroup.Item>
+                            <ListGroup.Item>Mileage: {ad.car.mileage} KM</ListGroup.Item>
+                            <ListGroup.Item>Power: {ad.car.power} HP</ListGroup.Item>
+                            <ListGroup.Item>Fuel Type: {ad.car.fuelType.name} HP</ListGroup.Item>
                         </ListGroup>
                     </Card.Body>
                 </Card>
