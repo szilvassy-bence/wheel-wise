@@ -1,5 +1,9 @@
-import Image from "react-bootstrap/Image"
+import "./MainBanner.css"
 
 export default function MainBanner(){
-    return <Image src="./wheel-wise-main-banner.jpg" fluid />;
+    return (
+        <div id="main-banner-wrapper">
+            <img id="main-banner-img" src="./wheel-wise-main-banner.jpg"  />
+        </div>    
+        ) 
 }

@@ -1,13 +1,86 @@
-.card.highlighted{
-    border: 1px solid #4793AF;
-    box-shadow: 0 0 10px 10px rgb(139, 50, 44, .1);
+.ad-card {
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid #FFC470;
 }
 
-.ad-card{
-    position:relative;
+.highlighted {
+    border: 1px solid #DD5746;
+    box-shadow: 3px 3px 1px 1px rgb(139, 50, 44, .3);
 }
-.card-img-top.highlighted-img{
+
+.card-img-wrapper {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+   
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px 10px 0 0;
+    object-fit: cover;
+}
+
+img.highlighted-img {
     position: absolute;
     right: 0;
     width: 160px;
+}
+
+.card-content-wrapper{
+    padding: 10px
+}
+
+.card-price {
+    display: flex;
+    align-content: center;
+    gap: 10px;
+}
+
+.card-content-wrapper h3{
+    margin-bottom: 0;
+}
+
+.card-price h4{
+    margin: 0;
+    color: #8B322C;
+}
+.card-price svg{
+    margin: 0;
+    color: #8B322C;
+}
+
+.card-footer {
+    display: flex;
+}
+
+.card-btn {
+    height: 40px;
+    padding: 10px 20px;
+    color: aliceblue;
+    font-weight: bold;
+    background-color: #DD5746;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.7s ease-in-out;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.card-btn:hover{
+    background-color: #8B322C;
+}
+
+.card-favorite-btn {
+    background-color: rgba(0, 0, 0, 0);
+    color: #DD5746;
+    border: 1px solid #DD5746;
+}
+
+.card-favorite-btn:hover{
+    background-color: #8B322C;
+    color: aliceblue;
 }
