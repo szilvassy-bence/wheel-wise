@@ -1,8 +1,5 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import AdvertisementList from "../../Components/AdvertisementList"
 import SimpleFilter from "../../Components/SimpleFilter";
 import MainBanner from "../../Components/MainBanner"

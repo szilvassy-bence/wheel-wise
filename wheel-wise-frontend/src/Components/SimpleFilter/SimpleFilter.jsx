@@ -1,9 +1,4 @@
 import {useEffect, useState} from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import "./SimpleFilter.css";
 import * as service from "./service.js";
 import CarTypeFormSelect from "../CarTypeFormSelect";
@@ -115,20 +110,20 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
 
     //Maximum year shouldnt be smaller than minimum
     return (
-        <Container fluid className="pt-4 pb-4 wrapper">
-            <Container>
-                <h2>Quick filter</h2>
+        <div id="simple-filter-wrapper">
+            <div id="simple-filter-content">
+                <h2>Find your dream car simply!</h2>
                 {carTypes ? (
                         <form onSubmit={e => submitForm(e)} >
                             <div id="simple-filter-form" >
-                                
+
                                 <CarTypeFormSelect formData={formData}
                                                    selectBrand={selectBrand}
                                                    selectedBrand={selectedBrand}
                                                    getUniqueBrands={getUniqueBrands}
                                                    carTypeModels={carTypeModels}
                                                    selectModel={selectModel}/>
-    
+
                                 <PriceFormRange minPrice={minPrice} maxPrice={maxPrice}/>
                                 <label className="simple-filter-label simple-filter-items">
                                     <span>From Year</span>

@@ -1,4 +1,3 @@
-import {ListGroup} from "react-bootstrap";
 import "./CardAd.css";
 
 function CardAd({ad, handleClick}) {

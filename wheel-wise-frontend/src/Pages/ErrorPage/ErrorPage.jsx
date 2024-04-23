@@ -1,4 +1,4 @@
-import {userRouteError} from "react-router-dom"
+import {useRouteError} from "react-router-dom"
 
 export default function ErrorPage()
 {
