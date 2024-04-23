@@ -29,6 +29,8 @@ public class AuthController : ControllerBase
             AddErrors(result);
             return BadRequest(ModelState);
         }
+        
+        
 
         return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName));
     }

@@ -53,6 +53,8 @@ app.Run();
 
 void AddServices()
 {
+    //builder.Services.AddHttpContextAccessor(); 
+    //builder.Services.AddScoped<UserManager<User>>(); 
     builder.Services.AddControllers()
         .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);;
     builder.Services.AddEndpointsApiExplorer();
@@ -107,9 +109,6 @@ void AddDbContext()
     
     builder.Services.AddDbContext<WheelWiseContext>(options =>
         options.UseSqlServer(connection));
-    
-    builder.Services.AddDbContext<UsersContext>(options =>
-        options.UseSqlServer(connection));
 }
 
 void AddAuthentication()
@@ -159,7 +158,7 @@ void AddIdentity()
             options.Password.RequireLowercase = false;
         })
         .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<UsersContext>();
+        .AddEntityFrameworkStores<WheelWiseContext>();
 }
 
 void LoadEnvironmentVariables()
