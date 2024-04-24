@@ -10,6 +10,7 @@ import AdvertisementDetail, {loader as adLoader} from "./Pages/AdvertisementDeta
 import AdvertisementCarousel from "./Components/AdvertisementCarousel";
 import Advertisements, {loader as adsLoader} from "./Pages/Advertisements";
 import Profile, {loader as profileLoader} from "./Pages/Profile";
+import CreateAd from "./Pages/CreateAdvertisement/index.js";
 
 const router = createBrowserRouter(
     [
@@ -40,6 +41,10 @@ const router = createBrowserRouter(
                     path: "/users/:name",
                     element: <Profile/>,
                     loader: ({params}) => profileLoader(params.name)
+                },
+                {
+                    path: "/createad",
+                    element: <CreateAd/>
                 } 
             ],
         },
