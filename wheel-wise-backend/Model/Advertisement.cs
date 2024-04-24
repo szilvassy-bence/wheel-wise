@@ -11,6 +11,8 @@ public class Advertisement
     public bool Highlighted { get; set; }
     public int? UserId { get; init; }
     public User User { get; init; }
+
+    public ICollection<FavouriteAd> UsersWhoFavorited { get; set; } = new List<FavouriteAd>();
     public int CarId { get; init; }
     public Car Car { get; set; }
 }

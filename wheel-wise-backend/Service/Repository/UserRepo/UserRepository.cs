@@ -21,7 +21,23 @@ public class UserRepository : IUserRepository
     {
         var iUser = await _userManager.FindByNameAsync(name);
         
-        return await _dbContext.Users.FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
+        return await _dbContext.Users.Include(x => x.FavoriteAdvertisements).ThenInclude(x => x.Advertisement).FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
+    }
+
+    public async Task AddFavoriteAdvertisement(string name, int adId)
+    {
+        var iUser = await _userManager.FindByNameAsync(name);
+        
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
+        
+        var ad = await _dbContext.Advertisements.FirstOrDefaultAsync(x => x.Id == adId);
+
+        var favAd = new FavouriteAd { AdvertisementId = ad.Id, UserId = user.Id };
+
+        _dbContext.Add(favAd);
+        
+        
+       await _dbContext.SaveChangesAsync();
     }
     
     

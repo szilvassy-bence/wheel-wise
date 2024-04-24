@@ -18,7 +18,38 @@ public class UserController : ControllerBase
     [HttpGet("{name}")]
     public async Task<ActionResult<User>> GetByName(string name)
     {
+        try
+        {
+            var user = await _userRepository.GetByName(name);
+            if (user == null)
+            {
+                return NotFound("User with given name cannot be found.");
+            }
+            
+
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred: {e.Message}");
+            return StatusCode(500, "An error occurred while trying to get user.");
+        }
         
-        return Ok(await _userRepository.GetByName(name));
+        
+    }
+
+    [HttpPatch("/addfavoritead/{userName}/{adId}")]
+    public async Task<IActionResult> AddFavAd(string userName, int adId)
+    {
+        try
+        {
+            await _userRepository.AddFavoriteAdvertisement(userName, adId);
+            return Ok("Advertisement added to favorites successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            return StatusCode(500, "An error occurred while adding the advertisement to favorites.");
+        }
     }
 }

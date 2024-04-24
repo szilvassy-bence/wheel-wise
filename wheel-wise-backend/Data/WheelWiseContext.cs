@@ -18,7 +18,6 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
     public DbSet<Transmission> Transmissions { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<FuelType> FuelTypes { get; set; }
-    
     public DbSet<User> Users { get; set; }
 
     /*
@@ -260,5 +259,7 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
         modelBuilder.Entity<Car>()
             .HasMany(e => e.Equipments)
             .WithMany();
+
+        
     }
 }
