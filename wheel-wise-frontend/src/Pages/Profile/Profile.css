@@ -1,6 +1,7 @@
 #profile-wrapper{
     display: flex;
     width: 100%;
+    background-color: #efefef;
 }
 
 #profile-content{
@@ -17,19 +18,20 @@
 
 #profile-menu ul{
     padding: 0;
-    border: 1px solid #DD5746;
+    border: 1px solid #dadada;
     border-radius: 5px;
 }
 
 #profile-menu li {
     list-style: none;
-    padding: 10px;
+    padding: 15px;
     height: 100%;
     border-width: 0 0 1px 0;
-    border-color: #DD5746;
+    border-color: #dadada;
     border-style: inset;
-    background-color: aliceblue;
+    background-color: white;
     overflow:hidden;
+    text-align: center;
 }
 
 #profile-menu li:first-child {
@@ -41,10 +43,53 @@
     border-radius: 0 0 5px 5px;
 }
 
+#profile-menu .active {
+    background-color: #DD5746;
+    color: white;
+}
+
 #profile-menu p{
     margin: 0;
 }
 
+#menu-img{
+    display: flex;
+    justify-content: center;
+}
+
 #menu-content{
     flex: 5;
+}
+
+.form-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+#profile-page-form  label {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+#profile-page-form span{
+    font-size: small;
+}
+
+
+#profile-page-form input{
+    border-radius: 5px;
+    padding: 5px;
+    border-width: 0 0 2px 0;
+}
+
+#profile-form-submit-btn {
+    padding: 10px 20px;
+    background-color: #DD5746;
+    border-radius: 5px;
+    border-color: #8B322C;
+    font-size: medium;
+    color: white;
+    font-weight: bold;
 }

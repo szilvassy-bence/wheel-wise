@@ -30,8 +30,6 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
         
-        
-
         return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName));
     }
 

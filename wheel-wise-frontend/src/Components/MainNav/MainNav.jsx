@@ -1,7 +1,7 @@
 import "./MainNav.css";
 import {useRef, useState, useContext, useEffect} from "react";
 import {AuthContext} from "../../Pages/Layout/Layout.jsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function MainNav() {
 
@@ -14,6 +14,7 @@ export default function MainNav() {
     const menuSearchDiv = useRef(null);
     const menuSearchInput = useRef(null);
     const {user, login, logout} = useContext(AuthContext);
+    const navigate = useNavigate();
 
     function toggleLogin() {
         console.log("Login toggled.")
@@ -116,7 +117,7 @@ export default function MainNav() {
                                     <>
                                         <h4>Welcome, {user.userName}</h4>
                                         <ul>
-                                            <li>Account</li>
+                                            <li onClick={() => navigate(`/users/${user.userName}`)}>Account</li>
                                             <li>Change password</li>
                                             <li onClick={handleLogout}>Logout</li>
                                         </ul>
