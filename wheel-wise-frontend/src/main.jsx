@@ -7,6 +7,7 @@ import Layout from "./Pages/Layout";
 import ErrorPage from "./Pages/ErrorPage";
 import Home, {loader as homeLoader} from "./Pages/Home";
 import AdvertisementDetail, {loader as adLoader} from "./Pages/AdvertisementDetail";
+import CreateAd from "./Pages/CreateAdvertisement/index.js";
 
 const router = createBrowserRouter(
     [
@@ -24,6 +25,10 @@ const router = createBrowserRouter(
                     path: "/ads/:id",
                     element: <AdvertisementDetail/>,
                     loader: ({params}) => adLoader(params.id)
+                },
+                {
+                    path: "/createad",
+                    element: <CreateAd/>
                 }
             ],
         },

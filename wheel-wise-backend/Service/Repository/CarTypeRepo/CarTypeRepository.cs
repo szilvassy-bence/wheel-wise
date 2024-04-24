@@ -18,7 +18,7 @@ public class CarTypeRepository : ICarTypeRepository
         return await _dbContext.CarTypes.ToListAsync();
     }
     
-    public async Task<CarType>? GetByCarModel(string brand,string model)
+    public async Task<CarType?> GetByCarModel(string brand,string model)
     {
         return (await _dbContext.CarTypes.FirstOrDefaultAsync(c => (c.Model == model && c.Brand == brand)))!;
     }

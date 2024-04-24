@@ -18,7 +18,7 @@ public class FuelTypeRepository : IFuelTypeRepository
         return await _dbContext.FuelTypes.ToListAsync();
     }
 
-    public async Task<FuelType> GetByName(string fuelTypeName)
+    public async Task<FuelType?> GetByName(string fuelTypeName)
     {
         return await _dbContext.FuelTypes.FirstOrDefaultAsync(x => x.Name == fuelTypeName);
     }

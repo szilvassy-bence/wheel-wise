@@ -5,7 +5,7 @@ namespace wheel_wise.Service.Repository.CarTypeRepo;
 public interface ICarTypeRepository
 {
     Task<IEnumerable<CarType>> GetAll();
-    Task<CarType>? GetByCarModel(string brand, string model);
+    Task<CarType?> GetByCarModel(string brand, string model);
 
     Task<CarType>? GeById(int id);
     Task Add(CarType carCarType);
