@@ -12,8 +12,8 @@ using wheel_wise.Data;
 namespace wheel_wise.Migrations
 {
     [DbContext(typeof(WheelWiseContext))]
-    [Migration("20240410093514_init20Cars")]
-    partial class init20Cars
+    [Migration("20240423124914_MergeUserContectAndWWContext")]
+    partial class MergeUserContectAndWWContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,204 @@ namespace wheel_wise.Migrations
                     b.ToTable("CarEquipment");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("wheel_wise.Model.Advertisement", b =>
                 {
                     b.Property<int>("Id")
@@ -54,8 +252,16 @@ namespace wheel_wise.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Highlighted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -73,8 +279,172 @@ namespace wheel_wise.Migrations
                         {
                             Id = 1,
                             CarId = 1,
-                            CreatedAt = new DateTime(2024, 4, 10, 11, 35, 14, 364, DateTimeKind.Local).AddTicks(4470),
-                            Highlighted = false
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2618),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CarId = 2,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2671),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CarId = 3,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2673),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CarId = 4,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2675),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CarId = 5,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2677),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CarId = 6,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2679),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CarId = 7,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2680),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CarId = 8,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2682),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CarId = 9,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2683),
+                            Description = "description",
+                            Highlighted = true,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CarId = 10,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2685),
+                            Description = "description",
+                            Highlighted = true,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CarId = 11,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2687),
+                            Description = "description",
+                            Highlighted = true,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CarId = 12,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2688),
+                            Description = "description",
+                            Highlighted = true,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CarId = 13,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2690),
+                            Description = "description",
+                            Highlighted = true,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CarId = 14,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2692),
+                            Description = "description",
+                            Highlighted = true,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CarId = 15,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2716),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CarId = 16,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2718),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CarId = 17,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2719),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CarId = 18,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2721),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CarId = 19,
+                            CreatedAt = new DateTime(2024, 4, 23, 14, 49, 13, 776, DateTimeKind.Local).AddTicks(2723),
+                            Description = "description",
+                            Highlighted = false,
+                            Title = "title"
                         });
                 });
 
@@ -643,28 +1013,22 @@ namespace wheel_wise.Migrations
 
             modelBuilder.Entity("wheel_wise.Model.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("IdentityUserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ZipCode")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("User");
                 });
@@ -684,6 +1048,57 @@ namespace wheel_wise.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("wheel_wise.Model.Advertisement", b =>
                 {
                     b.HasOne("wheel_wise.Model.Car", "Car")
@@ -693,7 +1108,7 @@ namespace wheel_wise.Migrations
                         .IsRequired();
 
                     b.HasOne("wheel_wise.Model.User", "User")
-                        .WithMany()
+                        .WithMany("FavoriteAdvertisements")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Car");
@@ -734,6 +1149,22 @@ namespace wheel_wise.Migrations
                     b.Navigation("FuelType");
 
                     b.Navigation("Transmission");
+                });
+
+            modelBuilder.Entity("wheel_wise.Model.User", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("wheel_wise.Model.User", b =>
+                {
+                    b.Navigation("FavoriteAdvertisements");
                 });
 #pragma warning restore 612, 618
         }

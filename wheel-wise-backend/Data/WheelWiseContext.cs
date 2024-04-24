@@ -1,14 +1,16 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using wheel_wise.Model;
 
 namespace wheel_wise.Data;
 
-public class WheelWiseContext : DbContext
+public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public WheelWiseContext(DbContextOptions<WheelWiseContext> options) : base(options)
     {
     }
-
+    
     public DbSet<Advertisement> Advertisements { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Equipment> Equipments { get; set; }
@@ -16,6 +18,8 @@ public class WheelWiseContext : DbContext
     public DbSet<Transmission> Transmissions { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<FuelType> FuelTypes { get; set; }
+    
+    public DbSet<User> Users { get; set; }
 
     /*
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,9 +31,12 @@ public class WheelWiseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        
+        
         var equipment1 = new Equipment { Id = 1, Type = "Technical", Name = "AC" };
         var equipment2 = new Equipment { Id = 2, Type = "Comfort", Name = "SeatHeating" };
-
+        
         modelBuilder.Entity<CarType>().HasData(
             new CarType { Id = 1, Brand = "Opel", Model = "Astra" },
             new CarType { Id = 2, Brand = "Renault", Model = "Clio" },
