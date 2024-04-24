@@ -1,0 +1,13 @@
+#error-page-wrapper{
+    width: 90%;
+    height: 100vh;
+    max-width: 1200px;
+    margin:auto;
+    display: flex;
+}
+
+#error-page-content{
+    margin:auto;
+    position: relative;
+    top: -20%;
+}
