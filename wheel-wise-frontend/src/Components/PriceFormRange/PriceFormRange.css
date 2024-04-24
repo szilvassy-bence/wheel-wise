@@ -1,8 +1,8 @@
 #price-range-div {
     position: relative;
     width: 100%;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 40px;
 }
 
 #price-range-label{
@@ -52,10 +52,6 @@
     right:-7px;
     top: -20px;
     font-size: small;
-}
-
-.range-value-right{
-    
 }
 
 .slider > .thumb{

@@ -52,15 +52,13 @@ export default function MainNav() {
     return (
         <header>
             <div id="navigation">
-                <div className="logo">Logo</div>
+                <div className="logo">
+                    <Link to="/" id="nav-logo">Logo</Link>
+                </div>
                 <ul className="menu">
                     <li>
-                        <Link to="/">Home</Link>
+                        <Link to="/ads" id="nav-ads">Ads</Link>
                     </li>
-                    <li>
-                        <Link to="/cities">Cities</Link>
-                    </li>
-                    <li>Sun Info</li>
                 </ul>
                 <div className="user-menu">
                     <div id="search">

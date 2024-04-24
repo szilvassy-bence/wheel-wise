@@ -124,7 +124,6 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
                                                    carTypeModels={carTypeModels}
                                                    selectModel={selectModel}/>
 
-                                <PriceFormRange minPrice={minPrice} maxPrice={maxPrice}/>
                                 <label className="simple-filter-label simple-filter-items">
                                     <span>From Year</span>
                                     <select value={formData.fromYear} className="quick-form" name="from-year"
@@ -143,8 +142,9 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
                                             <option key={year} value={year}>{year}</option>))}
                                     </select>
                                 </label>
+                                <PriceFormRange minPrice={minPrice} maxPrice={maxPrice} setFormData={setFormData}/>
                             </div>
-                            <button className="form-submit-btn" type="submit">
+                            <button className="form-submit-btn" type="submit" set>
                                 Submit
                             </button>
                         </form>) :

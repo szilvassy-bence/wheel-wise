@@ -3,8 +3,10 @@ svg {
 }
 
 header {
+    position: fixed;
+    z-index: 10;
     width: 100vw;
-    background-color: aliceblue;
+    background-color: #FFEC9E;
 }
 
 #navigation {
@@ -21,7 +23,18 @@ header {
 }
 
 header .logo {
+}
+
+#nav-logo {
+    font-weight: bolder;
+    text-decoration: none;
+    color: #8B322C;
+}
+
+#nav-ads {
     font-weight: bold;
+    text-decoration: none;
+    color: #000000;
 }
 
 header .menu {
@@ -62,6 +75,7 @@ header .menu {
     border-radius: 10px;
     border: 1px solid #4793AF;
     padding: 20px;
+    border-bottom-width: 2px;
 }
 
 .dropdown-menu h3{

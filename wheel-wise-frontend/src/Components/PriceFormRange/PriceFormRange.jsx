@@ -1,12 +1,10 @@
 import "./PriceFormRange.css";
 import React, {useRef, useState, useEffect} from "react";
 
-export default function PriceFormRange({minPrice, maxPrice}) {
+export default function PriceFormRange({minPrice, maxPrice, setFormData}) {
 
     const [sliderThumbLeftValue, setSliderThumbLeftValue] = useState(minPrice);
     const [sliderThumbRightValue, setSliderThumbRightValue] = useState(maxPrice);
-
-    console.log(typeof minPrice === "number")
 
     var inputLeftRef = useRef(null);
     var inputRightRef = useRef(null);
@@ -18,19 +16,11 @@ export default function PriceFormRange({minPrice, maxPrice}) {
         var _this = inputLeftRef.current,
             min = parseInt(_this.min),
             max = parseInt(_this.max);
-        console.log(_this.value)
-        console.log(inputRightRef.current.value)
         var percent = Math.min((((_this.value - min) / (max - min)) * 100), (inputRightRef.current.value - min) / (max - min) * 100 - 1);
-        console.log(percent);
         sliderThumbLeftRef.current.style.left = percent + "%";
         sliderRangeRef.current.style.left = percent + "%";
         var value = Math.round((max - min) * (percent / 100) + min);
         setSliderThumbLeftValue(value);
-
-        console.log(inputLeftRef.current);
-
-        // why 0 always?
-        console.log(sliderThumbLeftValue);
     }
 
     function setRightValue() {
@@ -39,13 +29,10 @@ export default function PriceFormRange({minPrice, maxPrice}) {
             max = parseInt(_this.max);
 
         var percent = Math.min((((max - _this.value) / (max - min) * 100)), (max - inputLeftRef.current.value) / (max - min) * 100 - 1);
-        var value = Math.round(max - (max - min) * (percent / 100));
-        setSliderThumbRightValue(value);
         sliderThumbRightRef.current.style.right = percent + "%";
         sliderRangeRef.current.style.right = percent + "%";
-        console.log(inputRightRef.current);
-
-        console.log(sliderThumbRightValue);
+        var value = Math.round(max - (max - min) * (percent / 100));
+        setSliderThumbRightValue(value);
     }
 
     useEffect(() => {
@@ -78,14 +65,18 @@ export default function PriceFormRange({minPrice, maxPrice}) {
             sliderThumbRightRef.current.classList.add("active");
         });
         return () => {
-            inputLeftRef.current.removeEventListener("input", setLeftValue);
-            inputRightRef.current.removeEventListener("input", setRightValue);
+            //inputLeftRef.current.removeEventListener("input", setLeftValue);
+            //inputRightRef.current.removeEventListener("input", setRightValue);
         }
     }, []);
 
     useEffect(() => {
         setSliderThumbLeftValue(minPrice);
-        setSliderThumbRightValue(minPrice === maxPrice ? maxPrice + 1 : maxPrice);
+        setSliderThumbRightValue(maxPrice);
+        sliderThumbLeftRef.current.style.left = 0;
+        sliderThumbRightRef.current.style.right = 0;
+        sliderRangeRef.current.style.left = 0;
+        sliderRangeRef.current.style.right = 0;
     }, [minPrice, maxPrice]);
 
     return (

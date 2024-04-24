@@ -5,8 +5,10 @@ import "./index.css"
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
 import Layout from "./Pages/Layout";
 import ErrorPage from "./Pages/ErrorPage";
-import Home, {loader as homeLoader} from "./Pages/Home";
+import Home from "./Pages/Home";
 import AdvertisementDetail, {loader as adLoader} from "./Pages/AdvertisementDetail";
+import AdvertisementCarousel from "./Components/AdvertisementCarousel";
+import Advertisements, {loader as adsLoader} from "./Pages/Advertisements";
 
 const router = createBrowserRouter(
     [
@@ -18,12 +20,20 @@ const router = createBrowserRouter(
                 {
                     path: "/",
                     element: <Home/>,
-                    loader: homeLoader
+                },
+                {
+                    path: "/ads",
+                    element: <Advertisements/>,
+                    loader: adsLoader
                 },
                 {
                     path: "/ads/:id",
                     element: <AdvertisementDetail/>,
                     loader: ({params}) => adLoader(params.id)
+                },
+                {
+                    path: "/carousel",
+                    element: <AdvertisementCarousel/>
                 }
             ],
         },

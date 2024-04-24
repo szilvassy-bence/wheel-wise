@@ -1,0 +1,75 @@
+#highlighted-ads-wrapper {
+    width: 100%;
+    display: flex;
+}
+
+#highlighted-ads-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.carousel-container {
+    display: flex;
+    gap: 20px;
+    overflow: auto;
+}
+
+.carousel-card {
+    flex: 1 1 250px;
+    border-radius: 10px;
+    border: 1px solid #FFC470;
+}
+
+.carousel-img-wrapper {
+    height: 150px;
+    border-radius: 10px;
+}
+
+.carousel-img {
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.carousel-content-wrapper{
+    padding: 15px;
+}
+
+.carousel-content-wrapper h3{
+    margin:0;
+}
+
+::-webkit-scrollbar {
+    margin-top: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FFC470;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #DD5746;
+}
+
+.carousel-card-footer {
+    display: flex;
+}
+
+@media screen and (min-width: 900px){
+    .carousel-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+        gap: 20px;
+    }
+}
