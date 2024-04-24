@@ -3,7 +3,7 @@ export default Profile;
 
 export async function loader(name){
     try {
-        const res = await fetch(`/api/users/${name}`);
+        const res = await fetch(`/api/user/${name}`);
         const data = await res.json();
         return data;
     } catch (e) {

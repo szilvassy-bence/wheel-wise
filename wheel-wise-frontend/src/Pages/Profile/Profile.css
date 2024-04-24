@@ -1,0 +1,50 @@
+#profile-wrapper{
+    display: flex;
+    width: 100%;
+}
+
+#profile-content{
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    margin: auto;
+    gap: 20px;
+}
+
+#profile-menu{
+    flex:1;
+}
+
+#profile-menu ul{
+    padding: 0;
+    border: 1px solid #DD5746;
+    border-radius: 5px;
+}
+
+#profile-menu li {
+    list-style: none;
+    padding: 10px;
+    height: 100%;
+    border-width: 0 0 1px 0;
+    border-color: #DD5746;
+    border-style: inset;
+    background-color: aliceblue;
+    overflow:hidden;
+}
+
+#profile-menu li:first-child {
+    border-radius:  5px 5px 0 0;
+}
+
+#profile-menu li:last-child {
+    border-width: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+#profile-menu p{
+    margin: 0;
+}
+
+#menu-content{
+    flex: 5;
+}
