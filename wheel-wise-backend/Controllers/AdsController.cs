@@ -42,6 +42,12 @@ public class AdsController : ControllerBase
         return Ok(ad);
     }
 
+    [HttpGet("highlighted")]
+    public async Task<ActionResult<IEnumerable<Advertisement>>> GetHighlightedAds()
+    {
+        return Ok(await _advertisementRepository.GetHighlightedAds());
+    }
+
     [WarningFilter("Info")]
     [HttpPost]
     public async Task<ActionResult<Advertisement>> PostAd(Advertisement ad)

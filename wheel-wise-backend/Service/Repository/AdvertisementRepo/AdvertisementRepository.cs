@@ -37,6 +37,20 @@ public class AdvertisementRepository : IAdvertisementRepository
         return filter.FilterProducts(allAds, andSpecification).ToList();
     }
 
+    public async Task<IEnumerable<Advertisement>> GetHighlightedAds()
+    {
+        return await _dbContext.Advertisements
+            .Where(a => a.Highlighted == true)
+            .Include(c => c.Car)
+            .Include(x => x.Car.CarType)
+            .Include(x => x.Car.Transmission)
+            .Include(x => x.Car.FuelType)
+            .Include(x => x.Car.Equipments)
+            .Include(x => x.Car.Color)
+            .Take(8)
+            .ToListAsync();
+    }
+
     public async Task<Advertisement?> GetById(int id)
     {
         return await _dbContext.Advertisements
