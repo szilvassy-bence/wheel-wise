@@ -7,5 +7,5 @@ public class User
     public IdentityUser IdentityUser { get; set; }
     public int UserId { get; init; }
     public int ZipCode { get; set; }
-    public virtual ICollection<Advertisement> FavoriteAdvertisements { get; set; }
+    public ICollection<Advertisement> FavoriteAdvertisements { get; set; } = new List<Advertisement>();
 }

@@ -18,6 +18,8 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
     public DbSet<Transmission> Transmissions { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<FuelType> FuelTypes { get; set; }
+    
+    public DbSet<User> Users { get; set; }
 
     /*
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -30,6 +32,7 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
         
         var equipment1 = new Equipment { Id = 1, Type = "Technical", Name = "AC" };
         var equipment2 = new Equipment { Id = 2, Type = "Comfort", Name = "SeatHeating" };

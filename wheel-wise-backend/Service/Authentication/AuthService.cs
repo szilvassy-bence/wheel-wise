@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using wheel_wise.Data;
+using wheel_wise.Model;
 
 namespace wheel_wise.Service.Authentication;
 
@@ -6,24 +8,34 @@ public class AuthService : IAuthService
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly ITokenService _tokenService;
+    private readonly WheelWiseContext _dbContext;
 
-    public AuthService(UserManager<IdentityUser> userManager, ITokenService tokenService)
+    public AuthService(UserManager<IdentityUser> userManager, ITokenService tokenService, WheelWiseContext dbContext)
     {
         _userManager = userManager;
         _tokenService = tokenService;
+        _dbContext = dbContext;
     }
 
 
     public async Task<AuthResult> RegisterAsync(string email, string userName, string password, string role)
     {
         var user = new IdentityUser { Email = email, UserName = userName };
+        
         var result = await _userManager.CreateAsync(user, password);
         if (!result.Succeeded)
         {
             return FailedRegistration(result, email, userName);
         }
+        
+        
 
         await _userManager.AddToRoleAsync(user, role);
+        
+        var registeringUser = await _userManager.FindByEmailAsync(email);
+        _dbContext.Add(new User { IdentityUser = registeringUser });
+        await _dbContext.SaveChangesAsync();
+        
         return new AuthResult(true, email, userName, "");
     }
 

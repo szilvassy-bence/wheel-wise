@@ -18,6 +18,7 @@ using wheel_wise.Service.Repository.ColorRepo;
 using wheel_wise.Service.Repository.EquipmentRepo;
 using wheel_wise.Service.Repository.FuelTypeRepo;
 using wheel_wise.Service.Repository.TransmissionRepo;
+using wheel_wise.Service.Repository.UserRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +66,7 @@ void AddServices()
     builder.Services.AddScoped<ICarRepository, CarRepository>();
     builder.Services.AddScoped<ITransmissionRepository, TransmissionRepository>();
     builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<AuthenticationSeeder>();
