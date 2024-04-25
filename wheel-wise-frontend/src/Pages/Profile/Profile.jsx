@@ -1,6 +1,6 @@
 import "./Profile.css";
 import { useState, useContext, useRef, useEffect } from "react";
-import {useLoaderData} from "react-router-dom";
+import {useLoaderData, useNavigate} from "react-router-dom";
 import {AuthContext, FavoriteContext} from "../../Pages/Layout/Layout";
 import CardAd from "../../Components/CardAd";
 
@@ -9,6 +9,7 @@ export default function Profile() {
     const {user} = useContext(AuthContext);
     const [favorites, setFavorites] = useContext(FavoriteContext);
     const profileMenuLiRef = useRef([]);
+    const navigate = useNavigate();
 
     const [profileState, setProfileState] = useState({
         userName: profile.identityUser.userName,
@@ -58,6 +59,10 @@ export default function Profile() {
         setProfileTab(node.getAttribute("tab"));
     }
 
+    const handleClickOnCreateAd = () => {
+        navigate(`/users/${profileState.userName}/createad`)
+    }
+
 
     return (
         <div id="profile-wrapper">
@@ -84,6 +89,11 @@ export default function Profile() {
                         <li tab="favorites" ref={el => profileMenuLiRef.current.push(el)} onClick={changeTab}>
                             <p>
                                 Favorites
+                            </p>
+                        </li>
+                        <li>
+                            <p onClick={handleClickOnCreateAd}>
+                                Create Advertisment
                             </p>
                         </li>
                     </ul>
