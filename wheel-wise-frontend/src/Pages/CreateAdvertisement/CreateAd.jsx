@@ -12,7 +12,7 @@ export default function CreateAd(){
     const[user, setUser] = useState({});
 
     const [formData, setFormData] = useState({
-        brand: "", model: "", color:"", fuelType:"", transmission:"", status:"", year: 0, price: 0, mileage: 0, power: 0
+        brand: "", model: "", color:"", fuelType:"", transmission:"", status:"New", year: 0, price: 0, mileage: 0, power: 0
     })
 
     const [checkedItems, setCheckedItems] = useState({});
