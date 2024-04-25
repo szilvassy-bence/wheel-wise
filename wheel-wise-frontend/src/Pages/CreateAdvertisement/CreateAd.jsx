@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"; 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./CreateAd.css"
+import Modal from "./AdSuccessfulModal/AdModal";
 
 export default function CreateAd(){
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [carTypeModels, setCarTypeModels] = useState(null);
@@ -16,6 +18,8 @@ export default function CreateAd(){
     })
 
     const [checkedItems, setCheckedItems] = useState({});
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,7 +46,7 @@ export default function CreateAd(){
                     colors: colorData,
                     fuelTypes: fuelTypeData,
                     transmissionTypes: transmissionTypeData,
-                    equipments: equipmentData.sort((a, b) => a.name.localeCompare(b.name))
+                    equipments: equipmentData
                 });
 
                 setFormData({
@@ -131,10 +135,11 @@ export default function CreateAd(){
         console.log(formData);
         //console.log(carProperties)
         let dataTosend = {...formData,
-            Equipments: checkedItems
+            Equipments: checkedItems,
+            UserName: user.identityUser.userName
         }
         console.log(dataTosend)
-        console.log(user)
+
 
         const response = await fetch("/api/Ads", {
             method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(dataTosend)
@@ -143,10 +148,17 @@ export default function CreateAd(){
         if (response.ok) {
             const data = await response.json();
             console.log(data);
+            setIsModalOpen(true);
         } else { 
             console.error("Problem fetching data from server")
         }
       }
+
+      const closeModal = () => {
+        setIsModalOpen(false);
+        console.log(params)
+        navigate(`/users/${user.identityUser.userName}`)
+    };
     
 
     return (
@@ -315,6 +327,8 @@ export default function CreateAd(){
 
             </form>
             }
+             {/* Modal */}
+             <Modal isOpen={isModalOpen} onClose={closeModal} />
         </>
     )
 }
