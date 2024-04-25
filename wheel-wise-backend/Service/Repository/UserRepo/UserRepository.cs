@@ -41,6 +41,21 @@ public class UserRepository : IUserRepository
 
         return user.FavoriteAdvertisements;
     }
+    
+    public async Task<IEnumerable<Advertisement?>> GetAdsByUserName(string userName)
+    {
+        var iUser = await _userManager.FindByNameAsync(userName);
+        var user = await _dbContext.Users
+            .Include(u => u.Advertisements).ThenInclude(a => a.Car).ThenInclude(c => c.CarType)
+            .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
+
+        if (user.Advertisements == null)
+        {
+            return new List<Advertisement>();
+        }
+
+        return user.Advertisements;
+    }
 
     public async Task UpdateUser(string id, UserData userData)
     {
@@ -91,6 +106,19 @@ public class UserRepository : IUserRepository
         }
 
         user.FavoriteAdvertisements.Add(ad);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task RemoveFavoriteAdvertisement(string userName, int adId)
+    {
+        var user = await GetByName(userName);
+        
+        var currentAd = user.FavoriteAdvertisements.FirstOrDefault(x => x.Id == adId);
+        if (currentAd == null)
+        {
+            return;
+        }
+        user.FavoriteAdvertisements.Remove(currentAd);
         await _dbContext.SaveChangesAsync();
     }
 }

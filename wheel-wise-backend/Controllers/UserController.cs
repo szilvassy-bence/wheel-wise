@@ -43,6 +43,12 @@ public class UserController : ControllerBase
     {
         return Ok(await _userRepository.GetFavoriteAdsByUserName(userName));
     }
+    
+    [HttpGet("{userName}/ads")]
+    public async Task<ActionResult<IEnumerable<Advertisement?>>> GetAdsByUserName(string userName)
+    {
+        return Ok(await _userRepository.GetAdsByUserName(userName));
+    }
 
     [HttpPatch("/addfavoritead/{userName}/{adId}")]
     public async Task<IActionResult> AddFavAd(string userName, int adId)
@@ -59,8 +65,23 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpDelete("removefavoritead/{userName}/{adId}")]
+    public async Task<IActionResult> RemoveFavAd(string userName, int adId)
+    {
+        try
+        {
+            await _userRepository.RemoveFavoriteAdvertisement(userName, adId);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     [HttpPatch("{id}/edit")]
-    public async Task<IActionResult> UpdateUser(string id, [FromBody]UserData userData)
+    public async Task<IActionResult> UpdateUser(string id, [FromBody] UserData userData)
     {
         await _userRepository.UpdateUser(id, userData);
         return Ok();
