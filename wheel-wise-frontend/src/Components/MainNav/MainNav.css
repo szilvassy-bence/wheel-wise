@@ -82,6 +82,10 @@ header .menu {
     margin-top: 0;
 }
 
+.dropdown-menu li{
+    cursor: pointer;
+}
+
 #navigation-login-form{
     display: flex;
     flex-direction: column;
