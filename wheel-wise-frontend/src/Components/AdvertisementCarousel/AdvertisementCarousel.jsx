@@ -1,21 +1,17 @@
 import "./AdvertisementCarousel.css";
 import { useLoaderData } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../Pages/Layout/Layout";
+import { AuthContext, FavoriteContext } from "../../Pages/Layout/Layout";
 import { useState, useEffect } from "react";
 import CardAd from "../CardAd";
 
 export default function AdvertisementCarousel() {
 
     const { user } = useContext(AuthContext);
-    console.log(`user data: ${Object.keys(user)}`)
+    const [favorites, setFavorites]= useContext(FavoriteContext);
     const [highlightedAds, setHighlightedAds] = useState(null);
 
-    const isFavorite = (ad) => {
-        return false;
-    }
-
-
+  
     const fetchHighlighted = async () => {
         try {
             const res = await fetch("/api/Ads/highlighted");
@@ -26,7 +22,11 @@ export default function AdvertisementCarousel() {
         }
     }
 
-
+    const isFavorite = (ad) => {
+        console.log("favads:" + favorites);
+        favorites.includes(ad)? true : false;
+        return true;
+    }
     const addFav = async (userName, adId) => {
         try {
             const response = await fetch(`/api/user/addfavoritead/${userName}/${adId}`, {
@@ -60,7 +60,7 @@ export default function AdvertisementCarousel() {
             }
 
         }
-        catch (error) {
+        catch (err) {
             console.error(err);
         }
 
@@ -75,12 +75,18 @@ export default function AdvertisementCarousel() {
         console.log("Clicked.");
     }
 
-    async function handleFavButtonClick(e) {
-        if (!isFavorite) {
-            addFav(user.userName, e.target.id)
+    function handleFavButtonClick(e, ad) {
+        try {
+            if (!isFavorite(ad)) {
+                addFav(user.userName, ad.id); 
+                setFavorites([...favorites, ad]);
+            } else {
+                removeFav(user.userName, ad.id);
+                setFavorites(favorites.filter(favAd => favAd.id !== ad.id));
+            }
+        } catch (error) {
+            console.error('Failed to add or remove advertisement from favorites:', error);
         }
-        removeFav(user.userName, e.target.id);
-
     }
 
     return (
@@ -115,7 +121,7 @@ export default function AdvertisementCarousel() {
                                         </svg>
 
                                     </button>
-                                    <button className="card-btn card-favorite-btn" id={ad.id} onClick={(e)=> handleFavButtonClick(e)}>
+                                    <button className="card-btn card-favorite-btn" key={ad.id} onClick={(e, ad)=> handleFavButtonClick(e, ad)}>
                                         <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                                             {isFavorite(ad) ? <path></path> : <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 11c.889-.086 1.416-.543 2.156-1.057a22.323 22.323 0 0 0 3.958-5.084 1.6 1.6 0 0 1 .582-.628 1.549 1.549 0 0 1 1.466-.087c.205.095.388.233.537.406a1.64 1.64 0 0 1 .384 1.279l-1.388 4.114M7 11H4v6.5A1.5 1.5 0 0 0 5.5 19v0A1.5 1.5 0 0 0 7 17.5V11Zm6.5-1h4.915c.286 0 .372.014.626.15.254.135.472.332.637.572a1.874 1.874 0 0 1 .215 1.673l-2.098 6.4C17.538 19.52 17.368 20 16.12 20c-2.303 0-4.79-.943-6.67-1.475" />}
                                         </svg>

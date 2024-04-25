@@ -10,5 +10,4 @@ public interface IUserRepository
     Task<IEnumerable<Advertisement?>> GetFavoriteAdsByUserName(string userName);
     Task AddFavoriteAdvertisement(string name, int adId);
     Task UpdateUser(string id, UserData userData);
-    Task RemoveFavoriteAdvertisement(string userName, int adId);
-}
+    Task RemoveFavoriteAdvertisement(string userName, int adId);}
