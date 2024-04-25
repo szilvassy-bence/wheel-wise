@@ -9,8 +9,12 @@ public class Advertisement
     public string Description { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool Highlighted { get; set; }
+    
     public int? UserId { get; init; }
     public User User { get; init; }
+    
+    //public ICollection<User> LikedByUsers { get; set; }
+    
     public int CarId { get; init; }
     public Car Car { get; set; }
 }

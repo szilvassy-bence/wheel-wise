@@ -1,0 +1,11 @@
+* [32mfavadbackend                                [m 61ea49f FavourAds added
+  many-to-many-rel-b                          [m ed14b62 added car entity attributes and adscontroller class
+  master                                      [m 53d8e8d started user data update
+  simplefilter                                [m 60f32e9 refactored design
+  [31mremotes/origin/cartype_and_color_controllers[m 589cbce CarTypeRepository and ColorRepository added
+  [31mremotes/origin/favadbackend                 [m 61ea49f FavourAds added
+  [31mremotes/origin/main                         [m f24f122 Added project plan and database structure file paths to readme.md
+  [31mremotes/origin/master                       [m 53d8e8d started user data update
+  [31mremotes/origin/routerprovider               [m d4853d0 basic routerprovider
+  [31mremotes/origin/simplefilter                 [m 60f32e9 refactored design
+  [31mremotes/origin/userforfrontend              [m c65e388 UserController, UserRepository
