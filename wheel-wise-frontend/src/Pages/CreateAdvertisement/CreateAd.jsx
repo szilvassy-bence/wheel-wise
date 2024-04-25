@@ -42,7 +42,7 @@ export default function CreateAd(){
                     colors: colorData,
                     fuelTypes: fuelTypeData,
                     transmissionTypes: transmissionTypeData,
-                    equipments: equipmentData
+                    equipments: equipmentData.sort((a, b) => a.name.localeCompare(b.name))
                 });
 
                 setFormData({
