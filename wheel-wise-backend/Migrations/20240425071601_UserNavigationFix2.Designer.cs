@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wheel_wise.Data;
 
@@ -11,9 +12,11 @@ using wheel_wise.Data;
 namespace wheel_wise.Migrations
 {
     [DbContext(typeof(WheelWiseContext))]
-    partial class WheelWiseContextModelSnapshot : ModelSnapshot
+    [Migration("20240425071601_UserNavigationFix2")]
+    partial class UserNavigationFix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,12 +30,12 @@ namespace wheel_wise.Migrations
                     b.Property<int>("FavoriteAdvertisementsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("User1Id")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("FavoriteAdvertisementsId", "User1Id");
+                    b.HasKey("FavoriteAdvertisementsId", "UserId");
 
-                    b.HasIndex("User1Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("AdvertisementUser");
                 });
@@ -291,7 +294,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 1,
                             CarId = 1,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8668),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6793),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -300,7 +303,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 2,
                             CarId = 2,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8712),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6835),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -309,7 +312,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 3,
                             CarId = 3,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8714),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6837),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -318,7 +321,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 4,
                             CarId = 4,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8715),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6839),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -327,7 +330,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 5,
                             CarId = 5,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8717),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6841),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -336,7 +339,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 6,
                             CarId = 6,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8718),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6842),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -345,7 +348,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 7,
                             CarId = 7,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8720),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6844),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -354,7 +357,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 8,
                             CarId = 8,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8721),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6845),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -363,7 +366,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 9,
                             CarId = 9,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8723),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6847),
                             Description = "description",
                             Highlighted = true,
                             Title = "title"
@@ -372,7 +375,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 10,
                             CarId = 10,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8724),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6849),
                             Description = "description",
                             Highlighted = true,
                             Title = "title"
@@ -381,7 +384,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 11,
                             CarId = 11,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8725),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6851),
                             Description = "description",
                             Highlighted = true,
                             Title = "title"
@@ -390,7 +393,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 12,
                             CarId = 12,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8727),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6852),
                             Description = "description",
                             Highlighted = true,
                             Title = "title"
@@ -399,7 +402,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 13,
                             CarId = 13,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8728),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6854),
                             Description = "description",
                             Highlighted = true,
                             Title = "title"
@@ -408,7 +411,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 14,
                             CarId = 14,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8730),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6856),
                             Description = "description",
                             Highlighted = true,
                             Title = "title"
@@ -417,7 +420,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 15,
                             CarId = 15,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8731),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6857),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -426,7 +429,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 16,
                             CarId = 16,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8733),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6858),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -435,7 +438,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 17,
                             CarId = 17,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8735),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6860),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -444,7 +447,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 18,
                             CarId = 18,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8737),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6861),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -453,7 +456,7 @@ namespace wheel_wise.Migrations
                         {
                             Id = 19,
                             CarId = 19,
-                            CreatedAt = new DateTime(2024, 4, 25, 14, 36, 7, 969, DateTimeKind.Local).AddTicks(8738),
+                            CreatedAt = new DateTime(2024, 4, 25, 9, 16, 1, 668, DateTimeKind.Local).AddTicks(6863),
                             Description = "description",
                             Highlighted = false,
                             Title = "title"
@@ -1054,7 +1057,7 @@ namespace wheel_wise.Migrations
 
                     b.HasOne("wheel_wise.Model.User", null)
                         .WithMany()
-                        .HasForeignKey("User1Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1133,13 +1136,13 @@ namespace wheel_wise.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("wheel_wise.Model.User", "User")
-                        .WithMany("Advertisements")
+                    b.HasOne("wheel_wise.Model.User", "Owner")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Car");
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("wheel_wise.Model.Car", b =>
@@ -1184,11 +1187,6 @@ namespace wheel_wise.Migrations
                         .HasForeignKey("IdentityUserId");
 
                     b.Navigation("IdentityUser");
-                });
-
-            modelBuilder.Entity("wheel_wise.Model.User", b =>
-                {
-                    b.Navigation("Advertisements");
                 });
 #pragma warning restore 612, 618
         }

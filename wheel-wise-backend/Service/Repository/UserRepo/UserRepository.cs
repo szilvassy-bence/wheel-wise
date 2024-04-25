@@ -93,4 +93,17 @@ public class UserRepository : IUserRepository
         user.FavoriteAdvertisements.Add(ad);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task RemoveFavoriteAdvertisement(string userName, int adId)
+    {
+        var user = await GetByName(userName);
+        
+        var currentAd = user.FavoriteAdvertisements.FirstOrDefault(x => x.Id == adId);
+        if (currentAd == null)
+        {
+            return;
+        }
+        user.FavoriteAdvertisements.Remove(currentAd);
+        await _dbContext.SaveChangesAsync();
+    }
 }
