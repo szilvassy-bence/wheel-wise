@@ -20,7 +20,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthResult> RegisterAsync(string email, string userName, string password, string role)
     {
-        var user = new IdentityUser { Email = email, UserName = userName };
+        var user = new IdentityUser { Email = email, UserName = userName, TwoFactorEnabled = false };
         
         var result = await _userManager.CreateAsync(user, password);
         if (!result.Succeeded)
@@ -28,8 +28,6 @@ public class AuthService : IAuthService
             return FailedRegistration(result, email, userName);
         }
         
-        
-
         await _userManager.AddToRoleAsync(user, role);
         
         var registeringUser = await _userManager.FindByEmailAsync(email);

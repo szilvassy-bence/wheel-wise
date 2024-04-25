@@ -28,13 +28,18 @@ public class UserRepository : IUserRepository
     public async Task UpdateUser(string id, UserData userData)
     {
         var user = await _userManager.FindByIdAsync(id);
-        Console.WriteLine(userData.UserName);
         
-        // check if the email address is used
-        var useremail = await _userManager.FindByEmailAsync(userData.Email);
-        if (useremail == null)
+        if (user == null)
+        {
+            return;
+        }
+
+        if (user.Email != userData.Email)
         {
             var result = await _userManager.ChangeEmailAsync(user, userData.Email, userData.Token);
+            //user.Email = userData.Email;
+            
+            //await _dbContext.SaveChangesAsync();
         }
 
         // need a DTO

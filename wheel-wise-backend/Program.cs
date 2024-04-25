@@ -131,18 +131,6 @@ void AddAuthentication()
                 IssuerSigningKey =
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ISSUER_SIGNING_KEY")))
             };
-            /*options.Events = new JwtBearerEvents()
-            {
-                OnAuthenticationFailed = (context) =>
-                {
-                    Debug.WriteLine($"Authentication failed. Exception: {context.Exception.Message}");
-                    if (context.Request.Headers.TryGetValue("Authorization", out var token))
-                    {
-                        Debug.WriteLine($"JWT Token: {token}");
-                    }
-                    return Task.CompletedTask;
-                }
-            };*/
         });
 }
 
