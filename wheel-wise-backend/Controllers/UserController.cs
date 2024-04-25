@@ -4,6 +4,7 @@ using wheel_wise.Model;
 using wheel_wise.Service.Repository.UserRepo;
 
 namespace wheel_wise.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class UserController : ControllerBase
@@ -25,7 +26,7 @@ public class UserController : ControllerBase
             {
                 return NotFound("User with given name cannot be found.");
             }
-            
+
 
             return Ok(user);
         }
@@ -34,8 +35,12 @@ public class UserController : ControllerBase
             Console.WriteLine($"An error occurred: {e.Message}");
             return StatusCode(500, "An error occurred while trying to get user.");
         }
-        
-        
+    }
+
+    [HttpGet("/users/{userName}/favorites")]
+    public async Task<ActionResult<IEnumerable<Advertisement?>>> GetFavoriteAdsByUserName(string userName)
+    {
+        return Ok(await _userRepository.GetFavoriteAdsByUserName(userName));
     }
 
     [HttpPatch("/addfavoritead/{userName}/{adId}")]

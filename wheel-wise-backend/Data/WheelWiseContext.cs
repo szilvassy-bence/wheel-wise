@@ -10,7 +10,7 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
     public WheelWiseContext(DbContextOptions<WheelWiseContext> options) : base(options)
     {
     }
-    
+
     public DbSet<Advertisement> Advertisements { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Equipment> Equipments { get; set; }
@@ -31,11 +31,11 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        
+
+
         var equipment1 = new Equipment { Id = 1, Type = "Technical", Name = "AC" };
         var equipment2 = new Equipment { Id = 2, Type = "Comfort", Name = "SeatHeating" };
-        
+
         modelBuilder.Entity<CarType>().HasData(
             new CarType { Id = 1, Brand = "Opel", Model = "Astra" },
             new CarType { Id = 2, Brand = "Renault", Model = "Clio" },
@@ -260,6 +260,18 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
             .HasMany(e => e.Equipments)
             .WithMany();
 
-        
+        // one to many relationship for can own many advertisements
+        // an advertisement is owned by one user
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Advertisements)
+            .WithOne(a => a.User)
+            .HasForeignKey(a => a.UserId);
+
+        // many to many unidirectional relationship
+        // a user can have many favorite ads, also an advertisement has many users liked that, but we dont use that
+        // direction
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.FavoriteAdvertisements)
+            .WithMany();
     }
 }
