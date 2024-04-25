@@ -50,12 +50,12 @@ export default function Layout() {
                 const res = await fetch(`/api/user/${user.userName}/favorites`);
                 const data = await res.json();
                 setFavorites(data);
-            } catch(e) {
-                console.log(e);
+            } catch(err) {
+                console.error(err);
             }
         }
         if (user != null)
-        fetchFavorites();
+        {fetchFavorites()}
     }, [user])
 
     useEffect(() =>{

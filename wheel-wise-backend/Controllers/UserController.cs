@@ -65,8 +65,23 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpDelete("removefavoritead/{userName}/{adId}")]
+    public async Task<IActionResult> RemoveFavAd(string userName, int adId)
+    {
+        try
+        {
+            await _userRepository.RemoveFavoriteAdvertisement(userName, adId);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     [HttpPatch("{id}/edit")]
-    public async Task<IActionResult> UpdateUser(string id, [FromBody]UserData userData)
+    public async Task<IActionResult> UpdateUser(string id, [FromBody] UserData userData)
     {
         await _userRepository.UpdateUser(id, userData);
         return Ok();
