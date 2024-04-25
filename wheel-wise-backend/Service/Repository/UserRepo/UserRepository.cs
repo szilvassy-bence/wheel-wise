@@ -15,8 +15,7 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
         _userManager = userManager;
     }
-
-
+    
     public async Task<User?> GetByName(string userName)
     {
         var iUser = await _userManager.FindByNameAsync(userName);
@@ -53,19 +52,20 @@ public class UserRepository : IUserRepository
         }
 
         var ad = await _dbContext.Advertisements.FirstOrDefaultAsync(x => x.Id == adId);
-
+        
+        // if there is no ad with that ad id
         if (ad == null)
         {
             return;
         }
 
+        // if the favorite advertisements is not yet initialized
         if (user.FavoriteAdvertisements == null)
         {
             user.FavoriteAdvertisements = new List<Advertisement>();
         }
 
         user.FavoriteAdvertisements.Add(ad);
-
         await _dbContext.SaveChangesAsync();
     }
 }
