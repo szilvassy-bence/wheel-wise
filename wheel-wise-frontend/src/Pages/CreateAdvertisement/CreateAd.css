@@ -1,8 +1,8 @@
 .CreateAdForm {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #f2f5ff;
     border-radius: 8px;
 }
 
@@ -12,33 +12,42 @@
     font-size: 1.2rem;
 }
 
+.control {
+   /* flex: 1;
+    margin-bottom: 10px;*/
+    flex: 0 0 calc(50% - 10px); /* Set each item to take up 33.33% of the width with some spacing */
+    margin-bottom: 20px; /* Add margin at the bottom of each item */
+    display: flex;
+    align-items: center;
+    width: calc(33.33% - 10px); /* Adjust width to match flex calculation */
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
 .control-group {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    width: 100%; /* Set width to 100% */
 }
 
-.control {
-    flex: 1;
-    margin-bottom: 15px;
-}
-
-.select-input, .input-field {
-    width: 100%;
+.control-group .control {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
+    border: #ccc solid 1px;
 }
 
 .unit {
-    margin-left: 10px;
-    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+.equipment-fieldset {
+    width: 100%; /* Set the width of the fieldset to 100% */
 }
 
 .checkbox-group {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    width: 100%; /* Set width to 100% */
 }
 
 .checkbox-item {
@@ -46,16 +55,51 @@
     margin-bottom: 10px; /* Add margin at the bottom of each item */
     display: flex;
     align-items: center;
-}
-
-.checkbox-input {
-    margin-right: 10px; /* Add margin to the right of the checkbox */
+    width: calc(33.33% - 10px); /* Adjust width to match flex calculation */
+    box-sizing: border-box; /* Include padding and border in width */
+    padding: 10px;
+    border: #ccc solid 1px;
 }
 
 .checkbox-item label {
     flex: 1; /* Let label take the remaining space */
 }
+ 
+input[type="number"] {
+    width: 38%;
+    font-size: medium;
+}
 
+input[type="number"]:focus{
+    border-color: #0056b3; /* Change border color on focus if needed */
+    box-shadow: none; /* Remove box shadow on focus */
+    background-color: #cde3fa;
+    color: black;
+}
+
+.control select{
+    width: 40%;
+    font-size: medium;
+}
+
+
+.ad-label {
+
+    min-width: 120px; /* Minimum width */
+    display: inline-block; /* To allow setting width */
+   /* text-align: right; /* Align text to the right for consistent alignment */
+    /*margin-right: 15px; /* Optional margin to separate label from input/select */
+}
+
+
+
+select:focus {
+    border-color: #0056b3; /* Change border color on focus if needed */
+    box-shadow: none; /* Remove box shadow on focus */
+    background-color: #cde3fa;
+}
+
+/*Submit button*/
 .submit-button {
     padding: 10px 20px;
     background-color: #007bff;

@@ -43,7 +43,7 @@ const router = createBrowserRouter(
                     loader: ({params}) => profileLoader(params.name)
                 },
                 {
-                    path: "/createad",
+                    path: "/users/:name/createad",
                     element: <CreateAd/>
                 } 
             ],
