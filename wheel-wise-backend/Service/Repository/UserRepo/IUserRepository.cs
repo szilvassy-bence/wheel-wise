@@ -8,6 +8,7 @@ public interface IUserRepository
 {
     Task<User?> GetByName(string name);
     Task<IEnumerable<Advertisement?>> GetFavoriteAdsByUserName(string userName);
+    Task<IEnumerable<Advertisement?>> GetAdsByUserName(string userName);
     Task AddFavoriteAdvertisement(string name, int adId);
     Task UpdateUser(string id, UserData userData);
 }

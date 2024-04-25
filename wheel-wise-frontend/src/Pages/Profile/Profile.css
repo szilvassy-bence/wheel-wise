@@ -2,6 +2,7 @@
     display: flex;
     width: 100%;
     background-color: #efefef;
+    padding-bottom: 40px;
 }
 
 #profile-content{
@@ -102,5 +103,5 @@
 .profile-ads-wrapper {
     display: grid;
     gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(250, auto));
+    grid-template-columns: repeat(auto-fill, minmax(250px, auto));
 }

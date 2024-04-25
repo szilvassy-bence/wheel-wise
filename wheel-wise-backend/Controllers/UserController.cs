@@ -43,6 +43,12 @@ public class UserController : ControllerBase
     {
         return Ok(await _userRepository.GetFavoriteAdsByUserName(userName));
     }
+    
+    [HttpGet("{userName}/ads")]
+    public async Task<ActionResult<IEnumerable<Advertisement?>>> GetAdsByUserName(string userName)
+    {
+        return Ok(await _userRepository.GetAdsByUserName(userName));
+    }
 
     [HttpPatch("/addfavoritead/{userName}/{adId}")]
     public async Task<IActionResult> AddFavAd(string userName, int adId)

@@ -7,9 +7,9 @@ import CardAd from "../../Components/CardAd";
 export default function Profile() {
     const profile = useLoaderData();
     const {user} = useContext(AuthContext);
-    const [favorites, setFavorites] = useContext(FavoriteContext);
+    const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
     const profileMenuLiRef = useRef([]);
-
+    
     const [profileState, setProfileState] = useState({
         userName: profile.identityUser.userName,
         email: profile.identityUser.email,
@@ -40,21 +40,17 @@ export default function Profile() {
             }
         }
 
-        console.log(profileState);
     }
 
     function changeTab(e) {
         const node = e.target.closest("li");
-        console.log(profileMenuLiRef.current);
         profileMenuLiRef.current.map(el => {
-            console.log(el);
             if(el != null && el.classList.contains("active")){
                 el.classList.remove("active");
             }
         })
         profileMenuLiRef.current = [];
         node.classList.add("active");
-        console.log(node.getAttribute("tab"));
         setProfileTab(node.getAttribute("tab"));
     }
 
@@ -129,25 +125,29 @@ export default function Profile() {
                             </form>
                         </>
                     ) : profileTab === "ads" ? (
-                        <div className="profile-ads-wrapper">
+                        <div>
                             <h2>Your advertisements</h2>
-                            { profile.advertisements.length === 0 ? (
+                            { userAds.length === 0 ? (
                                 <p>You have no advertisements currently.</p>
                             ) : (
-                                profile.advertisements.map(ad => (
-                                    <CardAd ad={ad} handleClick={(e) => console.log(e.target)} />
-                                ))
+                                <div className="profile-ads-wrapper">
+                                    {userAds.map(ad => (
+                                        <CardAd key={ad.id} ad={ad} handleClick={(e) => console.log(e.target)} />
+                                    ))}
+                                </div>
                             )}
                         </div>
                     ) : profileTab === "favorites" ? (
-                        <div className="profile-ads-wrapper">
+                        <div>
                             <h2>Favorite advertisements</h2>
-                            { profile.favoriteAdvertisements.length === 0 ? (
+                            { favorites.length === 0 ? (
                                 <p>You have no advertisements currently.</p>
                             ) : (
-                                favorites.map(ad => (
-                                    <CardAd ad={ad} handleClick={(e) => console.log(e.target)} />
-                                ))
+                                <div className="profile-ads-wrapper">
+                                {favorites.map(ad => (
+                                    <CardAd key={ad.id} ad={ad} handleClick={(e) => console.log(e.target)} />
+                                ))}
+                                </div>
                             )}
                         </div>
                     ) : (

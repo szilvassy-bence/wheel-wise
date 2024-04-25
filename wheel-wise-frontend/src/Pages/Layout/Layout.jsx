@@ -9,7 +9,8 @@ export const FavoriteContext = createContext(null);
 
 export default function Layout() {
     
-    const [favorites, setFavorites] = useState(null);
+    const [favorites, setFavorites] = useState([]);
+    const [userAds, setUserAds] = useState([]);
     const [user, setUser] = useLocalStorage("user", null);
     const navigate = useNavigate();
 
@@ -56,6 +57,20 @@ export default function Layout() {
         if (user != null)
         fetchFavorites();
     }, [user])
+
+    useEffect(() =>{
+        async function fetchUserAds(){
+            try {
+                const res = await fetch(`/api/user/${user.userName}/ads`);
+                const data = await res.json();
+                setUserAds(data);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+        if (user != null)
+            fetchUserAds();
+    }, [user])
     
     
 
@@ -67,7 +82,7 @@ export default function Layout() {
 
     return (
         <AuthContext.Provider value={value}>
-            <FavoriteContext.Provider value={[favorites, setFavorites]} >
+            <FavoriteContext.Provider value={[favorites, setFavorites, userAds, setUserAds]} >
                 <MainNav/>
                 <div id="main-content">
                     <Outlet/>
