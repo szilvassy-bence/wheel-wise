@@ -133,6 +133,7 @@ export default function CreateAd(){
         e.preventDefault();
     
         console.log(formData);
+        console.log(user);
         //console.log(carProperties)
         let dataTosend = {...formData,
             Equipments: checkedItems,

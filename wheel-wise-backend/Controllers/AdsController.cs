@@ -10,6 +10,7 @@ using wheel_wise.Service.Repository.ColorRepo;
 using wheel_wise.Service.Repository.EquipmentRepo;
 using wheel_wise.Service.Repository.FuelTypeRepo;
 using wheel_wise.Service.Repository.TransmissionRepo;
+using wheel_wise.Service.Repository.UserRepo;
 
 namespace wheel_wise.Controllers;
 
@@ -25,10 +26,12 @@ public class AdsController : ControllerBase
     private readonly ITransmissionRepository _transmissionRepository;
     private readonly ICarRepository _carRepository;
     private readonly IEquipmentRepository _equipmentRepository;
+    private readonly IUserRepository _userRepository;
 
     public AdsController(ILogger<AdsController> logger, IAdvertisementRepository advertisementRepository, 
         ICarTypeRepository carTypeRepository, IColorRepository colorRepository, IFuelTypeRepository fuelTypeRepository,
-        ITransmissionRepository transmissionRepository, ICarRepository carRepository, IEquipmentRepository equipmentRepository)
+        ITransmissionRepository transmissionRepository, ICarRepository carRepository, IEquipmentRepository equipmentRepository,
+        IUserRepository userRepository)
     {
         _logger = logger;
         _advertisementRepository = advertisementRepository;
@@ -38,6 +41,7 @@ public class AdsController : ControllerBase
         _transmissionRepository = transmissionRepository;
         _carRepository = carRepository;
         _equipmentRepository = equipmentRepository;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
@@ -73,6 +77,7 @@ public class AdsController : ControllerBase
         Console.WriteLine($"Price: {ad.Price}");
         Console.WriteLine($"Mileage: {ad.Mileage}");
         Console.WriteLine($"Power: {ad.Power}");
+        Console.WriteLine($"User {ad.UserName}");
         
         try
         {
@@ -80,6 +85,7 @@ public class AdsController : ControllerBase
             var color = await _colorRepository.GetByName(ad.Color);
             var fuel = await _fuelTypeRepository.GetByName(ad.FuelType);
             var transmission = await _transmissionRepository.GetByName(ad.Transmission);
+            var user = await _userRepository.GetByName(ad.UserName);
 
             ICollection<Equipment> equipments = new List<Equipment>();
             foreach (var ads in ad.Equipments)
@@ -95,7 +101,7 @@ public class AdsController : ControllerBase
                 }
             }
 
-            if (color == null || carModel == null || fuel == null || transmission == null ||
+            if (color == null || carModel == null || fuel == null || transmission == null || user == null ||
                 !Enum.TryParse(ad.Status, out Status status)) return BadRequest();
             
             Console.WriteLine(color.Id);
@@ -125,7 +131,7 @@ public class AdsController : ControllerBase
                 Description = "Desc",
                 CreatedAt = DateTime.Now,
                 Highlighted = false,
-                UserId = null
+                UserId = user.Id
             };
 
             await _advertisementRepository.Add(advertisement);
