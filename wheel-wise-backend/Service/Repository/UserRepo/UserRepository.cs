@@ -29,8 +29,10 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<Advertisement?>> GetFavoriteAdsByUserName(string userName)
     {
-
-        var user = await GetByName(userName);
+        var iUser = await _userManager.FindByNameAsync(userName);
+        var user = await _dbContext.Users
+            .Include(u => u.FavoriteAdvertisements).ThenInclude(a => a.Car).ThenInclude(c => c.CarType)
+            .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
 
         if (user.FavoriteAdvertisements == null)
         {

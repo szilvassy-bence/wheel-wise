@@ -118,7 +118,6 @@ export default function MainNav() {
                                         <h4>Welcome, {user.userName}</h4>
                                         <ul>
                                             <li onClick={() => navigate(`/users/${user.userName}`)}>Account</li>
-                                            <li>Change password</li>
                                             <li onClick={handleLogout}>Logout</li>
                                         </ul>
                                     </>

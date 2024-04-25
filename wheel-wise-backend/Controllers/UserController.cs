@@ -38,7 +38,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("/users/{userName}/favorites")]
+    [HttpGet("{userName}/favorites")]
     public async Task<ActionResult<IEnumerable<Advertisement?>>> GetFavoriteAdsByUserName(string userName)
     {
         return Ok(await _userRepository.GetFavoriteAdsByUserName(userName));

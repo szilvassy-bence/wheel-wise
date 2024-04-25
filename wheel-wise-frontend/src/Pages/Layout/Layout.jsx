@@ -1,13 +1,15 @@
 import "./Layout.css"
 import {Outlet, useNavigate} from "react-router-dom"
 import MainNav from "../../Components/MainNav"
-import {createContext, useMemo} from "react";
+import {createContext, useMemo, useEffect, useState} from "react";
 import {useLocalStorage} from "../../Hooks/useLocalStorage.jsx";
 
 export const AuthContext = createContext(null);
+export const FavoriteContext = createContext(null);
 
 export default function Layout() {
-
+    
+    const [favorites, setFavorites] = useState(null);
     const [user, setUser] = useLocalStorage("user", null);
     const navigate = useNavigate();
 
@@ -39,6 +41,24 @@ export default function Layout() {
         navigate("/", {replace: true});
     }
 
+
+
+    useEffect(() =>{
+        async function fetchFavorites(){
+            try {
+                const res = await fetch(`/api/user/${user.userName}/favorites`);
+                const data = await res.json();
+                setFavorites(data);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+        if (user != null)
+        fetchFavorites();
+    }, [user])
+    
+    
+
     const value = useMemo(
         () => ({
             user, login, logout
@@ -47,12 +67,12 @@ export default function Layout() {
 
     return (
         <AuthContext.Provider value={value}>
-    
+            <FavoriteContext.Provider value={[favorites, setFavorites]} >
                 <MainNav/>
                 <div id="main-content">
                     <Outlet/>
                 </div>
-
+            </FavoriteContext.Provider>
         </AuthContext.Provider>
     )
 }
