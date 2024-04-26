@@ -63,10 +63,9 @@ export default function MainBanner() {
                 </div>
                 <div className="slide fade" ref={el => slideRef.current.push(el)}>
                     <img src="./wheel-wise-main-banner-3.jpg"/>
+                    <div className="text">
                         <h2>Biggest online car dealership</h2>
                         <h4>We guarantee that you sell your car!</h4>
-                    <div className="text">
-                        
                     </div>
                 </div>
                 <a className="prev" onClick={() => plusSlide(-1)}>&#10094;</a>

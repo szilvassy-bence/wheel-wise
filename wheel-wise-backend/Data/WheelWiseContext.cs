@@ -274,4 +274,8 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
             .HasMany(u => u.FavoriteAdvertisements)
             .WithMany();
     }
+    
+    
+    
+    
 }

@@ -1,10 +1,10 @@
 import "./PriceFormRange.css";
-import React, {useRef, useState, useEffect} from "react";
+import {useRef, useState, useEffect} from "react";
 
-export default function PriceFormRange({minPrice, maxPrice, setFormData}) {
+export default function PriceFormRange({adsMinPrice, adsMaxPrice, setFilterMinPrice, setFilterMaxPrice}) {
 
-    const [sliderThumbLeftValue, setSliderThumbLeftValue] = useState(minPrice);
-    const [sliderThumbRightValue, setSliderThumbRightValue] = useState(maxPrice);
+    const [sliderThumbLeftValue, setSliderThumbLeftValue] = useState(adsMinPrice);
+    const [sliderThumbRightValue, setSliderThumbRightValue] = useState(adsMaxPrice);
 
     var inputLeftRef = useRef(null);
     var inputRightRef = useRef(null);
@@ -19,8 +19,9 @@ export default function PriceFormRange({minPrice, maxPrice, setFormData}) {
         var percent = Math.min((((_this.value - min) / (max - min)) * 100), (inputRightRef.current.value - min) / (max - min) * 100 - 1);
         sliderThumbLeftRef.current.style.left = percent + "%";
         sliderRangeRef.current.style.left = percent + "%";
-        var value = Math.round((max - min) * (percent / 100) + min);
-        setSliderThumbLeftValue(value);
+        //var value = Math.round((max - min) * (percent / 100) + min);
+        setFilterMinPrice( _this.value);
+        setSliderThumbLeftValue(_this.value);
     }
 
     function setRightValue() {
@@ -28,11 +29,13 @@ export default function PriceFormRange({minPrice, maxPrice, setFormData}) {
             min = parseInt(_this.min),
             max = parseInt(_this.max);
 
+        // setting the circle and the range position
         var percent = Math.min((((max - _this.value) / (max - min) * 100)), (max - inputLeftRef.current.value) / (max - min) * 100 - 1);
         sliderThumbRightRef.current.style.right = percent + "%";
         sliderRangeRef.current.style.right = percent + "%";
-        var value = Math.round(max - (max - min) * (percent / 100));
-        setSliderThumbRightValue(value);
+        //var value = Math.round(max - (max - min) * (percent / 100));
+        setFilterMaxPrice(_this.value);
+        setSliderThumbRightValue(_this.value);
     }
 
     useEffect(() => {
@@ -71,13 +74,13 @@ export default function PriceFormRange({minPrice, maxPrice, setFormData}) {
     }, []);
 
     useEffect(() => {
-        setSliderThumbLeftValue(minPrice);
-        setSliderThumbRightValue(maxPrice);
+        setSliderThumbLeftValue(adsMinPrice);
+        setSliderThumbRightValue(adsMaxPrice);
         sliderThumbLeftRef.current.style.left = 0;
         sliderThumbRightRef.current.style.right = 0;
         sliderRangeRef.current.style.left = 0;
         sliderRangeRef.current.style.right = 0;
-    }, [minPrice, maxPrice]);
+    }, [adsMinPrice, adsMaxPrice]);
 
     return (
         <div id="price-range-div">
@@ -88,15 +91,15 @@ export default function PriceFormRange({minPrice, maxPrice, setFormData}) {
                 <input
                     type="range"
                     id="input-left"
-                    min={minPrice}
-                    max={maxPrice}
+                    min={adsMinPrice}
+                    max={adsMaxPrice}
                     value={sliderThumbLeftValue}
                     ref={inputLeftRef}/>
                 <input
                     type="range"
                     id="input-right"
-                    min={minPrice}
-                    max={maxPrice}
+                    min={adsMinPrice}
+                    max={adsMaxPrice}
                     value={sliderThumbRightValue}
                     ref={inputRightRef}/>
                 <div className="slider">

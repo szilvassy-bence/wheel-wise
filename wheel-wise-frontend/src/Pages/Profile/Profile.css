@@ -13,17 +13,17 @@
     gap: 20px;
 }
 
-#profile-menu{
+#profile-menu-tabs {
     flex:1;
 }
 
-#profile-menu ul{
+#profile-menu-tabs ul{
     padding: 0;
     border: 1px solid #dadada;
     border-radius: 5px;
 }
 
-#profile-menu li {
+#profile-menu-tabs li {
     list-style: none;
     padding: 15px;
     height: 100%;
@@ -33,28 +33,25 @@
     background-color: white;
     overflow:hidden;
     text-align: center;
+    cursor: pointer;
 }
 
-#profile-menu li:first-child {
+#profile-menu-tabs li:first-child {
     border-radius:  5px 5px 0 0;
 }
 
-#profile-menu li:last-child {
+#profile-menu-tabs li:last-child {
     border-width: 0;
     border-radius: 0 0 5px 5px;
 }
 
-#profile-menu .active {
+#profile-menu-tabs .active {
     background-color: #DD5746;
     color: white;
 }
 
-#profile-menu p{
+#profile-menu-tabs p{
     margin: 0;
-}
-
-#profile-menu li {
-    cursor: pointer;
 }
 
 
@@ -69,6 +66,7 @@
 
 .form-group {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 20px;
 }
@@ -104,4 +102,15 @@
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+}
+
+@media screen and (max-width: 500px){
+    #profile-content {
+        display: block;
+    }
+
+    #profile-menu-tabs {
+        display: block;
+        width: 90%
+    }
 }
