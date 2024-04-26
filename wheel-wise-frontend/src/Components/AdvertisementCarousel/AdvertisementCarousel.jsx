@@ -1,8 +1,7 @@
 import "./AdvertisementCarousel.css";
-import { useLoaderData } from "react-router-dom";
-import { useContext } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext, FavoriteContext } from "../../Pages/Layout/Layout";
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import CardAd from "../CardAd";
 
 export default function AdvertisementCarousel() {
@@ -10,6 +9,7 @@ export default function AdvertisementCarousel() {
     const { user } = useContext(AuthContext);
     const [favorites, setFavorites]= useContext(FavoriteContext);
     const [highlightedAds, setHighlightedAds] = useState(null);
+    const navigate = useNavigate();
 
   
     const fetchHighlighted = async () => {
@@ -114,7 +114,9 @@ export default function AdvertisementCarousel() {
                                     </ul>
                                 </div>
                                 <div className="carousel-card-footer">
-                                    <button className="card-btn card-detail-btn">Details</button>
+                                    <button className="card-btn card-detail-btn" onClick={(e) => {
+                                        navigate(`/ads/${ad.id}`);
+                                    }}>Details</button>
                                     <button className="card-btn card-favorite-btn">
                                         <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

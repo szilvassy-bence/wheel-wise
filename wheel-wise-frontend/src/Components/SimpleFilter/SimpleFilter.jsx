@@ -4,14 +4,24 @@ import * as service from "./service.js";
 import CarTypeFormSelect from "../CarTypeFormSelect";
 import PriceFormRange from "../PriceFormRange";
 
-export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
+export default function SimpleFilter({setAllAdData, adsMinPrice, adsMaxPrice}) {
     const [carTypes, setCarTypes] = useState(null);
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [carTypeModels, setCarTypeModels] = useState(null);
 
+    const [filterMinPrice, setFilterMinPrice] = useState(adsMinPrice);
+    const [filterMaxPrice, setFilterMaxPrice] = useState(adsMaxPrice);
     const [formData, setFormData] = useState({
-        brand: "", model: "", minPrice: 0, maxPrice: 0, fromYear: 0, tillYear: 0
+        brand: "", model: "", minPrice: adsMinPrice, maxPrice: adsMaxPrice, fromYear: 0, tillYear: 0
     })
+
+    useEffect(()=> {
+        setFormData({...formData, minPrice: filterMinPrice})
+    }, [filterMinPrice]);
+
+    useEffect(()=> {
+        setFormData({...formData, maxPrice: filterMaxPrice})
+    }, [filterMaxPrice]);
 
     const fetchCarTypeData = async () => {
         try {
@@ -51,16 +61,6 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
     function selectModel(e) {
         console.log(e.target.value);
         setFormData({...formData, model: e.target.value})
-    }
-
-    function setMinPrice(e) {
-        console.log(e.target.value);
-        setFormData({...formData, minPrice: e.target.value})
-    }
-
-    function setMaxPrice(e) {
-        console.log(e.target.value);
-        setFormData({...formData, maxPrice: e.target.value})
     }
 
     function setFromYear(e) {
@@ -108,6 +108,10 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
         }
     }
 
+    useEffect(() => {
+        console.log(formData);
+    }, [formData])
+
     //Maximum year shouldnt be smaller than minimum
     return (
         <div id="simple-filter-wrapper">
@@ -142,9 +146,9 @@ export default function SimpleFilter({setAllAdData, minPrice, maxPrice}) {
                                             <option key={year} value={year}>{year}</option>))}
                                     </select>
                                 </label>
-                                <PriceFormRange minPrice={minPrice} maxPrice={maxPrice} setFormData={setFormData}/>
+                                <PriceFormRange adsMinPrice={adsMinPrice} adsMaxPrice={adsMaxPrice} setFilterMinPrice={setFilterMinPrice} setFilterMaxPrice={setFilterMaxPrice}/>
                             </div>
-                            <button className="form-submit-btn" type="submit" set>
+                            <button className="form-submit-btn" type="submit">
                                 Submit
                             </button>
                         </form>) :

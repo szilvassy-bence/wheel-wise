@@ -3,6 +3,7 @@ using wheel_wise.Service.Repository;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.ActionFilters;
 using wheel_wise.Contracts;
+using wheel_wise.Model.Filters;
 using wheel_wise.Service.Repository.AdvertisementRepo;
 using wheel_wise.Service.Repository.CarRepo;
 using wheel_wise.Service.Repository.CarTypeRepo;
@@ -137,6 +138,13 @@ public class AdsController : ControllerBase
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    [HttpPost("SimpleForm")]
+    public async Task<ActionResult<IEnumerable<Advertisement>>> GetBySimpleFilter(SimpleFilter simpleFilter)
+    {
+        Console.WriteLine(simpleFilter);
+        return Ok(await _advertisementRepository.GetBySimpleFilter(simpleFilter));
     }
 
     [WarningFilter("Info")]

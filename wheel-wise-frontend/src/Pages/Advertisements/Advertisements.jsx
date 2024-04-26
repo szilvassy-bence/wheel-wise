@@ -11,8 +11,8 @@ export default function Advertisements(){
     console.log(ads);
 
     const [allAdData, setAllAdData] = useState(ads);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(0);
+    const [adsMinPrice, setAdsMinPrice] = useState(0);
+    const [adsMaxPrice, setAdsMaxPrice] = useState(0);
     const navigate = useNavigate();
     
     // set the min and max prices of the current listing
@@ -24,8 +24,8 @@ export default function Advertisements(){
                 if (minPrice == maxPrice){
                     maxPrice++;
                 }
-                setMinPrice(minPrice);
-                setMaxPrice(maxPrice);
+                setAdsMinPrice(minPrice);
+                setAdsMaxPrice(maxPrice);
             };
             fetchData();
         }
@@ -42,8 +42,8 @@ export default function Advertisements(){
         <>
             <SimpleFilter
                 setAllAdData={setAllAdData}
-                minPrice={minPrice}
-                maxPrice={maxPrice}
+                adsMinPrice={adsMinPrice}
+                adsMaxPrice={adsMaxPrice}
             />
             <AdvertisementList allAdData={allAdData} handleClick={handleClick} title={"Advertisement"}/>
         </>

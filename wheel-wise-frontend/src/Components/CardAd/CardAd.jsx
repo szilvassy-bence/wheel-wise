@@ -5,9 +5,9 @@ function CardAd({ad, handleClick}) {
     return (
         <>
             <div id={ad.id} className={ad.highlighted ? "highlighted ad-card" : "ad-card"}>
-                {ad.highlighted && <img className="highlighted-img" variant="top" src="./highlighted-3.png"/>}
+                {ad.highlighted && <img className="highlighted-img" src="./../../public/highlighted-3.png"/>}
                 <div className="card-img-wrapper">
-                    <img className="card-img" variant="top" src="./car.jpg"/>
+                    <img className="card-img"  src="./../../public/car.jpg"/>
                 </div>
                 <div className="card-content-wrapper">
                     <h3>{ad.title}</h3>

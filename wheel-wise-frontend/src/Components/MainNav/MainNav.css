@@ -71,9 +71,9 @@ header .menu {
     position: absolute;
     right: 0;
     top: 50px;
-    background-color: aliceblue;
+    background-color: #FFC470;
     border-radius: 10px;
-    border: 1px solid #4793AF;
+    border: 1px solid #DD5746;
     padding: 20px;
     border-bottom-width: 2px;
 }
@@ -110,7 +110,7 @@ header .menu {
 }
 
 #submit-btn{
-    background-color: darkslategrey;
+    background-color: #4793AF;
     color: aliceblue;
     padding: 5px;
     border-radius: 5px;
