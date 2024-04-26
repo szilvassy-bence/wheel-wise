@@ -50,7 +50,7 @@ public class UserController : ControllerBase
         return Ok(await _userRepository.GetAdsByUserName(userName));
     }
 
-    [HttpPatch("/addfavoritead/{userName}/{adId}")]
+    [HttpPatch("addfavoritead/{userName}/{adId}")]
     public async Task<IActionResult> AddFavAd(string userName, int adId)
     {
         try
