@@ -58,12 +58,68 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
             new CarType { Id = 19, Brand = "Fiat", Model = "500" },
             new CarType { Id = 20, Brand = "Skoda", Model = "Octavia" });
         modelBuilder.Entity<Equipment>().HasData(equipment1, equipment2);
+        modelBuilder.Entity<Equipment>().HasData(
+    new Equipment { Id = 3, Type = "Technical", Name = "GPS Navigation" },
+    new Equipment { Id = 4, Type = "Comfort", Name = "Heated Steering Wheel" },
+    new Equipment { Id = 5, Type = "Technical", Name = "Bluetooth Connectivity" },
+    new Equipment { Id = 6, Type = "Safety", Name = "ABS (Anti-lock Braking System)" },
+    new Equipment { Id = 7, Type = "Comfort", Name = "Sunroof" },
+    new Equipment { Id = 8, Type = "Technical", Name = "LED Headlights" },
+    new Equipment { Id = 9, Type = "Safety", Name = "Airbags" },
+    new Equipment { Id = 10, Type = "Comfort", Name = "Leather Seats" },
+    new Equipment { Id = 11, Type = "Technical", Name = "Keyless Entry" },
+    new Equipment { Id = 12, Type = "Safety", Name = "Lane Departure Warning" },
+    new Equipment { Id = 13, Type = "Comfort", Name = "Automatic Climate Control" },
+    new Equipment { Id = 14, Type = "Technical", Name = "Rearview Camera" },
+    new Equipment { Id = 15, Type = "Safety", Name = "Traction Control" },
+    new Equipment { Id = 16, Type = "Comfort", Name = "Cruise Control" },
+    new Equipment { Id = 17, Type = "Technical", Name = "Wireless Charging" },
+    new Equipment { Id = 18, Type = "Safety", Name = "Parking Sensors" },
+    new Equipment { Id = 19, Type = "Comfort", Name = "Electric Seats" },
+    new Equipment { Id = 20, Type = "Technical", Name = "Rain-Sensing Wipers" },
+    new Equipment { Id = 21, Type = "Safety", Name = "Blind Spot Monitoring" },
+    new Equipment { Id = 22, Type = "Comfort", Name = "Memory Seats" },
+    new Equipment { Id = 23, Type = "Technical", Name = "Voice Control" },
+    new Equipment { Id = 24, Type = "Safety", Name = "Adaptive Cruise Control" },
+    new Equipment { Id = 25, Type = "Comfort", Name = "Panoramic Sunroof" },
+    new Equipment { Id = 26, Type = "Technical", Name = "Auto-Dimming Rearview Mirror" },
+    new Equipment { Id = 27, Type = "Safety", Name = "Emergency Braking" },
+    new Equipment { Id = 28, Type = "Comfort", Name = "Ventilated Seats" },
+    new Equipment { Id = 29, Type = "Technical", Name = "Wi-Fi Hotspot" },
+    new Equipment { Id = 30, Type = "Safety", Name = "Forward Collision Warning" }
+              );
         modelBuilder.Entity<Color>()
-            .HasData(new Color { Id = 1, Name = "White" }, new Color { Id = 2, Name = "Black" });
-        modelBuilder.Entity<FuelType>().HasData(new FuelType { Id = 1, Name = "Diesel" },
-            new FuelType { Id = 2, Name = "Petrol" });
-        modelBuilder.Entity<Transmission>().HasData(new Transmission { Id = 1, Name = "Manual" },
-            new FuelType { Id = 2, Name = "Automatic" });
+            .HasData(
+                new Color { Id = 1, Name = "White" }, 
+                new Color { Id = 2, Name = "Black" },
+                new Color { Id = 3, Name = "Red" },
+                new Color { Id = 4, Name = "Blue" },
+                new Color { Id = 5, Name = "Green" },
+                new Color { Id = 6, Name = "Yellow" },
+                new Color { Id = 7, Name = "Purple" },
+                new Color { Id = 8, Name = "Orange" },
+                new Color { Id = 9, Name = "Gray" },
+                new Color { Id = 10, Name = "Brown" }
+                );
+        modelBuilder.Entity<FuelType>().HasData(
+            new FuelType { Id = 1, Name = "Diesel" },
+            new FuelType { Id = 2, Name = "Petrol" },
+            new FuelType { Id = 3, Name = "Electric" },
+            new FuelType { Id = 4, Name = "Hybrid" },
+            new FuelType { Id = 5, Name = "LPG" },
+            new FuelType { Id = 6, Name = "CNG" },
+            new FuelType { Id = 7, Name = "Ethanol" }
+            );
+        modelBuilder.Entity<Transmission>().HasData(
+            new Transmission { Id = 1, Name = "Manual" },
+            new FuelType { Id = 2, Name = "Automatic" },
+            new Transmission { Id = 3, Name = "CVT (Continuously Variable Transmission)" },
+            new Transmission { Id = 4, Name = "DSG (Direct-Shift Gearbox)" },
+            new Transmission { Id = 5, Name = "Semi-Automatic" },
+            new Transmission { Id = 6, Name = "Tiptronic" },
+            new Transmission { Id = 7, Name = "AMT (Automated Manual Transmission)" },
+            new Transmission { Id = 8, Name = "Dual-Clutch Transmission" }
+            );
         modelBuilder.Entity<Car>().HasData(new Car
             {
                 Id = 1, ColorId = 1, Year = 2010, Price = 20000m, Mileage = 15000, Power = 100,
