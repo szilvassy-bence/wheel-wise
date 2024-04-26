@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"; 
+import { useEffect, useState, useContext } from "react"; 
 import { useParams, useNavigate } from "react-router-dom";
+import { AuthContext, FavoriteContext } from "../Layout/Layout";
 import "./CreateAd.css"
 import Modal from "./AdSuccessfulModal/AdModal";
 
@@ -8,19 +9,25 @@ export default function CreateAd(){
     const params = useParams();
     const navigate = useNavigate();
 
+    //const { user } = useContext(AuthContext);
+    const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
+
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [carTypeModels, setCarTypeModels] = useState(null);
     const[carProperties, setCarProperties] = useState({});
     const[user, setUser] = useState({});
 
     const [formData, setFormData] = useState({
-        brand: "", model: "", color:"", fuelType:"", transmission:"", status:"New", year: 0, price: 0, mileage: 0, power: 0
+        brand: "", model: "", color:"", fuelType:"", transmission:"", status:"New", year: 2024, price: 0, mileage: 0, power: 0
     })
 
     const [checkedItems, setCheckedItems] = useState({});
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    console.log(userAds)
+    
+    console.log(favorites)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -53,6 +60,7 @@ export default function CreateAd(){
                     ...formData, color: colorData[0].name, fuelType: fuelTypeData[0].name, transmission: transmissionTypeData[0].name
                 })
                 setUser(userData);
+
 
             } catch (error) {
                 console.error("Error fetching data", error);
@@ -149,6 +157,8 @@ export default function CreateAd(){
         if (response.ok) {
             const data = await response.json();
             console.log(data);
+            console.log(userAds)
+            setUserAds([...userAds, data]);
             setIsModalOpen(true);
         } else { 
             console.error("Problem fetching data from server")

@@ -135,8 +135,8 @@ public class AdsController : ControllerBase
                 UserId = user.Id
             };
 
-            await _advertisementRepository.Add(advertisement);
-            return CreatedAtAction(nameof(GetAll), new { id = advertisement.Id }, ad);
+             await _advertisementRepository.Add(advertisement);
+            return CreatedAtAction(nameof(GetAll), new { id = advertisement.Id }, advertisement);
 
         }
         catch (Exception e)
