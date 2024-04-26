@@ -107,6 +107,7 @@ export default function MainNav() {
 
                                             <button id="submit-btn" type="submit">Login</button>
                                         </form>
+                                        <Link to="/register" >Register</Link>
                                         { headerIsLoginSuccessful === false && (
                                             <div>
                                                 <p>Login is not successful, try again!</p>

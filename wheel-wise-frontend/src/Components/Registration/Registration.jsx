@@ -1,11 +1,11 @@
 import {Form} from "react-router-dom";
-import "./Register.css";
+import "./Registration.css";
 
 export default function Register(){
     return (
-        <div id="register">
+        <div id="registration-wrapper">
             <h1>Register</h1>
-            <Form method="post">
+            <Form method="post" id="registration-form">
                 <label>
                     <span>User name</span>
                     <input type="text" name="username" placeholder="User name"/>
