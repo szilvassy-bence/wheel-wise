@@ -1,13 +1,13 @@
 import CardAd from '../../Components/CardAd';
 import "./AdvertisementList.css";
 
-export default function AdvertisementList({allAdData, handleClick, title}) {
+export default function AdvertisementList({allAdData, title, favorites, setFavorites, user}) {
     return (
             <div id="ad-list-wrapper">
                 <h2>{title}</h2>
                 <div id="ad-list-content">
                     {allAdData.map((ad) => (
-                        <CardAd ad={ad} handleClick={handleClick}></CardAd>
+                        <CardAd ad={ad} favorites={favorites} setFavorites={setFavorites} user={user} ></CardAd>
                         ))}
                 </div>
             </div>

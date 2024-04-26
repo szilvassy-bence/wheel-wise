@@ -31,12 +31,6 @@ export default function Advertisements(){
         }
     }, [allAdData]);
 
-    function handleClick(e) {
-        console.log(e.target);
-        const id = e.target.id;
-        console.log(`ad id: ${id}`);
-        navigate(`/advertisement/${id}`);
-    }
     
     return (
         <>
@@ -45,7 +39,7 @@ export default function Advertisements(){
                 adsMinPrice={adsMinPrice}
                 adsMaxPrice={adsMaxPrice}
             />
-            <AdvertisementList allAdData={allAdData} handleClick={handleClick} title={"Advertisement"}/>
+            <AdvertisementList allAdData={allAdData} title={"Advertisement"}/>
         </>
     )
 }
