@@ -40,7 +40,7 @@ export default function AdvertisementCarousel() {
                 <div className="carousel-container">
                     {highlightedAds && (
                         highlightedAds.map(ad => (
-                            <CardAd ad={ad} favorites={favorites} setFavorites={setFavorites} user={user}></CardAd>
+                            <CardAd ad={ad} favorites={favorites} setFavorites={setFavorites} user={user} ></CardAd>
                         ))
                     )}
                 </div>

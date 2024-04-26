@@ -2,11 +2,14 @@ import "./Advertisements.css";
 import SimpleFilter from "../../Components/SimpleFilter";
 import AdvertisementList from "../../Components/AdvertisementList";
 import {useLoaderData, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
+import { AuthContext, FavoriteContext } from "../Layout/Layout.jsx";
 import * as service from "./service.js";
 
 export default function Advertisements(){
-    
+
+    const { user } = useContext(AuthContext);
+    const [favorites, setFavorites] = useContext(FavoriteContext);
     const ads = useLoaderData();
     console.log(ads);
 
@@ -39,7 +42,7 @@ export default function Advertisements(){
                 adsMinPrice={adsMinPrice}
                 adsMaxPrice={adsMaxPrice}
             />
-            <AdvertisementList allAdData={allAdData} title={"Advertisement"}/>
+            <AdvertisementList allAdData={allAdData} favorites={favorites} setFavorites={setFavorites} user={user} title={"Advertisement"}/>
         </>
     )
 }

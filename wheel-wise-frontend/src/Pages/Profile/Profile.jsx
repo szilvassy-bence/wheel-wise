@@ -155,7 +155,7 @@ export default function Profile() {
                             ) : (
                                 <div className="profile-ads-wrapper">
                                 {favorites.map(ad => (
-                                    <CardAd key={ad.id} ad={ad} handleClick={(e) => console.log(e.target)} />
+                                    <CardAd key={ad.id} ad={ad} favorites={favorites} setFavorites={setFavorites} user={user}/>
                                 ))}
                                 </div>
                             )}
