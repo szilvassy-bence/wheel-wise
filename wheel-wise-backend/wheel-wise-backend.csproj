@@ -32,4 +32,11 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Migrations\20240425091043_AddedPropsToCar.Designer.cs" />
+      <Compile Remove="Migrations\20240425075021_test3.cs" />
+      <Compile Remove="Migrations\20240425075021_test3.Designer.cs" />
+      <Compile Remove="Migrations\20240425091043_AddedPropsToCar.cs" />
+    </ItemGroup>
+
 </Project>
