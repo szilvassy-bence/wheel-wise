@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.CarTypeRepo;
@@ -54,7 +55,7 @@ public class CarTypeController: ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost, Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddCarType(CarType carType)
     {
         try
@@ -74,7 +75,7 @@ public class CarTypeController: ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteCarType(int id)
     {
         try

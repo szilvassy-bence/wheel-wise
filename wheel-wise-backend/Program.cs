@@ -158,3 +158,5 @@ void LoadEnvironmentVariables()
     DotEnv.Load(dotenv);
     var config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 }
+
+public partial class Program{}

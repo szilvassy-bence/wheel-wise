@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.TransmissionRepo;
@@ -35,7 +36,7 @@ public class TransmissionController : ControllerBase
         return Ok(transmission);
     }
 
-    [HttpPost]
+    [HttpPost, Authorize(Roles = "Admin")]
     public async Task<IActionResult> Add(Transmission transmission)
     {
         _transmissionRepository.Add(transmission);
@@ -60,7 +61,7 @@ public class TransmissionController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var transmissionToDelete = await _transmissionRepository.GetById(id);

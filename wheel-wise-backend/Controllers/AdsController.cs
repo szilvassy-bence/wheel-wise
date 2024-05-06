@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +49,15 @@ public class AdsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Advertisement>>> GetAll()
     {
-        return Ok(await _advertisementRepository.GetAll());
+        try
+        {
+            return Ok(await _advertisementRepository.GetAll());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "Server error.");
+        }
     }
 
     [HttpGet("{id}")]
@@ -70,7 +79,7 @@ public class AdsController : ControllerBase
     }
 
     [WarningFilter("Info")]
-    [HttpPost]
+    [HttpPost, Authorize]
     public async Task<ActionResult<Advertisement>> PostAd(AdvertisementPostRequest ad)
     {
         Console.WriteLine("Request");
@@ -180,7 +189,7 @@ public class AdsController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}"), Authorize]
     public async Task<IActionResult> DeleteCarById(int id)
     {
         var adToDelete = await _advertisementRepository.GetById(id);

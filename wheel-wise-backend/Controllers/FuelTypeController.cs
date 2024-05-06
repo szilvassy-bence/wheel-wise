@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.FuelTypeRepo;
@@ -33,7 +34,7 @@ public class FuelTypeController : ControllerBase
         }
     }
     
-    [HttpPost]
+    [HttpPost, Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddFuelType(FuelType fuelType)
     {
         try
@@ -49,7 +50,7 @@ public class FuelTypeController : ControllerBase
         }
     }
     
-    [HttpDelete("{fuelTypeId}")]
+    [HttpDelete("{fuelTypeId}"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteFuelTypeById(string fuelTypeId)
     {
         try

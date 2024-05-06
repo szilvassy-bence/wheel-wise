@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
@@ -38,7 +39,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("{userName}/favorites")]
+    [HttpGet("{userName}/favorites"), Authorize]
     public async Task<ActionResult<IEnumerable<Advertisement?>>> GetFavoriteAdsByUserName(string userName)
     {
         return Ok(await _userRepository.GetFavoriteAdsByUserName(userName));
@@ -50,7 +51,7 @@ public class UserController : ControllerBase
         return Ok(await _userRepository.GetAdsByUserName(userName));
     }
 
-    [HttpPatch("addfavoritead/{userName}/{adId}")]
+    [HttpPatch("addfavoritead/{userName}/{adId}"), Authorize]
     public async Task<IActionResult> AddFavAd(string userName, int adId)
     {
         try
@@ -65,7 +66,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpDelete("removefavoritead/{userName}/{adId}")]
+    [HttpDelete("removefavoritead/{userName}/{adId}"), Authorize]
     public async Task<IActionResult> RemoveFavAd(string userName, int adId)
     {
         try
@@ -80,7 +81,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPatch("{id}/edit")]
+    [HttpPatch("{id}/edit"), Authorize]
     public async Task<IActionResult> UpdateUser(string id, [FromBody] UserData userData)
     {
         await _userRepository.UpdateUser(id, userData);

@@ -4,8 +4,9 @@ namespace wheel_wise.Model;
 
 public class User 
 {
-    public IdentityUser IdentityUser { get; set; }
     public int Id { get; init; }
+    
+    public IdentityUser IdentityUser { get; set; }
     public int ZipCode { get; set; }
     
     // one to many relationship

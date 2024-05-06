@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.EquipmentRepo;
@@ -33,7 +34,7 @@ public class EquipmentController : ControllerBase
         }
     }
     
-    [HttpPost]
+    [HttpPost, Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddEquipment(Equipment equipment)
     {
         try
@@ -49,7 +50,7 @@ public class EquipmentController : ControllerBase
         }
     }
     
-    [HttpDelete("{equipmentId}")]
+    [HttpDelete("{equipmentId}"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteEquipmentById(string equipmentId)
     {
         try

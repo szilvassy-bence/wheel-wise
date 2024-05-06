@@ -237,7 +237,7 @@ public class WheelWiseContext : IdentityDbContext<IdentityUser, IdentityRole, st
             },
             new Advertisement
             {
-                Id = 5, Title = "title", Description = "description", CreatedAt = DateTime.Now, Highlighted = false,
+                Id = 5, Title = "title", Description = "falevél", CreatedAt = DateTime.Now, Highlighted = false,
                 CarId = 5
             },
             new Advertisement

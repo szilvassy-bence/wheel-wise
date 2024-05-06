@@ -149,4 +149,6 @@ public class AdvertisementRepository : IAdvertisementRepository
 
         return new AndSpecification(specs);
     }
+    
+    public partial class Program{}
 }
