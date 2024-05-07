@@ -17,7 +17,8 @@ public class UserController : ControllerBase
     {
         _userRepository = userRepository;
     }
-
+    
+    [Authorize]
     [HttpGet("{name}")]
     public async Task<ActionResult<User>> GetByName(string name)
     {

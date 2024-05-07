@@ -43,11 +43,22 @@ export default function Layout() {
     }
 
 
+    function getRequestOptions(){
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}` 
+            }
+        };
+        return requestOptions;
+    }
+
 
     useEffect(() =>{
         async function fetchFavorites(){
             try {
-                const res = await fetch(`/api/user/${user.userName}/favorites`);
+                const res = await fetch(`/api/user/${user.userName}/favorites`, getRequestOptions());
                 const data = await res.json();
                 setFavorites(data);
             } catch(err) {
@@ -61,7 +72,7 @@ export default function Layout() {
     useEffect(() =>{
         async function fetchUserAds(){
             try {
-                const res = await fetch(`/api/user/${user.userName}/ads`);
+                const res = await fetch(`/api/user/${user.userName}/ads`, getRequestOptions());
                 const data = await res.json();
                 setUserAds(data);
             } catch(e) {
