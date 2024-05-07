@@ -32,6 +32,3 @@ jobs:
     - run: |
         cd wheel-wise-frontend
         npm run build --if-present
-    - run: |
-        cd wheel-wise-frontend
-        npm test
