@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,13 @@ public class UserController : ControllerBase
     {
         _userRepository = userRepository;
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<User>>> GetAll()
+    {
+        return Ok();
+    }
     
     [Authorize]
     [HttpGet("{name}")]
@@ -24,12 +32,21 @@ public class UserController : ControllerBase
     {
         try
         {
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var authenticatedUserRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            Console.WriteLine($"Authenticated name identifier: {authenticatedUserEmail}");
             var user = await _userRepository.GetByName(name);
             if (user == null)
             {
                 return NotFound("User with given name cannot be found.");
             }
-
+            if (authenticatedUserEmail != null)
+            {
+                if (authenticatedUserEmail != user.IdentityUser.Email && authenticatedUserRole != "Admin")
+                {
+                    return Forbid();
+                }    
+            }
 
             return Ok(user);
         }
