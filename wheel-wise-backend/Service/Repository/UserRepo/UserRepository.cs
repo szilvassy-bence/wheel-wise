@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wheel_wise.Data;
 using wheel_wise.Model;
@@ -16,10 +18,29 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
         _userManager = userManager;
     }
-    
+
+    public async Task<IEnumerable<User>> GetAll()
+    {
+        try
+        {
+            var users = await _dbContext.Users.Include(u => u.IdentityUser).ToListAsync();
+            return users;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     public async Task<User?> GetByName(string userName)
     {
         var iUser = await _userManager.FindByNameAsync(userName);
+        if (iUser is null)
+        {
+            throw (new NullReferenceException($"User with user name {userName} is not found."));
+        }
+
         var user = await _dbContext.Users
             .Include(x => x.Advertisements)
             .Include(x => x.FavoriteAdvertisements)
@@ -31,7 +52,9 @@ public class UserRepository : IUserRepository
     {
         var iUser = await _userManager.FindByNameAsync(userName);
         var user = await _dbContext.Users
-            .Include(u => u.FavoriteAdvertisements).ThenInclude(a => a.Car).ThenInclude(c => c.CarType)
+            .Include(u => u.FavoriteAdvertisements)
+            .ThenInclude(a => a.Car)
+            .ThenInclude(c => c.CarType)
             .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
 
         if (user.FavoriteAdvertisements == null)
@@ -41,15 +64,15 @@ public class UserRepository : IUserRepository
 
         return user.FavoriteAdvertisements;
     }
-    
+
     public async Task<IEnumerable<Advertisement?>> GetAdsByUserName(string userName)
     {
         var iUser = await _userManager.FindByNameAsync(userName);
         var user = await _dbContext.Users
             .Include(u => u.Advertisements).ThenInclude(a => a.Car).ThenInclude(c => c.CarType)
             .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
-
-        if (user.Advertisements == null)
+        
+        if (user != null && user.Advertisements == null)
         {
             return new List<Advertisement>();
         }
@@ -60,7 +83,7 @@ public class UserRepository : IUserRepository
     public async Task UpdateUser(string id, UserData userData)
     {
         var user = await _userManager.FindByIdAsync(id);
-        
+
         if (user == null)
         {
             return;
@@ -70,20 +93,23 @@ public class UserRepository : IUserRepository
         {
             var result = await _userManager.ChangeEmailAsync(user, userData.Email, userData.Token);
             //user.Email = userData.Email;
-            
+
             //await _dbContext.SaveChangesAsync();
         }
 
         // need a DTO
     }
-    
-    
 
     public async Task AddFavoriteAdvertisement(string userName, int adId)
     {
-
         var user = await GetByName(userName);
-        
+
+        // if the favorite advertisements is not yet initialized
+        if (user.FavoriteAdvertisements == null)
+        {
+            user.FavoriteAdvertisements = new List<Advertisement>();
+        }
+
         // if ad is already in user.FavoriteAdvertisements
         var currentAd = user.FavoriteAdvertisements.FirstOrDefault(x => x.Id == adId);
         if (currentAd != null)
@@ -92,17 +118,11 @@ public class UserRepository : IUserRepository
         }
 
         var ad = await _dbContext.Advertisements.FirstOrDefaultAsync(x => x.Id == adId);
-        
+
         // if there is no ad with that ad id
         if (ad == null)
         {
-            return;
-        }
-
-        // if the favorite advertisements is not yet initialized
-        if (user.FavoriteAdvertisements == null)
-        {
-            user.FavoriteAdvertisements = new List<Advertisement>();
+            throw new InvalidOperationException("The ad you are trying to add to another entity does not exist.");
         }
 
         user.FavoriteAdvertisements.Add(ad);
@@ -112,12 +132,13 @@ public class UserRepository : IUserRepository
     public async Task RemoveFavoriteAdvertisement(string userName, int adId)
     {
         var user = await GetByName(userName);
-        
+
         var currentAd = user.FavoriteAdvertisements.FirstOrDefault(x => x.Id == adId);
         if (currentAd == null)
         {
-            return;
+            throw (new InvalidOperationException("The ad you are trying to add to another entity does not exist."));
         }
+
         user.FavoriteAdvertisements.Remove(currentAd);
         await _dbContext.SaveChangesAsync();
     }
