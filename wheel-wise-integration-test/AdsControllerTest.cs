@@ -28,7 +28,7 @@ public class AdsControllerTest : IClassFixture<WheelWiseFactory>
     [Fact]
     public async Task GetAdById()
     {
-        var response = await _httpClient.GetAsync($"/api/Ads/5");
+        var response = await _httpClient.GetAsync($"/api/Ads/555");
         var resContent = await response.Content.ReadAsStringAsync();
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
