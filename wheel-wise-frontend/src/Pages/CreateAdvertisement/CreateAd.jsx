@@ -9,16 +9,15 @@ export default function CreateAd(){
     const params = useParams();
     const navigate = useNavigate();
 
-    //const { user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
 
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [carTypeModels, setCarTypeModels] = useState(null);
     const[carProperties, setCarProperties] = useState({});
-    const[user, setUser] = useState({});
 
     const [formData, setFormData] = useState({
-        brand: "", model: "", color:"", fuelType:"", transmission:"", status:"New", year: 2024, price: 0, mileage: 0, power: 0
+        brand: "", model: "", color:"", fuelType:"", transmission:"", status:"New", year: 2024, price: 0, mileage: 0, power: 0, title: "", description: ""
     })
 
     const [checkedItems, setCheckedItems] = useState({});
@@ -31,13 +30,12 @@ export default function CreateAd(){
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [carTypeResponse, colorResponse, fuelTypeResponse, transmissionTypeResponse, equipmentResponse, userResponse] = await Promise.all([
+                const [carTypeResponse, colorResponse, fuelTypeResponse, transmissionTypeResponse, equipmentResponse] = await Promise.all([
                     fetch("/api/CarType"),
                     fetch("/api/Color"),
                     fetch("/api/FuelType"),
                     fetch("/api/Transmission"),
                     fetch("/api/Equipment"),
-                    fetch(`/api/user/${params.name}`)
                 ]);
     
                 const carTypeData = await carTypeResponse.json();
@@ -45,8 +43,6 @@ export default function CreateAd(){
                 const fuelTypeData = await fuelTypeResponse.json();
                 const transmissionTypeData = await transmissionTypeResponse.json();
                 const equipmentData = await equipmentResponse.json();
-                const userData = await userResponse.json();
-                console.log(userData)
     
                 setCarProperties({
                     carTypes: carTypeData,
@@ -59,7 +55,6 @@ export default function CreateAd(){
                 setFormData({
                     ...formData, color: colorData[0].name, fuelType: fuelTypeData[0].name, transmission: transmissionTypeData[0].name
                 })
-                setUser(userData);
 
 
             } catch (error) {
@@ -145,13 +140,12 @@ export default function CreateAd(){
         //console.log(carProperties)
         let dataTosend = {...formData,
             Equipments: checkedItems,
-            UserName: user.identityUser.userName
+            UserName: user.userName
         }
         console.log(dataTosend)
 
-
         const response = await fetch("/api/Ads", {
-            method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(dataTosend)
+            method: "POST", headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${user.token}`}, body: JSON.stringify(dataTosend)
         });
 
         if (response.ok) {
@@ -177,6 +171,18 @@ export default function CreateAd(){
         {Object.keys(carProperties).length === 0 && <div>Loading</div>}
         {Object.keys(carProperties).length !== 0 &&
             <form className="CreateAdForm" onSubmit={onSubmit}>
+                 <fieldset><legend>Title</legend>
+                        <div>
+                            <label className="ad-label" htmlFor="title">Title</label>
+                            <input type="text"
+                                name="title"
+                                id="title"
+                                value={formData.title}
+                                onChange={e => setSetselects(e, "title")}
+                                placeholder="Short title">
+                                </input>
+                        </div>
+                    </fieldset>
                 <fieldset><legend>Required Properties</legend>
                     <div className="control-group">
                         <div className="control">
@@ -328,6 +334,19 @@ export default function CreateAd(){
                          ))}
                          </div>
                          </fieldset>
+
+                         <fieldset className="description-fieldset"><legend>Description</legend>
+                            <div >
+                                <label htmlFor="description"></label>
+                                <textarea
+                                    name="description"
+                                    id="description"
+                                    value={formData.description}
+                                    onChange={e => setSetselects(e, "description")}
+                                    placeholder="Add a description for your ad!">
+                                </textarea>
+                            </div>
+                        </fieldset>
                 </div>
 
                 <div className="buttons">

@@ -70,16 +70,38 @@ input[type="number"] {
     font-size: medium;
 }
 
-input[type="number"]:focus{
+input[type="number"]:focus, [type="text"]:focus, textarea:focus{
     border-color: #0056b3; /* Change border color on focus if needed */
     box-shadow: none; /* Remove box shadow on focus */
-    background-color: #cde3fa;
+    background-color: #e2eefc;
     color: black;
+}
+
+input[type="text"] {
+    width: 70%;
+    font-size: medium;
+}
+
+textarea {
+    width: 70%;
+    font-size:large;
 }
 
 .control select{
     width: 40%;
     font-size: medium;
+}
+
+.description-fieldset {
+    width: 100%; /* Set the width of the fieldset to 100% */
+    font-size: medium;
+    padding: 20px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: none;
 }
 
 
@@ -113,4 +135,9 @@ select:focus {
 
 .submit-button:hover {
     background-color: #0056b3;
+}
+
+fieldset {
+    margin-bottom: 20px;
+    padding: 20px;
 }
