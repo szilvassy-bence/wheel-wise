@@ -66,7 +66,7 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
             }
         } catch (error) {
             console.error('Failed to add or remove advertisement from favorites:', error);
-        }
+        }}
 
         async function removeAd(ad, user) {
             try {
@@ -93,7 +93,7 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
             e.preventDefault();
             try {
                 removeAd(user, ad);
-                setUserAds(userAds.filter(uAd => uAd.id !== ad.id));
+                setUser(userAds.filter(uAd => uAd.id !== ad.id));
             } catch (error) {
                 console.error('Failed to add or remove advertisement:', error);
             }
@@ -137,6 +137,6 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
                 </div>
             </>
         );
-    }
+    
 }
 export default CardAd

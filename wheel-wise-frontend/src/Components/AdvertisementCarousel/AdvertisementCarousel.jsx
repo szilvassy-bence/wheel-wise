@@ -8,7 +8,7 @@ import CardAd from "../CardAd";
 export default function AdvertisementCarousel() {
 
     const { user } = useContext(AuthContext);
-    const [favorites, setFavorites] = useContext(FavoriteContext);
+    const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
     const [highlightedAds, setHighlightedAds] = useState(null);
     const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export default function AdvertisementCarousel() {
                 <div className="carousel-container">
                     {highlightedAds && (
                         highlightedAds.map(ad => (
-                            <CardAd ad={ad} favorites={favorites} setFavorites={setFavorites} user={user} ></CardAd>
+                            <CardAd ad={ad} favorites={favorites} setFavorites={setFavorites} user={user} userAds={userAds} setUserAds={setUserAds}></CardAd>
                         ))
                     )}
                 </div>

@@ -9,7 +9,7 @@ import * as service from "./service.js";
 export default function Advertisements(){
 
     const { user } = useContext(AuthContext);
-    const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
+    const [favorites, setFavorites] = useContext(FavoriteContext);
     const ads = useLoaderData();
     console.log(ads);
 
@@ -42,7 +42,7 @@ export default function Advertisements(){
                 adsMinPrice={adsMinPrice}
                 adsMaxPrice={adsMaxPrice}
             />
-            <AdvertisementList allAdData={allAdData} favorites={favorites} setFavorites={setFavorites} user={user} userAds={userAds} setUserAds={setUserAds} title={"Advertisement"}/>
+            <AdvertisementList allAdData={allAdData} favorites={favorites} setFavorites={setFavorites} user={user}  title={"Advertisement"}/>
         </>
     )
 }
