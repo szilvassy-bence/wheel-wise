@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
@@ -39,6 +40,11 @@ public class FuelTypeController : ControllerBase
     {
         try
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+            
             _logger.LogInformation("Adding fuelType to repo.");
             await _fuelTypeRepository.Add(fuelType);
             return CreatedAtAction(nameof(GetAll), new { id = fuelType.Id }, fuelType);
@@ -55,6 +61,11 @@ public class FuelTypeController : ControllerBase
     {
         try
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+            
             _logger.LogInformation("Deleting Equipment with id {fuelTypeId}", fuelTypeId);
 
             if (Int32.TryParse(fuelTypeId, out int idInt))

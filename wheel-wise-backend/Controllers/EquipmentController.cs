@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
@@ -39,6 +40,10 @@ public class EquipmentController : ControllerBase
     {
         try
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
             _logger.LogInformation("Adding equipment to repo.");
             await _equipmentRepository.Add(equipment);
             return CreatedAtAction(nameof(GetAll), new { id = equipment.Id }, equipment);
@@ -55,6 +60,10 @@ public class EquipmentController : ControllerBase
     {
         try
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
             _logger.LogInformation("Deleting Equipment with id {equipmentId}", equipmentId);
 
             if (Int32.TryParse(equipmentId, out int idInt))

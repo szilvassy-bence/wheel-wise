@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
@@ -39,38 +40,72 @@ public class TransmissionController : ControllerBase
     [HttpPost, Authorize(Roles = "Admin")]
     public async Task<IActionResult> Add(Transmission transmission)
     {
-        _transmissionRepository.Add(transmission);
-        return CreatedAtAction(nameof(GetAll), new { id = transmission.Id }, transmission);
+        try
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+            
+            _transmissionRepository.Add(transmission);
+            return CreatedAtAction(nameof(GetAll), new { id = transmission.Id }, transmission);
+        }
+        catch(Exception e)
+        {
+            _logger.LogError(e, "Error adding transmission.");
+            return StatusCode(500);
+        }
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, Transmission transmission)
     {
-        if (id != transmission.Id)
+        try
         {
-            return BadRequest();
-        }
+            if (id != transmission.Id)
+            {
+                return BadRequest();
+            }
 
-        var transmissionToUpdate = await _transmissionRepository.GetById(id);
-        if (transmissionToUpdate is null)
-        {
-            return NotFound();
+            var transmissionToUpdate = await _transmissionRepository.GetById(id);
+            if (transmissionToUpdate is null)
+            {
+                return NotFound();
+            }
+
+            await _transmissionRepository.Update(transmission);
+            return NoContent();
         }
-        
-        await _transmissionRepository.Update(transmission);
-        return NoContent();
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error changing transmission.");
+            return StatusCode(500);
+        }
     }
 
     [HttpDelete("{id}"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
-        var transmissionToDelete = await _transmissionRepository.GetById(id);
-        if (transmissionToDelete is null)
+        try
         {
-            return NotFound();
-        }
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+            
+            var transmissionToDelete = await _transmissionRepository.GetById(id);
+            if (transmissionToDelete is null)
+            {
+                return NotFound();
+            }
 
-        await _transmissionRepository.Delete(transmissionToDelete);
-        return NoContent();
+            await _transmissionRepository.Delete(transmissionToDelete);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error deleting transmission.");
+            return StatusCode(500);
+        }
     }
 }

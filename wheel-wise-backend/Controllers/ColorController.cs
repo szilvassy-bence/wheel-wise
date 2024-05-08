@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
@@ -58,12 +59,11 @@ public class ColorController : ControllerBase
     {
         try
         {
-            _colorRepository.Add(color);
-            bool colorAdded = await _colorRepository.GetByName(color.Name) != null;
-            if (!colorAdded)
+            if (!User.IsInRole("Admin"))
             {
-                throw new NullReferenceException("Color wasn't added!");
+                return Forbid();
             }
+            _colorRepository.Add(color);
 
             return CreatedAtAction(nameof(GetAll), new { id = color.Id }, color);
         }
@@ -78,7 +78,12 @@ public class ColorController : ControllerBase
     public async Task<IActionResult> DeleteColor(int id)
     {
         try
-        {
+        { 
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+            
             var color = await _colorRepository.GeById(id);
             if (color == null)
             {

@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.CarTypeRepo;
+using wheel_wise.Service.Repository.UserRepo;
 
 namespace wheel_wise.Controllers;
 
@@ -11,11 +13,13 @@ public class CarTypeController: ControllerBase
 {
     private ILogger<CarTypeController> _logger;
     private ICarTypeRepository _carTypeRepository;
+    private IUserRepository _userRepository;
 
-    public CarTypeController(ILogger<CarTypeController> logger, ICarTypeRepository carTypeRepository)
+    public CarTypeController(ILogger<CarTypeController> logger, ICarTypeRepository carTypeRepository, IUserRepository userRepository)
     {
         _logger = logger;
         _carTypeRepository = carTypeRepository;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
@@ -60,12 +64,13 @@ public class CarTypeController: ControllerBase
     {
         try
         {
-            _carTypeRepository.Add(carType);
-            /*bool carTypeAdded = await _carTypeRepository.GetByCarModel(carType.Brand, carType.Model) != null;
-            if (!carTypeAdded)
+            if (!User.IsInRole("Admin"))
             {
-                throw new NullReferenceException("Car type wasn't added!");
-            }*/
+                return Forbid();
+            }
+
+            await _carTypeRepository.Add(carType);
+            
             return CreatedAtAction(nameof(GetAll), new { id = carType.Id }, carType);
         }
         catch (Exception e)
@@ -80,13 +85,18 @@ public class CarTypeController: ControllerBase
     {
         try
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+            
             var carType = await _carTypeRepository.GeById(id);
             if (carType == null)
             {
                 return NotFound("Can't find the car type to delete");
             }
 
-            _carTypeRepository.Delete(carType);
+            await _carTypeRepository.Delete(carType);
             return NoContent();
 
         }
