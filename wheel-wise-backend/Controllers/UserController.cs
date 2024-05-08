@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     }
     
     [Authorize]
-    [HttpGet("{name}")]
+    [HttpGet("{userName}")]
     public async Task<ActionResult<User>> GetByName(string userName)
     {
         try

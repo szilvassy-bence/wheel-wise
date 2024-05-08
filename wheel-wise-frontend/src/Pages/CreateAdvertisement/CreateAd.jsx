@@ -162,7 +162,9 @@ export default function CreateAd(){
       const closeModal = () => {
         setIsModalOpen(false);
         console.log(params)
-        navigate(`/users/${user.identityUser.userName}`)
+        console.log(user)
+        console.log(user.userName)
+        navigate(`/users/${user.userName}`)
     };
     
 

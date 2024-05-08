@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository;
@@ -82,21 +83,21 @@ public class AdsController : ControllerBase
     [HttpPost, Authorize]
     public async Task<ActionResult<Advertisement>> PostAd(AdvertisementPostRequest ad)
     {
-        Console.WriteLine("Request");
-        Console.WriteLine($"Year: {ad.Year}");
-        Console.WriteLine($"Price: {ad.Price}");
-        Console.WriteLine($"Mileage: {ad.Mileage}");
-        Console.WriteLine($"Power: {ad.Power}");
-        Console.WriteLine($"User {ad.UserName}");
         
         try
         {
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _userRepository.GetByName(ad.UserName);
+            if (user is not null && authenticatedUserEmail != user.IdentityUser.Email)
+            {
+                return BadRequest();
+            }
+            
             var carModel = await _carTypeRepository.GetByCarModel(ad.Brand, ad.Model);
             var color = await _colorRepository.GetByName(ad.Color);
             var fuel = await _fuelTypeRepository.GetByName(ad.FuelType);
             var transmission = await _transmissionRepository.GetByName(ad.Transmission);
-            var user = await _userRepository.GetByName(ad.UserName);
-
+            
             ICollection<Equipment> equipments = new List<Equipment>();
             foreach (var ads in ad.Equipments)
             {
@@ -114,11 +115,7 @@ public class AdsController : ControllerBase
             if (color == null || carModel == null || fuel == null || transmission == null || user == null ||
                 !Enum.TryParse(ad.Status, out Status status)) return BadRequest();
             
-            Console.WriteLine(color.Id);
-            Console.WriteLine(carModel.Id);
-            Console.WriteLine(fuel.Id);
-            Console.WriteLine(status);
-                
+               
             Car newCar = new Car
             {
                 CarTypeId = carModel.Id,

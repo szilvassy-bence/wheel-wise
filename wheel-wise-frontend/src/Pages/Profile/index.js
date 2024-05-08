@@ -17,7 +17,7 @@ export async function loader(name){
         const requestOptions = {
             method: 'GET',
             headers: {
-                //'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` 
             }
         };
