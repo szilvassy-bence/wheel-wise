@@ -45,6 +45,9 @@ public class UserRepository : IUserRepository
             .Include(x => x.Advertisements)
             .Include(x => x.FavoriteAdvertisements)
             .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
+
+        var emptiedUser = new User { IdentityUser = null, UserName = user.UserName };
+            
         return user;
     }
 
@@ -68,16 +71,26 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<Advertisement?>> GetAdsByUserName(string userName)
     {
         var iUser = await _userManager.FindByNameAsync(userName);
-        var user = await _dbContext.Users
-            .Include(u => u.Advertisements).ThenInclude(a => a.Car).ThenInclude(c => c.CarType)
-            .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
-        
-        if (user != null && user.Advertisements == null)
+        if (iUser is null)
         {
-            return new List<Advertisement>();
+            throw (new NullReferenceException($"User with user name {userName} is not found."));
+        }
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
+        
+        if (user is null)
+        {
+            throw (new NullReferenceException($"User with user name {userName} is not found."));
         }
 
-        return user.Advertisements;
+        var emptyUser = await _dbContext.Users.Include(u => u.Advertisements)
+            .ThenInclude(c => c.Car)
+            .ThenInclude(c => c.CarType).FirstOrDefaultAsync(x => x.UserName == userName);
+
+        //var adList = user.Advertisements.ToList();
+
+        //adList.ForEach(x => x.User.IdentityUser = null);
+
+        return emptyUser.Advertisements;
     }
 
     public async Task UpdateUser(string id, UserData userData)

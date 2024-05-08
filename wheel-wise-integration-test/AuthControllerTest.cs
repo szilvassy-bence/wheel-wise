@@ -52,7 +52,7 @@ public class AuthControllerTest
     public async Task RegisterReturnsSuccessStatusCode()
     {
         // Arrange
-        var regRequest = new RegistrationRequest("t@t", "t", "1233445");
+        var regRequest = new RegistrationRequest("t@t", "t", "1233445", 2000);
         var json = JsonSerializer.Serialize(regRequest);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
