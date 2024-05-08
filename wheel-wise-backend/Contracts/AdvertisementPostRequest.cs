@@ -12,8 +12,8 @@ public class AdvertisementPostRequest
     public decimal Price { get; set; }
     public int Mileage { get; set; }
     public int Power { get; set; }
-
     public string UserName { get; set; }
-
+    public string Title { get; set; }
+    public string Description { get; set; }
     public Dictionary<int, bool> Equipments { get; set; }
 }

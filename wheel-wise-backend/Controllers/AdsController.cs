@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository;
@@ -82,21 +83,21 @@ public class AdsController : ControllerBase
     [HttpPost, Authorize]
     public async Task<ActionResult<Advertisement>> PostAd(AdvertisementPostRequest ad)
     {
-        Console.WriteLine("Request");
-        Console.WriteLine($"Year: {ad.Year}");
-        Console.WriteLine($"Price: {ad.Price}");
-        Console.WriteLine($"Mileage: {ad.Mileage}");
-        Console.WriteLine($"Power: {ad.Power}");
-        Console.WriteLine($"User {ad.UserName}");
         
         try
         {
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _userRepository.GetByName(ad.UserName);
+            if (user is not null && authenticatedUserEmail != user.IdentityUser.Email)
+            {
+                return BadRequest();
+            }
+            
             var carModel = await _carTypeRepository.GetByCarModel(ad.Brand, ad.Model);
             var color = await _colorRepository.GetByName(ad.Color);
             var fuel = await _fuelTypeRepository.GetByName(ad.FuelType);
             var transmission = await _transmissionRepository.GetByName(ad.Transmission);
-            var user = await _userRepository.GetByName(ad.UserName);
-
+            
             ICollection<Equipment> equipments = new List<Equipment>();
             foreach (var ads in ad.Equipments)
             {
@@ -114,11 +115,7 @@ public class AdsController : ControllerBase
             if (color == null || carModel == null || fuel == null || transmission == null || user == null ||
                 !Enum.TryParse(ad.Status, out Status status)) return BadRequest();
             
-            Console.WriteLine(color.Id);
-            Console.WriteLine(carModel.Id);
-            Console.WriteLine(fuel.Id);
-            Console.WriteLine(status);
-                
+               
             Car newCar = new Car
             {
                 CarTypeId = carModel.Id,
@@ -137,8 +134,8 @@ public class AdsController : ControllerBase
             Advertisement advertisement = new Advertisement
             {
                 CarId = newCar.Id,
-                Title = "Random title",
-                Description = "Desc",
+                Title = ad.Title,
+                Description = ad.Description,
                 CreatedAt = DateTime.Now,
                 Highlighted = false,
                 UserId = user.Id
@@ -164,13 +161,8 @@ public class AdsController : ControllerBase
 
     [WarningFilter("Info")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAdById(int id, Advertisement ad)
+    public async Task<IActionResult> PutAdById(int id, AdvertisementPostRequest ad)
     {
-        if (id != ad.Id)
-        {
-            return BadRequest();
-        }
-
         try
         {
             var adToUpdate = await _advertisementRepository.GetById(id);
@@ -179,7 +171,49 @@ public class AdsController : ControllerBase
                 return NotFound();
             }
             
-            await _advertisementRepository.UpdateById(id, ad);
+            var carModel = await _carTypeRepository.GetByCarModel(ad.Brand, ad.Model);
+            var color = await _colorRepository.GetByName(ad.Color);
+            var fuel = await _fuelTypeRepository.GetByName(ad.FuelType);
+            var transmission = await _transmissionRepository.GetByName(ad.Transmission);
+            var user = await _userRepository.GetByName(ad.UserName);
+
+            ICollection<Equipment> equipments = new List<Equipment>();
+            foreach (var ads in ad.Equipments)
+            {
+                Console.WriteLine($"{ads.Key} - {ads.Value}");
+                if (ads.Value == true)
+                {
+                    var equipment = await _equipmentRepository.GetById(ads.Key);
+                    if (equipment != null)
+                    {
+                        equipments.Add(equipment);
+                    }
+                }
+            }
+
+            if (color == null || carModel == null || fuel == null || transmission == null || user == null ||
+                !Enum.TryParse(ad.Status, out Status status)) return BadRequest();
+
+            var car = await _carRepository.GetById(adToUpdate.CarId);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            car.FuelType = fuel;
+            car.Year = ad.Year;
+            car.Price = ad.Price;
+            car.Mileage = ad.Mileage;
+            car.Power = ad.Power;
+            car.Transmission = transmission;
+            car.Equipments = equipments;
+            car.Status = status;
+            
+            await _carRepository.Update(car);
+
+            adToUpdate.Title = ad.Title;
+            adToUpdate.Description = ad.Description;
+            
+            await _advertisementRepository.UpdateById(id, adToUpdate);
             return NoContent();
         }
         catch (Exception e)
@@ -192,13 +226,23 @@ public class AdsController : ControllerBase
     [HttpDelete("{id}"), Authorize]
     public async Task<IActionResult> DeleteCarById(int id)
     {
-        var adToDelete = await _advertisementRepository.GetById(id);
-        if (adToDelete is null)
+        try
         {
-            return NotFound();
-        }
+            var adToDelete = await _advertisementRepository.GetById(id);
+            if (adToDelete is null)
+            {
+                return NotFound();
+            }
 
-        await _advertisementRepository.Delete(adToDelete);
-        return NoContent();
+            var car = adToDelete.Car;
+            await _advertisementRepository.Delete(adToDelete);
+            await _carRepository.Delete(car);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

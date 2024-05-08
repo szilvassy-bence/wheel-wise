@@ -6,6 +6,7 @@ namespace wheel_wise.Service.Repository.UserRepo;
 
 public interface IUserRepository
 {
+    Task<IEnumerable<User>> GetAll();
     Task<User?> GetByName(string name);
     Task<IEnumerable<Advertisement?>> GetFavoriteAdsByUserName(string userName);
     Task<IEnumerable<Advertisement?>> GetAdsByUserName(string userName);
