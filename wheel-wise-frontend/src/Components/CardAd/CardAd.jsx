@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
 
     const navigate = useNavigate();
-    async function addFav(user, ad) {
+    async function addFav() {
         try {
-            const response = await fetch(`/api/user/addfavoritead/${user.userName}/${ad.id}`, {
+            console.log(user.userName)
+            console.log(ad)
+            const response = await fetch(`/api/user/addfavorite/${user.userName}/${ad.id}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
                 }
             });
 
@@ -23,12 +26,13 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
         }
     }
 
-    async function removeFav(user, ad) {
+    async function removeFav() {
         try {
             const response = await fetch(`/api/user/removefavoritead/${user.userName}/${ad.id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
                 }
             });
 
@@ -43,7 +47,7 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
 
     }
 
-    function isFavorite(ad, favorites) {
+    function isFavorite() {
         console.log("favads:" + favorites);
         const filteredAds = favorites.filter(fav => fav.id == ad.id);
         if (filteredAds.length === 1) {
@@ -54,7 +58,7 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
         }
     }
 
-    function handleFavButtonClick(e, ad, favorites, setFavorites, user) {
+    function handleFavButtonClick(e) {
         try {
             if (!isFavorite(ad, favorites)) {
                 addFav(user, ad);
@@ -68,7 +72,9 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
             console.error('Failed to add or remove advertisement from favorites:', error);
         }}
 
-        async function removeAd(ad, user) {
+    
+        async function removeAd() {
+            console.log(ad)
             try {
                 const response = await fetch(`/api/ads/${ad.id}`, {
                     method: 'DELETE',
@@ -89,15 +95,16 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
 
         }
 
-        function handleDeleteAdButtonClick(e, ad, user) {
-            e.preventDefault();
+        function handleDeleteAdButtonClick(e) {
+          
             try {
-                removeAd(user, ad);
-                setUser(userAds.filter(uAd => uAd.id !== ad.id));
+                removeAd(ad, user);
+                setUserAds(userAds.filter(uAd => uAd.id !== ad.id));
             } catch (error) {
                 console.error('Failed to add or remove advertisement:', error);
             }
         }
+
         return (
             <>
                 <div id={ad.id} className={ad.highlighted ? "highlighted ad-card" : "ad-card"}>
@@ -120,8 +127,8 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds }) {
                     </div>
                     <div className="card-footer">
                         <button className="card-btn card-detail-btn" onClick={(e) => navigate(`/ads/${ad.id}`)}>Details</button>
-                        {user.userName && ad.user?.userName && user.userName === ad.user.userName && <button className="card-btn card-edit-btn" /*onClick={(e) => handleDeleteAdButtonClick(e, ad, user)}*/>Delete</button>}
-                        {user && <button className="card-btn card-favorite-btn" onClick={(e) => handleFavButtonClick(e, ad, favorites, setFavorites, user)}>
+                        {user && user.userName && ad.user?.userName && user.userName === ad.user.userName && <button className="card-btn card-edit-btn" onClick={(e) => handleDeleteAdButtonClick(e)}>Delete</button>}
+                        {user &&  user.userName !== ad.user?.userName && <button className="card-btn card-favorite-btn" onClick={(e) => handleFavButtonClick(e)}>
                             {isFavorite(ad, favorites) ? (
                                 <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475" />

@@ -12,5 +12,4 @@ export default function AdvertisementList({allAdData, title, favorites, setFavor
                 </div>
             </div>
     )
-
 }
