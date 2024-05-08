@@ -56,8 +56,6 @@ public class UserRepository : IUserRepository
         var iUser = await _userManager.FindByNameAsync(userName);
         var user = await _dbContext.Users
             .Include(u => u.FavoriteAdvertisements)
-            .ThenInclude(a => a.Car)
-            .ThenInclude(c => c.CarType)
             .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
 
         if (user.FavoriteAdvertisements == null)
@@ -68,9 +66,9 @@ public class UserRepository : IUserRepository
         return user.FavoriteAdvertisements;
     }
 
-    public async Task<IEnumerable<Advertisement?>> GetAdsByUserName(string userName)
+    public async Task<IEnumerable<AdvertisementDTO?>> GetAdsByUserName(string userName)
     {
-        var iUser = await _userManager.FindByNameAsync(userName);
+        /*var iUser = await _userManager.FindByNameAsync(userName);
         if (iUser is null)
         {
             throw (new NullReferenceException($"User with user name {userName} is not found."));
@@ -80,17 +78,40 @@ public class UserRepository : IUserRepository
         if (user is null)
         {
             throw (new NullReferenceException($"User with user name {userName} is not found."));
-        }
+        }*/
 
-        var emptyUser = await _dbContext.Users.Include(u => u.Advertisements)
-            .ThenInclude(c => c.Car)
-            .ThenInclude(c => c.CarType).FirstOrDefaultAsync(x => x.UserName == userName);
+        /*public int Id { get; init; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool Highlighted { get; set; }
+    
+        public int? UserId { get; init; }
+        public string UserName { get; init; }
+    
+        public int CarId { get; init; }
+        public Car Car { get; set; */
 
+        var emptyUser = await _dbContext.Users.Where(x => userName == x.IdentityUser.UserName)
+            .SelectMany(x => x.Advertisements).Select(x => new AdvertisementDTO
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Description = x.Description,
+                CreatedAt = x.CreatedAt,
+                Highlighted = x.Highlighted,
+                UserId = x.UserId,
+                UserName = x.User.UserName,
+                CarId = x.CarId,
+                Car = x.Car
+            }).ToListAsync();
+        
+        
         //var adList = user.Advertisements.ToList();
 
         //adList.ForEach(x => x.User.IdentityUser = null);
 
-        return emptyUser.Advertisements;
+        return emptyUser;
     }
 
     public async Task UpdateUser(string id, UserData userData)
