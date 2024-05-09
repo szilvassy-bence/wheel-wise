@@ -61,6 +61,7 @@ public class AdvertisementRepository : IAdvertisementRepository
             .Include(x => x.Car.FuelType)
             .Include(x => x.Car.Equipments)
             .Include(x => x.Car.Color)
+            .Include(u=> u.User)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 

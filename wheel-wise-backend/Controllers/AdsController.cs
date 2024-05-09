@@ -83,14 +83,13 @@ public class AdsController : ControllerBase
     [HttpPost, Authorize]
     public async Task<ActionResult<Advertisement>> PostAd(AdvertisementPostRequest ad)
     {
-        
         try
         {
             var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _userRepository.GetByName(ad.UserName);
             if (user is not null && authenticatedUserEmail != user.IdentityUser.Email)
             {
-                return BadRequest();
+                return Forbid();
             }
             
             var carModel = await _carTypeRepository.GetByCarModel(ad.Brand, ad.Model);
@@ -138,7 +137,8 @@ public class AdsController : ControllerBase
                 Description = ad.Description,
                 CreatedAt = DateTime.Now,
                 Highlighted = false,
-                UserId = user.Id
+                UserId = user.Id,
+                User = user
             };
 
              await _advertisementRepository.Add(advertisement);
@@ -160,11 +160,18 @@ public class AdsController : ControllerBase
     }
 
     [WarningFilter("Info")]
-    [HttpPut("{id}")]
+    [HttpPut("{id}"), Authorize]
     public async Task<IActionResult> PutAdById(int id, AdvertisementPostRequest ad)
     {
         try
         {
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _userRepository.GetByName(ad.UserName);
+            if (user is not null && authenticatedUserEmail != user.IdentityUser.Email)
+            {
+                return Forbid();
+            }
+            
             var adToUpdate = await _advertisementRepository.GetById(id);
             if (adToUpdate is null)
             {
@@ -175,7 +182,6 @@ public class AdsController : ControllerBase
             var color = await _colorRepository.GetByName(ad.Color);
             var fuel = await _fuelTypeRepository.GetByName(ad.FuelType);
             var transmission = await _transmissionRepository.GetByName(ad.Transmission);
-            var user = await _userRepository.GetByName(ad.UserName);
 
             ICollection<Equipment> equipments = new List<Equipment>();
             foreach (var ads in ad.Equipments)
@@ -207,6 +213,7 @@ public class AdsController : ControllerBase
             car.Transmission = transmission;
             car.Equipments = equipments;
             car.Status = status;
+            car.CarType = carModel;
             
             await _carRepository.Update(car);
 
@@ -214,7 +221,7 @@ public class AdsController : ControllerBase
             adToUpdate.Description = ad.Description;
             
             await _advertisementRepository.UpdateById(id, adToUpdate);
-            return NoContent();
+            return CreatedAtAction(nameof(GetAll), new { id = adToUpdate.Id }, adToUpdate);
         }
         catch (Exception e)
         {
@@ -232,6 +239,21 @@ public class AdsController : ControllerBase
             if (adToDelete is null)
             {
                 return NotFound();
+            }
+            
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _userRepository.GetByName(adToDelete.User.UserName);
+            if (user == null)
+            {
+                return NotFound("User with given name cannot be found.");
+            }
+            
+            if (authenticatedUserEmail != null)
+            {
+                if (authenticatedUserEmail != user.IdentityUser.Email && !User.IsInRole("Admin"))
+                {
+                    return Forbid();
+                }
             }
 
             var car = adToDelete.Car;

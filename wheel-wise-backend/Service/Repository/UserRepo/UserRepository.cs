@@ -48,7 +48,7 @@ public class UserRepository : IUserRepository
             .Include(x => x.FavoriteAdvertisements)
             .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
 
-        var emptiedUser = new User { IdentityUser = null, UserName = user.UserName };
+        //var emptiedUser = new User { IdentityUser = null, UserName = user.UserName };
             
         return user;
     }
@@ -95,7 +95,13 @@ public class UserRepository : IUserRepository
         public Car Car { get; set; */
 
         var emptyUser = await _dbContext.Users.Where(x => userName == x.IdentityUser.UserName)
-            .SelectMany(x => x.Advertisements).Select(x => new AdvertisementDTO
+            .SelectMany(x => x.Advertisements).Include(c=>c.Car)
+            .Include(x => x.Car.CarType)
+            .Include(x => x.Car.Transmission)
+            .Include(x => x.Car.FuelType)
+            .Include(x => x.Car.Equipments)
+            .Include(x => x.Car.Color)
+            .Select(x => new AdvertisementDTO
             {
                 Id = x.Id,
                 Title = x.Title,
