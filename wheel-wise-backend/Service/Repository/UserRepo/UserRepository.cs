@@ -93,7 +93,7 @@ public class UserRepository : IUserRepository
         public Car Car { get; set; */
 
         var emptyUser = await _dbContext.Users.Where(x => userName == x.IdentityUser.UserName)
-            .SelectMany(x => x.Advertisements).Select(x => new AdvertisementDTO
+            .SelectMany(x => x.Advertisements).Include(x => x.Car).Select(x => new AdvertisementDTO
             {
                 Id = x.Id,
                 Title = x.Title,

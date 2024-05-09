@@ -12,6 +12,7 @@ import Advertisements, {loader as adsLoader} from "./Pages/Advertisements";
 import Profile, {loader as profileLoader} from "./Pages/Profile";
 import CreateAd from "./Pages/CreateAdvertisement/index.js";
 import Registration, {action as registrationAction} from "./Components/Registration";
+import AdminEditor from "./Pages/AdminEditor/AdminEditor.jsx";
 
 
 const router = createBrowserRouter(
@@ -52,6 +53,10 @@ const router = createBrowserRouter(
                     path: "/register",
                     element: <Registration />,
                     action: registrationAction
+                },
+                {
+                    path: "/admineditor",
+                    element: <AdminEditor />
                 }
             ],
         },
