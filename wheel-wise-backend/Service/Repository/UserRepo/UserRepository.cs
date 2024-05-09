@@ -57,7 +57,8 @@ public class UserRepository : IUserRepository
     {
         var iUser = await _userManager.FindByNameAsync(userName);
         var user = await _dbContext.Users
-            .Include(u => u.FavoriteAdvertisements)
+            .Include(u => u.FavoriteAdvertisements).ThenInclude(a => a.Car)
+            .ThenInclude(x => x.CarType)
             .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
 
         if (user.FavoriteAdvertisements == null)
@@ -95,7 +96,7 @@ public class UserRepository : IUserRepository
         public Car Car { get; set; */
 
         var emptyUser = await _dbContext.Users.Where(x => userName == x.IdentityUser.UserName)
-            .SelectMany(x => x.Advertisements).Include(x => x.Car).Select(x => new AdvertisementDTO
+            .SelectMany(x => x.Advertisements).Select(x => new AdvertisementDTO
             {
                 Id = x.Id,
                 Title = x.Title,
@@ -106,7 +107,7 @@ public class UserRepository : IUserRepository
                 UserName = x.User.UserName,
                 CarId = x.CarId,
                 Car = x.Car
-            }).ToListAsync();
+            }).Include(x => x.Car).ToListAsync();
         
         
         //var adList = user.Advertisements.ToList();

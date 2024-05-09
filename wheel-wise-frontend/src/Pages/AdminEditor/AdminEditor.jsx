@@ -8,6 +8,9 @@ export default function AdminEditor() {
     const {user} = useContext(AuthContext);
     const [carTypes, setCarTypes] = useState(null);
     const [carTypeModel, setCarTypeModel] = useState({  brand: "", model: "" })
+    const [formData, setFormData] = useState({
+        brand: "", model: ""
+    })
 
     const fetchCarTypeData = async () => {
         try {
@@ -26,6 +29,9 @@ export default function AdminEditor() {
         }))
       }
 
+
+
+      //ADD
     async function addCarType(){
         console.log(carTypeModel.brand, carTypeModel.model)
         try {
@@ -48,6 +54,43 @@ export default function AdminEditor() {
         }            
     }
 
+    //DELETE
+
+    /*const fetchCarTypeData = async () => {
+        try {
+            const response = await fetch("/api/CarType");
+            const data = await response.json();
+            setCarTypes(data);
+            console.log(data);
+        } catch (error) {
+            console.error("Error fetching car type data", error);
+        }
+    }
+    useEffect(() => {
+        fetchCarTypeData();
+    }, []);*/
+
+
+    function getUniqueBrands() {
+        let brands = [];
+        carTypes.map(x => {
+            if (!brands.includes(x.brand)) {
+                brands.push(x.brand);
+            }
+        })
+        return brands.sort();
+    }
+
+    function selectBrand(e) {
+        console.log(e.target.value);
+        setSelectedBrand(e.target.value);
+        if (e.target.value === "Select Brand") {
+            setFormData({...formData, brand: e.target.value, model: "Select Model"})
+        } else {
+            setFormData({...formData, brand: e.target.value})
+        }
+    }
+
 
     return (
         <div id="simple-filter-wrapper">
@@ -68,41 +111,7 @@ export default function AdminEditor() {
                     </label>
                     <button>Add CarType</button>
                 </form>
-                {/*<form onSubmit={e => submitForm(e)} >
-                            <div id="simple-filter-form" >
-
-                                <CarTypeFormSelect formData={formData}
-                                                   selectBrand={selectBrand}
-                                                   selectedBrand={selectedBrand}
-                                                   getUniqueBrands={getUniqueBrands}
-                                                   carTypeModels={carTypeModels}
-                                                   selectModel={selectModel}/>
-
-                                <label className="simple-filter-label simple-filter-items">
-                                    <span>From Year</span>
-                                    <select value={formData.fromYear} className="quick-form" name="from-year"
-                                            placeholder="From year" onChange={e => setFromYear(e)}>
-                                        <option>Min Year</option>
-                                        {service.yearCounter().map(year => (
-                                            <option key={year} value={year}>{year}</option>))}
-                                    </select>
-                                </label>
-                                <label className="simple-filter-label simple-filter-items">
-                                    <span>Till Year</span>
-                                    <select value={formData.tillYear} className="quick-form" name="till-year"
-                                            placeholder="Till year" onChange={e => setTillYear(e)}>
-                                        <option>Max Year</option>
-                                        {service.yearCounter().map(year => (
-                                            <option key={year} value={year}>{year}</option>))}
-                                    </select>
-                                </label>
-                                <PriceFormRange adsMinPrice={adsMinPrice} adsMaxPrice={adsMaxPrice} setFilterMinPrice={setFilterMinPrice} setFilterMaxPrice={setFilterMaxPrice}/>
-                            </div>
-                            <button className="form-submit-btn" type="submit">
-                                Submit
-                            </button>
-                        </form>) 
-                                        (<p>Loading...</p>)*/}
+              {/*<CarTypeFormSelect formData={formData} selectBrand={selectBrand} selectedBrand={selectBrand} getUniqueBrands={getUniqueBrands} ></CarTypeFormSelect>*/}
             </div>
         </div>
     )
