@@ -169,28 +169,30 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPatch("/update/{id}"), Authorize]
-    public async Task<ActionResult<RegistrationResponse>> UpdateById(string id, DataChangeRequest dataChangeRequest)
+    [HttpPatch("update/{id}"), Authorize]
+    public async Task<ActionResult<RegistrationResponse>> UpdateById(string id,
+        [FromBody] DataChangeRequest dataChangeRequest)
     {
+        
+        var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+        _logger.LogInformation(authenticatedUserEmail);
+        _logger.LogInformation(id);
+        Console.WriteLine(authenticatedUserEmail);
+        Console.WriteLine(id);
+        var user = await _userRepository.GetIdentityUserById(id);
+        if (user == null)
         {
-            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            var user = await _userRepository.GetIdentityUserById(id);
-            if (user == null)
-            {
-                return NotFound("User with given name cannot be found.");
-            }
-
-            if (authenticatedUserEmail != null)
-            {
-                if (authenticatedUserEmail != user.Email)
-                {
-                    return Forbid();
-                }
-            }
+            return NotFound("User with given name cannot be found.");
         }
+
+        if (authenticatedUserEmail != null && authenticatedUserEmail != user.Email)
+        {
+            return Forbid();
+        }
+        
         try
         {
-            var newData = await _userRepository.UpdateById(id, dataChangeRequest);
+            var newData = await _userRepository.UpdateIdentityUserData(user, dataChangeRequest);
             return Ok(newData);
         }
         catch (Exception e)
@@ -201,7 +203,7 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("/delete/{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteUserById(int id)
     {
         try
@@ -232,7 +234,7 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpPatch("/update-pass/{id}")]
+    [HttpPatch("update-pass/{id}")]
     public async Task<ActionResult<RegistrationResponse>> UpdatePasswordById(string id,
         PasswordChangeRequest passwordChangeRequest)
     {

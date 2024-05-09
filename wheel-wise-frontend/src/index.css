@@ -8,3 +8,68 @@ body{
 #root{
     width: 100%;
 }
+
+.form-wrapper{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.registration-login-form{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.registration-login-form label {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.registration-login-form button {
+    align-self: center;
+    height: 40px;
+    padding: 10px 30px;
+    color: aliceblue;
+    background-color: #DD5746;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.7s ease-in-out;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: medium;
+}
+
+.registration-login-form button:hover{
+    background-color: #8B322C;
+}
+
+.registration-login-form input {
+    border-radius: 5px;
+    padding: 5px;
+    border-width: 0 0 2px 0;
+    font-size: medium;
+    width: 200px;
+    font-size: medium;
+}
+
+.on-white input {
+    background-color: #FFEC9E;
+}
+
+@media screen and (max-width: 600px) {
+    .registration-login-form{
+        width: 90%;
+        align-items: center;
+    }
+
+    .registration-login-form label{
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+}

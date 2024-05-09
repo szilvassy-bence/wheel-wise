@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using wheel_wise.Data;
+using wheel_wise.Model;
 
 namespace wheel_wise.Service.Authentication;
 
@@ -6,11 +8,13 @@ public class AuthenticationSeeder
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly WheelWiseContext _context;
 
-    public AuthenticationSeeder(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+    public AuthenticationSeeder(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, WheelWiseContext context)
     {
         _roleManager = roleManager;
         _userManager = userManager;
+        _context = context;
     }
 
     public void AddRoles()
@@ -48,6 +52,8 @@ public class AuthenticationSeeder
             if (adminCreated.Succeeded)
             {
                 await userManager.AddToRoleAsync(admin, "Admin");
+                _context.Users.Add(new User { IdentityUser = admin, Email = admin.Email, UserName = admin.UserName, ZipCode = 0});
+                await _context.SaveChangesAsync();
             }
         }
     }    

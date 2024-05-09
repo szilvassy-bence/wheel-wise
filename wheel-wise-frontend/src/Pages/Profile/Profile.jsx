@@ -6,7 +6,7 @@ import CardAd from "../../Components/CardAd";
 
 export default function Profile() {
     const profile = useLoaderData();
-    const {user} = useContext(AuthContext);
+    const {user, logout} = useContext(AuthContext);
     const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
     const profileMenuLiRef = useRef([]);
     const navigate = useNavigate();
@@ -19,28 +19,36 @@ export default function Profile() {
     });
     const [profileTab, setProfileTab] = useState("details");
 
-    const handleSubmit = async (e) => {
+    const handleUserDataChange = async (e) => {
         e.preventDefault();
         
         // check the password equality, and validity
         if (profileState.password === profileState.passwordAgain){
             try {
-                await fetch(`/api/user/${profile.identityUser.id}/edit`,{
+                const res = await fetch(`/api/user/update/${profile.identityUser.id}`,{
                     method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json",
+                                "Authorization": `Bearer ${user.token}`
+                     },
                     body: JSON.stringify({
-                        userName: profileState.userName,
                         email: profileState.email,
-                        password: profileState.password,
-                        token: user.token
+                        userName: profileState.userName,
                     })
-                    }
-                );
+                });
+                if (res.ok){
+                    const data = await res.json();
+                    //console.log(data);
+                    logout();
+                    navigate("/login");
+                }
             } catch(e){
                 console.log(e);
             }
         }
+    }
 
+    const handlePasswordChange = async (e) => {
+        
     }
 
     function changeTab(e) {
@@ -98,8 +106,8 @@ export default function Profile() {
                     { profileTab === "details" ? (
                         <>
                             <h2>Profile details</h2>
-                            <form id="profile-page-form" onSubmit={handleSubmit} action="">
-                                <div className="form-group">
+                            <form id="user-data-update-form" className="user-update-form" onSubmit={handleUserDataChange}>
+                                <div className="user-update-form-group">
                                     <label htmlFor="profile-user-name">
                                         <span>User name</span>
                                         <input type="text" id="profile-user-name" value={profileState.userName} onChange={e => {
@@ -114,8 +122,12 @@ export default function Profile() {
                                                 email: e.target.value});
                                         }}/>
                                     </label>
+
                                 </div>
-                                <div className="form-group">
+                                <button id="profile-form-submit-btn">Submit</button>
+                            </form>
+                            <form id="password-update-form" className="user-update-form" onSubmit={handlePasswordChange}>   
+                                <div className="user-update-form-group">
                                     <label htmlFor="profile-password">
                                         <span>Password</span>
                                         <input type="password" id="profile-password" value={profileState.password} onChange={e => {

@@ -12,7 +12,6 @@ public class User
     
     public string UserName { get; set; }
     
-    
     public int? ZipCode { get; set; }
     
     

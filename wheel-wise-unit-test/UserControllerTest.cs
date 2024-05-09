@@ -345,7 +345,7 @@ public class UserControllerTest
         _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(user);
 
         var regRequest = new RegistrationResponse("kdfng@sdfg", "kjbdfg");
-        _userRepository.Setup(x => x.UpdateById(It.IsAny<string>(), new DataChangeRequest("lknsdf", "dfg")))
+        _userRepository.Setup(x => x.UpdateIdentityUserData(It.IsAny<IdentityUser>(), new DataChangeRequest("lknsdf", "dfg")))
             .ReturnsAsync(regRequest);
         
         // Act
@@ -363,7 +363,7 @@ public class UserControllerTest
         _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(user);
 
         var regRequest = new RegistrationResponse("kdfng@sdfg", "kjbdfg");
-        _userRepository.Setup(x => x.UpdateById(It.IsAny<string>(), new DataChangeRequest("lknsdf", "dfg")))
+        _userRepository.Setup(x => x.UpdateIdentityUserData(It.IsAny<IdentityUser>(), new DataChangeRequest("lknsdf", "dfg")))
             .ReturnsAsync(regRequest);
         
         // Act
@@ -380,7 +380,7 @@ public class UserControllerTest
         var identityUser = ConfigureHttpContext.IdentityUserGoodContext(_userController);
         _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(identityUser);
         
-        _userRepository.Setup(x => x.UpdateById(It.IsAny<string>(), It.IsAny<DataChangeRequest>()))
+        _userRepository.Setup(x => x.UpdateIdentityUserData(It.IsAny<IdentityUser>(), It.IsAny<DataChangeRequest>()))
             .ThrowsAsync(new Exception());
         
         // Act

@@ -64,31 +64,31 @@
     flex: 5;
 }
 
-.form-group {
+.user-update-form-group {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 20px;
 }
 
-#profile-page-form  label {
+.user-update-form  label {
     max-width: 400px;
     display: flex;
     flex-direction: column;
 }
 
-#profile-page-form span{
+.user-update-form span{
     font-size: small;
 }
 
 
-#profile-page-form input{
+.user-update-form input{
     border-radius: 5px;
     padding: 5px;
     border-width: 0 0 2px 0;
 }
 
-#profile-form-submit-btn {
+.user-update-form button{
     padding: 10px 20px;
     background-color: #DD5746;
     border-radius: 5px;
@@ -102,6 +102,10 @@
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+}
+
+#user-data-update-form{
+    margin-bottom: 40px;
 }
 
 @media screen and (max-width: 500px){

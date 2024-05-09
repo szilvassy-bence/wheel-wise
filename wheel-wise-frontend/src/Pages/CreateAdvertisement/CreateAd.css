@@ -1,4 +1,4 @@
-.CreateAdForm {
+.create-ad-form {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -65,19 +65,19 @@
     flex: 1; /* Let label take the remaining space */
 }
  
-input[type="number"] {
+.create-ad-form input[type="number"] {
     width: 38%;
     font-size: medium;
 }
 
-input[type="number"]:focus, [type="text"]:focus, textarea:focus{
+.create-ad-form input[type="number"]:focus, [type="text"]:focus, textarea:focus{
     border-color: #0056b3; /* Change border color on focus if needed */
     box-shadow: none; /* Remove box shadow on focus */
     background-color: #e2eefc;
     color: black;
 }
 
-input[type="text"] {
+.create-ad-form input[type="text"] {
     width: 70%;
     font-size: medium;
 }

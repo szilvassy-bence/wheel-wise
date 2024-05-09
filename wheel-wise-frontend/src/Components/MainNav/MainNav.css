@@ -109,7 +109,7 @@ header .menu {
     cursor: pointer;
 }
 
-#submit-btn{
+.dropdown-menu #submit-btn{
     background-color: #4793AF;
     color: aliceblue;
     padding: 5px;

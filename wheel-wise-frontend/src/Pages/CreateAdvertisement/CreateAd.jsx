@@ -172,7 +172,7 @@ export default function CreateAd(){
         <>
         {Object.keys(carProperties).length === 0 && <div>Loading</div>}
         {Object.keys(carProperties).length !== 0 &&
-            <form className="CreateAdForm" onSubmit={onSubmit}>
+            <form className="create-ad-form" onSubmit={onSubmit}>
                  <fieldset><legend>Title</legend>
                         <div>
                             <label className="ad-label" htmlFor="title">Title</label>

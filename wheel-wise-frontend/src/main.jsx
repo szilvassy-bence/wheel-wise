@@ -11,7 +11,8 @@ import AdvertisementCarousel from "./Components/AdvertisementCarousel";
 import Advertisements, {loader as adsLoader} from "./Pages/Advertisements";
 import Profile, {loader as profileLoader} from "./Pages/Profile";
 import CreateAd from "./Pages/CreateAdvertisement/index.js";
-import Registration, {action as registrationAction} from "./Components/Registration";
+import Registration from "./Pages/Registration";
+import Login from "./Pages/Login";
 
 
 const router = createBrowserRouter(
@@ -51,7 +52,10 @@ const router = createBrowserRouter(
                 {
                     path: "/register",
                     element: <Registration />,
-                    action: registrationAction
+                },
+                {
+                    path: "/login",
+                    element: <Login />,
                 }
             ],
         },

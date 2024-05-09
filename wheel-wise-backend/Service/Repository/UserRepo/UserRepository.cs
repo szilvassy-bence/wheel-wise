@@ -179,30 +179,24 @@ public class UserRepository : IUserRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<RegistrationResponse> UpdateById(string id, DataChangeRequest dataChangeRequest)
-    {
-        var user = await _userManager.FindByIdAsync(id);
-        if (user is null)
-        {
-            throw (new InvalidOperationException("The user you are trying to update."));
-        }
-
+    public async Task<RegistrationResponse> UpdateIdentityUserData(IdentityUser identityUser, DataChangeRequest dataChangeRequest)
+    { 
         var userByEmail = await _userManager.FindByEmailAsync(dataChangeRequest.Email);
-        if (userByEmail != null && user != userByEmail)
+        if (userByEmail != null && identityUser != userByEmail)
         {
             throw (new InvalidOperationException($"User email: {dataChangeRequest.Email} is already taken!"));
         }
 
         var userByUserName = await _userManager.FindByNameAsync(dataChangeRequest.UserName);
-        if (userByUserName != null && user != userByUserName)
+        if (userByUserName != null && identityUser != userByUserName)
         {
             throw (new Exception($"User name: {dataChangeRequest.UserName} is already taken!"));
         }
 
         if (!string.IsNullOrEmpty(dataChangeRequest.Email))
         {
-            user.Email = dataChangeRequest.Email;
-            user.NormalizedEmail = dataChangeRequest.Email.ToUpper();
+            identityUser.Email = dataChangeRequest.Email;
+            identityUser.NormalizedEmail = dataChangeRequest.Email.ToUpper();
         }
         else
         {
@@ -211,8 +205,8 @@ public class UserRepository : IUserRepository
         
         if (!string.IsNullOrEmpty(dataChangeRequest.UserName))
         {
-            user.Email = dataChangeRequest.UserName;
-            user.NormalizedEmail = dataChangeRequest.UserName.ToUpper();
+            identityUser.UserName = dataChangeRequest.UserName;
+            identityUser.NormalizedUserName = dataChangeRequest.UserName.ToUpper();
         }
         else
         {

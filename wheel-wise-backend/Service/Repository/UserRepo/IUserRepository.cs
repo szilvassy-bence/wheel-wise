@@ -16,7 +16,7 @@ public interface IUserRepository
     Task AddFavoriteAdvertisement(string name, int adId);
     Task UpdateUser(string id, UserData userData);
     Task RemoveFavoriteAdvertisement(string userName, int adId);
-    Task<RegistrationResponse> UpdateById(string id, DataChangeRequest dataChangeRequest);
+    Task<RegistrationResponse> UpdateIdentityUserData(IdentityUser identityUser, DataChangeRequest dataChangeRequest);
     Task DeleteUser(User user);
     Task<RegistrationResponse> UpdatePasswordById(IdentityUser identityUser, PasswordChangeRequest passwordChangeRequest);
 }
