@@ -73,7 +73,7 @@ public class AuthControllerTest
     public async Task RegisterReturnsBadRequestStatusCode()
     {
         // Arrange
-        var regRequest = new RegistrationRequest("tt", "t", "12321657");
+        var regRequest = new RegistrationRequest("tt", "t", "12321657", 2000);
         var json = JsonSerializer.Serialize(regRequest);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -89,7 +89,7 @@ public class AuthControllerTest
     public async Task LoginReturnsOKIfSuccessful()
     {
         // Arrange
-        var regRequest = new RegistrationRequest("t@t", "t", "12321657");
+        var regRequest = new RegistrationRequest("t@t", "t", "12321657", 2000);
         var regJson = JsonSerializer.Serialize(regRequest);
         var regContent = new StringContent(regJson, Encoding.UTF8, "application/json");
 

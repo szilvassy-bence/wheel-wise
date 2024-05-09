@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using wheel_wise.Controllers;
 using wheel_wise.Model;
+using wheel_wise.Model.DTO;
 using wheel_wise.Service.Repository.UserRepo;
 
 namespace wheel_wise_unit_test;
@@ -245,7 +246,7 @@ public class UserControllerTest
         _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
         var user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
-        var adsList = new List<Advertisement>();
+        var adsList = new List<AdvertisementDTO>();
         _userRepository.Setup(x => x.GetAdsByUserName(It.IsAny<string>())).ReturnsAsync(adsList);
 
         // Act
@@ -307,7 +308,7 @@ public class UserControllerTest
         _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
         User user = new User { IdentityUser = new IdentityUser { Email = "i@i" } };
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
-        var adsList = new List<Advertisement>();
+        var adsList = new List<AdvertisementDTO>();
         _userRepository.Setup(x => x.GetAdsByUserName(It.IsAny<string>())).ReturnsAsync(adsList);
 
         // Act
