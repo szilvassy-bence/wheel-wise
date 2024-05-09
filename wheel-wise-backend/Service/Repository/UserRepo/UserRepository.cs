@@ -57,7 +57,8 @@ public class UserRepository : IUserRepository
     {
         var iUser = await _userManager.FindByNameAsync(userName);
         var user = await _dbContext.Users
-            .Include(u => u.FavoriteAdvertisements)
+            .Include(u => u.FavoriteAdvertisements).ThenInclude(a => a.Car)
+            .ThenInclude(x => x.CarType)
             .FirstOrDefaultAsync(x => x.IdentityUser.Id == iUser.Id);
 
         if (user.FavoriteAdvertisements == null)
@@ -112,7 +113,7 @@ public class UserRepository : IUserRepository
                 UserName = x.User.UserName,
                 CarId = x.CarId,
                 Car = x.Car
-            }).ToListAsync();
+            }).Include(x => x.Car).ToListAsync();
         
         
         //var adList = user.Advertisements.ToList();

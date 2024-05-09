@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using wheel_wise.Data;
 using wheel_wise.Model;
-
 namespace wheel_wise.Service.Authentication;
 
 public class AuthenticationSeeder

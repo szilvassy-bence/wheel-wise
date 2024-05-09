@@ -34,7 +34,7 @@ namespace wheel_wise.Migrations
 
                     b.HasIndex("User1Id");
 
-                    b.ToTable("AdvertisementUser");
+                    b.ToTable("AdvertisementUser", (string)null);
                 });
 
             modelBuilder.Entity("CarEquipment", b =>
@@ -49,7 +49,7 @@ namespace wheel_wise.Migrations
 
                     b.HasIndex("EquipmentsId");
 
-                    b.ToTable("CarEquipment");
+                    b.ToTable("CarEquipment", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -284,7 +284,7 @@ namespace wheel_wise.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Advertisements");
+                    b.ToTable("Advertisements", (string)null);
 
                     b.HasData(
                         new
@@ -506,7 +506,7 @@ namespace wheel_wise.Migrations
 
                     b.HasIndex("TransmissionId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
 
                     b.HasData(
                         new
@@ -776,7 +776,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarTypes");
+                    b.ToTable("CarTypes", (string)null);
 
                     b.HasData(
                         new
@@ -915,7 +915,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Colors", (string)null);
 
                     b.HasData(
                         new
@@ -988,7 +988,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Equipments");
+                    b.ToTable("Equipments", (string)null);
 
                     b.HasData(
                         new
@@ -1187,7 +1187,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuelTypes");
+                    b.ToTable("FuelTypes", (string)null);
 
                     b.HasData(
                         new
@@ -1241,7 +1241,7 @@ namespace wheel_wise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Transmissions");
+                    b.ToTable("Transmissions", (string)null);
 
                     b.HasData(
                         new
@@ -1312,7 +1312,7 @@ namespace wheel_wise.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("AdvertisementUser", b =>
