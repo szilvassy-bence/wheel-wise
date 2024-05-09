@@ -128,7 +128,7 @@ function CardAd({ ad, favorites, setFavorites, user, userAds, setUserAds, delete
                     </div>
                     <div className="card-footer">
                         <button className="card-btn card-detail-btn" onClick={(e) => navigate(`/ads/${ad.id}`)}>Details</button>
-                        {user && user.userName && ad.user?.userName && user.userName === ad.user.userName && deleteButtonCheck===true && <button className="card-btn card-edit-btn" onClick={(e) => handleDeleteAdButtonClick(e)}>Delete</button>}
+                        {user && user.userName && ad.userName && deleteButtonCheck===true && <button className="card-btn card-edit-btn" onClick={(e) => handleDeleteAdButtonClick(e)}>Delete</button>}
                         {user &&  user.userName !== ad.user?.userName  && <button className="card-btn card-favorite-btn" onClick={(e) => handleFavButtonClick(e)}>
                             {isFavorite(ad, favorites) ? (
                                 <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
