@@ -61,6 +61,7 @@ export default function Layout() {
                 const res = await fetch(`/api/user/${user.userName}/favorites`, getRequestOptions());
                 const data = await res.json();
                 setFavorites(data);
+                console.log("favorites: " + data );
             } catch(err) {
                 console.error(err);
             }

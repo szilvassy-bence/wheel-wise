@@ -11,6 +11,7 @@ using wheel_wise_unit_test.Utilities;
 using wheel_wise.Contracts;
 using wheel_wise.Controllers;
 using wheel_wise.Model;
+using wheel_wise.Model.DTO;
 using wheel_wise.Service.Repository.UserRepo;
 
 namespace wheel_wise_unit_test;
@@ -180,7 +181,7 @@ public class UserControllerTest
         // Arrange
         var user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
-        var adsList = new List<Advertisement>();
+        var adsList = new List<AdvertisementDTO>();
         _userRepository.Setup(x => x.GetAdsByUserName(It.IsAny<string>())).ReturnsAsync(adsList);
 
         // Act
@@ -225,7 +226,7 @@ public class UserControllerTest
         // Arrange
         User user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
-        var adsList = new List<Advertisement>();
+        var adsList = new List<AdvertisementDTO>();
         _userRepository.Setup(x => x.GetAdsByUserName(It.IsAny<string>())).ReturnsAsync(adsList);
 
         // Act

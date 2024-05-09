@@ -81,7 +81,39 @@ public class WheelWiseFactory : WebApplicationFactory<Program>
         var identityUserAdmin = userManager.FindByEmailAsync("admin@admin.com").Result;
         if (identityUserAdmin != null)
         {
-            User user = new User() {  IdentityUser = identityUserAdmin, ZipCode = 0 };
+            User admin = new User
+            {
+                IdentityUser = identityUserAdmin, 
+                ZipCode = 0,
+            };
+            if (identityUserAdmin.UserName is not null)
+            {
+                admin.UserName = identityUserAdmin.UserName;
+            }
+            if (identityUserAdmin.Email is not null)
+            {
+                admin.Email = identityUserAdmin.Email;
+            }
+            context.Users.Add(admin);
+            context.SaveChanges();
+        }
+        
+        var identityUserUser = userManager.FindByEmailAsync("user@user.com").Result;
+        if (identityUserUser != null)
+        {
+            User user = new User
+            {
+                IdentityUser = identityUserUser, 
+                ZipCode = 1000,
+            };
+            if (identityUserUser.UserName is not null)
+            {
+                user.UserName = identityUserUser.UserName;
+            }
+            if (identityUserUser.Email is not null)
+            {
+                user.Email = identityUserUser.Email;
+            }
             context.Users.Add(user);
             context.SaveChanges();
         }

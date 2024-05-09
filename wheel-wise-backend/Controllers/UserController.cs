@@ -89,7 +89,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{userName}/ads")]
-    public async Task<ActionResult<IEnumerable<Advertisement?>>> GetAdsByUserName(string userName)
+    public async Task<ActionResult<IEnumerable<AdvertisementDTO?>>> GetAdsByUserName(string userName)
     {
         var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
         var user = await _userRepository.GetByName(userName);

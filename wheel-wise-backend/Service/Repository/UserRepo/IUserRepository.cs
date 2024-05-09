@@ -12,7 +12,7 @@ public interface IUserRepository
     Task<IdentityUser> GetIdentityUserById(string id);
     Task<User> GetUserById(int id);
     Task<IEnumerable<Advertisement?>> GetFavoriteAdsByUserName(string userName);
-    Task<IEnumerable<Advertisement?>> GetAdsByUserName(string userName);
+    Task<IEnumerable<AdvertisementDTO?>> GetAdsByUserName(string userName);
     Task AddFavoriteAdvertisement(string name, int adId);
     Task UpdateUser(string id, UserData userData);
     Task RemoveFavoriteAdvertisement(string userName, int adId);

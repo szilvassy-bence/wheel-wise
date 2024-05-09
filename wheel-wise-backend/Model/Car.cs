@@ -8,7 +8,7 @@ public class Car
 {
     // Required properties
     public int Id { get; init; }
-    public int ColorId { get; init; }
+    public int ColorId { get; set; }
     public Color Color { get; set; }
     public int Year { get; set; }
     
@@ -17,12 +17,12 @@ public class Car
     public decimal Price { get; set; }
     public int Mileage { get; set; }
     public int Power { get; set; }
-    public int FuelTypeId { get; init; }
+    public int FuelTypeId { get; set; }
     public FuelType FuelType { get; set; }
     public Status Status { get; set; }
     public int TransmissionId { get; set; }
     public Transmission Transmission { get; set; } 
-    public int CarTypeId { get; init; }
-    public CarType CarType { get; init; }
+    public int CarTypeId { get; set; }
+    public CarType CarType { get; set; }
     public ICollection<Equipment> Equipments { get; set; }
 }

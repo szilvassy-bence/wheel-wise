@@ -7,10 +7,9 @@ export default function AdvertisementList({allAdData, title, favorites, setFavor
                 <h2>{title}</h2>
                 <div id="ad-list-content">
                     {allAdData.map((ad) => (
-                        <CardAd ad={ad} favorites={favorites} setFavorites={setFavorites} user={user} ></CardAd>
+                        <CardAd ad={ad} favorites={favorites} setFavorites={setFavorites} user={user} deleteButtonCheck={false}></CardAd>
                         ))}
                 </div>
             </div>
     )
-
 }
