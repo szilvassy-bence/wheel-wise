@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using wheel_wise.Contracts;
 using wheel_wise.Model;
 using wheel_wise.Model.DTO;
 using wheel_wise.Service.Repository.UserRepo;
@@ -35,7 +36,7 @@ public class UserController : ControllerBase
             return StatusCode(500, "Could not process the request");
         }
     }
-    
+
     [Authorize]
     [HttpGet("{userName}")]
     public async Task<ActionResult<User>> GetByName(string userName)
@@ -48,13 +49,15 @@ public class UserController : ControllerBase
             {
                 return NotFound("User with given name cannot be found.");
             }
+
             if (authenticatedUserEmail != null)
             {
                 if (authenticatedUserEmail != user.IdentityUser.Email && !User.IsInRole("Admin"))
                 {
                     return Forbid();
-                }    
+                }
             }
+
             return Ok(user);
         }
         catch (Exception e)
@@ -73,16 +76,18 @@ public class UserController : ControllerBase
         {
             return NotFound("User with given name cannot be found.");
         }
+
         if (authenticatedUserEmail != null)
         {
             if (authenticatedUserEmail != user.IdentityUser.Email && !User.IsInRole("Admin"))
             {
                 return Forbid();
-            }    
+            }
         }
+
         return Ok(await _userRepository.GetFavoriteAdsByUserName(userName));
     }
-    
+
     [HttpGet("{userName}/ads")]
     public async Task<ActionResult<IEnumerable<Advertisement?>>> GetAdsByUserName(string userName)
     {
@@ -92,14 +97,15 @@ public class UserController : ControllerBase
         {
             return NotFound("User with given name cannot be found.");
         }
+
         if (authenticatedUserEmail != null)
         {
             if (authenticatedUserEmail != user.IdentityUser.Email && !User.IsInRole("Admin"))
             {
                 return Forbid();
-            }    
+            }
         }
-        
+
         return Ok(await _userRepository.GetAdsByUserName(userName));
     }
 
@@ -112,13 +118,15 @@ public class UserController : ControllerBase
         {
             return NotFound("User with given name cannot be found.");
         }
+
         if (authenticatedUserEmail != null)
         {
             if (authenticatedUserEmail != user.IdentityUser.Email)
             {
                 return Forbid();
-            }    
+            }
         }
+
         try
         {
             await _userRepository.AddFavoriteAdvertisement(userName, adId);
@@ -133,19 +141,22 @@ public class UserController : ControllerBase
 
     [HttpDelete("removefavoritead/{userName}/{adId}"), Authorize]
     public async Task<IActionResult> RemoveFavoriteAdvertisement(string userName, int adId)
-    {var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+    {
+        var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
         var user = await _userRepository.GetByName(userName);
         if (user == null)
         {
             return NotFound("User with given name cannot be found.");
         }
+
         if (authenticatedUserEmail != null)
         {
             if (authenticatedUserEmail != user.IdentityUser.Email)
             {
                 return Forbid();
-            }    
+            }
         }
+
         try
         {
             await _userRepository.RemoveFavoriteAdvertisement(userName, adId);
@@ -158,10 +169,96 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPatch("{id}/edit"), Authorize]
-    public async Task<IActionResult> UpdateUser(string id, [FromBody] UserData userData)
+    [HttpPatch("/update/{id}"), Authorize]
+    public async Task<ActionResult<RegistrationResponse>> UpdateById(string id, DataChangeRequest dataChangeRequest)
     {
-        await _userRepository.UpdateUser(id, userData);
-        return Ok();
+        {
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _userRepository.GetIdentityUserById(id);
+            if (user == null)
+            {
+                return NotFound("User with given name cannot be found.");
+            }
+
+            if (authenticatedUserEmail != null)
+            {
+                if (authenticatedUserEmail != user.Email)
+                {
+                    return Forbid();
+                }
+            }
+        }
+        try
+        {
+            var newData = await _userRepository.UpdateById(id, dataChangeRequest);
+            return Ok(newData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return StatusCode(500);
+        }
+    }
+
+    [Authorize]
+    [HttpDelete("/delete/{id}")]
+    public async Task<IActionResult> DeleteUserById(int id)
+    {
+        try
+        {
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound("User with given name cannot be found.");
+            }
+
+            if (authenticatedUserEmail != null)
+            {
+                if (authenticatedUserEmail != user.IdentityUser.Email && !User.IsInRole("Admin"))
+                {
+                    return Forbid();
+                }
+            }
+
+            await _userRepository.DeleteUser(user);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return StatusCode(500);
+        }
+    }
+
+    [Authorize]
+    [HttpPatch("/update-pass/{id}")]
+    public async Task<ActionResult<RegistrationResponse>> UpdatePasswordById(string id,
+        PasswordChangeRequest passwordChangeRequest)
+    {
+        try
+        {
+            var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var identityUser = await _userRepository.GetIdentityUserById(id);
+            if (identityUser == null)
+            {
+                return NotFound("User with given name cannot be found.");
+            }
+
+            if (authenticatedUserEmail != null)
+            {
+                if (authenticatedUserEmail != identityUser.Email && !User.IsInRole("Admin"))
+                {
+                    return Forbid();
+                }
+            }
+
+            return Ok(await _userRepository.UpdatePasswordById(identityUser, passwordChangeRequest));
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return StatusCode(500);
+        }
     }
 }

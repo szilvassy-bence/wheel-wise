@@ -1,7 +1,9 @@
+using System.Text;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using wheel_wise.Contracts;
 using wheel_wise.Data;
 using wheel_wise.Model;
 using wheel_wise.Model.DTO;
@@ -141,5 +143,82 @@ public class UserRepository : IUserRepository
 
         user.FavoriteAdvertisements.Remove(currentAd);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<RegistrationResponse> UpdateById(string id, DataChangeRequest dataChangeRequest)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+        {
+            throw (new InvalidOperationException("The user you are trying to update."));
+        }
+
+        var userByEmail = await _userManager.FindByEmailAsync(dataChangeRequest.Email);
+        if (userByEmail != null && user != userByEmail)
+        {
+            throw (new InvalidOperationException($"User email: {dataChangeRequest.Email} is already taken!"));
+        }
+
+        var userByUserName = await _userManager.FindByNameAsync(dataChangeRequest.UserName);
+        if (userByUserName != null && user != userByUserName)
+        {
+            throw (new Exception($"User name: {dataChangeRequest.UserName} is already taken!"));
+        }
+
+        if (!string.IsNullOrEmpty(dataChangeRequest.Email))
+        {
+            user.Email = dataChangeRequest.Email;
+            user.NormalizedEmail = dataChangeRequest.Email.ToUpper();
+        }
+        else
+        {
+            throw (new InvalidOperationException("Email cannot be empty."));
+        }
+        
+        if (!string.IsNullOrEmpty(dataChangeRequest.UserName))
+        {
+            user.Email = dataChangeRequest.UserName;
+            user.NormalizedEmail = dataChangeRequest.UserName.ToUpper();
+        }
+        else
+        {
+            throw (new InvalidOperationException("User name cannot be empty."));
+        }
+
+        await _dbContext.SaveChangesAsync();
+        return new RegistrationResponse(dataChangeRequest.Email, dataChangeRequest.UserName);
+    }
+
+    public async Task DeleteUser(User user)
+    {
+        _dbContext.Users.Remove(user);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<RegistrationResponse> UpdatePasswordById(IdentityUser identityUser, PasswordChangeRequest passwordChangeRequest)
+    {
+        var result = await _userManager.ChangePasswordAsync(identityUser, passwordChangeRequest.ExistingPassword,
+            passwordChangeRequest.newPassword);
+        if (!result.Succeeded)
+        {
+            var sb = new StringBuilder();
+            foreach (var error in result.Errors)
+            {
+                sb.AppendLine($"Error code: {error.Code}, error description: {error.Description}");
+                throw (new InvalidOperationException(sb.ToString()));
+            }
+        }
+
+        return new RegistrationResponse(identityUser.Email, identityUser.UserName);
+    }
+
+    public async Task<IdentityUser> GetIdentityUserById(string id)
+    {
+        return await _userManager.FindByIdAsync(id);
+    }
+    
+    public async Task<User> GetUserById(int id)
+    {
+        return await _dbContext.Users.FindAsync(id);
     }
 }

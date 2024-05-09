@@ -1,10 +1,14 @@
 using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using wheel_wise_unit_test.Utilities;
+using wheel_wise.Contracts;
 using wheel_wise.Controllers;
 using wheel_wise.Model;
 using wheel_wise.Service.Repository.UserRepo;
@@ -58,18 +62,7 @@ public class UserControllerTest
     public async Task GetByNameReturnsOk()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Name, "admin@admin.com"),
-            new Claim(ClaimTypes.Role, "Admin")
-            // other required and custom claims
-        }, "TestAuthentication"));
-
-        var controller = _userController;
-        controller.ControllerContext = new ControllerContext();
-        controller.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        var user = new User
-            { Id = 1, IdentityUser = new IdentityUser { UserName = "admin", Email = "admin@admin.com" } };
+        var user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
         // Act
@@ -83,18 +76,7 @@ public class UserControllerTest
     public async Task GetByNameReturnsForbid()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@admin.com"),
-            new Claim(ClaimTypes.Role, "User")
-            // other required and custom claims
-        }, "TestAuthentication"));
-
-        var controller = _userController;
-        controller.ControllerContext = new ControllerContext();
-        controller.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        var user = new User
-            { Id = 1, IdentityUser = new IdentityUser { UserName = "admin", Email = "admin@admin.com" } };
+        var user = ConfigureHttpContext.UserBadContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
         // Act
@@ -108,16 +90,7 @@ public class UserControllerTest
     public async Task GetByNameReturnsOkIfAdminRequests()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@admin.com"),
-            new Claim(ClaimTypes.Role, "Admin")
-            // other required and custom claims
-        }, "TestAuthentication"));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-
-        var user = new User
-            { Id = 1, IdentityUser = new IdentityUser { UserName = "admin", Email = "admin@admin.com" } };
+        var user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
         // Act
@@ -131,16 +104,7 @@ public class UserControllerTest
     public async Task GetByNameReturnsNotFound()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Name, "admin@admin.com"),
-            new Claim(ClaimTypes.Role, "Admin")
-            // other required and custom claims
-        }, "TestAuthentication"));
-
-        var controller = _userController;
-        controller.ControllerContext = new ControllerContext();
-        controller.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
+        ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ThrowsAsync(new Exception());
 
         // Act
@@ -154,13 +118,7 @@ public class UserControllerTest
     public async Task GetFavoriteAdsByUserNameReturnsOkIfUsersRequestTheirOwn()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "User")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        var user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
+        var user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         var adsList = new List<Advertisement>();
         _userRepository.Setup(x => x.GetFavoriteAdsByUserName(It.IsAny<string>())).ReturnsAsync(adsList);
@@ -176,13 +134,7 @@ public class UserControllerTest
     public async Task GetFavoriteAdsByUserNameReturnsForbidIfUsersRequestNotTheirOwn()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "User")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        var user = new User { IdentityUser = new IdentityUser { Email = "valami@test" } };
+        var user = ConfigureHttpContext.UserBadContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
         // Act
@@ -196,12 +148,7 @@ public class UserControllerTest
     public async Task GetFavoriteAdsByUserNameReturnsNotFoundIfUsersRequestNotFoundUser()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "User")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
+        ConfigureHttpContext.UserGoodContext(_userController);
         User user = null;
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
@@ -216,13 +163,7 @@ public class UserControllerTest
     public async Task GetFavoriteAdsByUserNameReturnsOkIfAdminRequests()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "Admin")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        User user = new User { IdentityUser = new IdentityUser { Email = "i@i" } };
+        User user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
         // Act
@@ -237,13 +178,7 @@ public class UserControllerTest
     public async Task GetAdsByUserNameReturnsOkIfUsersRequestTheirOwn()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "User")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        var user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
+        var user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         var adsList = new List<Advertisement>();
         _userRepository.Setup(x => x.GetAdsByUserName(It.IsAny<string>())).ReturnsAsync(adsList);
@@ -259,13 +194,7 @@ public class UserControllerTest
     public async Task GetAdsByUserNameReturnsForbidIfUsersRequestNotTheirOwn()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "User")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        var user = new User { IdentityUser = new IdentityUser { Email = "valami@test" } };
+        var user = ConfigureHttpContext.UserBadContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
         // Act
@@ -279,12 +208,7 @@ public class UserControllerTest
     public async Task GetAdsByUserNameReturnsNotFoundIfUsersRequestNotFoundUser()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "User")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
+        ConfigureHttpContext.UserGoodContext(_userController);
         User user = null;
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
 
@@ -299,13 +223,7 @@ public class UserControllerTest
     public async Task GetAdsByUserNameReturnsOkIfAdminRequests()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test"),
-            new Claim(ClaimTypes.Role, "Admin")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        User user = new User { IdentityUser = new IdentityUser { Email = "i@i" } };
+        User user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         var adsList = new List<Advertisement>();
         _userRepository.Setup(x => x.GetAdsByUserName(It.IsAny<string>())).ReturnsAsync(adsList);
@@ -321,11 +239,7 @@ public class UserControllerTest
     public async Task AddFavoriteAdvertisementReturnsOk()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(
-            new Claim[] { new Claim(ClaimTypes.Email, "test@test") }
-        ));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        User user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
+        User user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         _userRepository.Setup(x => x.AddFavoriteAdvertisement(It.IsAny<string>(), It.IsAny<int>()))
             .Returns(Task.CompletedTask);
@@ -341,11 +255,7 @@ public class UserControllerTest
     public async Task AddFavoriteAdvertisementReturnsForbid()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(
-            new Claim[] { new Claim(ClaimTypes.Email, "atest@test") }
-        ));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        User user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
+        User user = ConfigureHttpContext.UserBadContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         _userRepository.Setup(x => x.AddFavoriteAdvertisement(It.IsAny<string>(), It.IsAny<int>()))
             .Returns(Task.CompletedTask);
@@ -361,11 +271,7 @@ public class UserControllerTest
     public async Task AddFavoriteAdvertisementReturnsStatusCode500()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(
-            new Claim[] { new Claim(ClaimTypes.Email, "test@test") }
-        ));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-        User user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
+        User user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         _userRepository.Setup(x => x.AddFavoriteAdvertisement(It.IsAny<string>(), It.IsAny<int>()))
             .ThrowsAsync(new Exception());
@@ -383,13 +289,7 @@ public class UserControllerTest
     public async Task RemoveFavoriteAdvertisementReturnNoContent()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-
-        var user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
+        var user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         _userRepository.Setup(x => x.RemoveFavoriteAdvertisement(It.IsAny<string>(), It.IsAny<int>()))
             .Returns(Task.CompletedTask);
@@ -405,12 +305,7 @@ public class UserControllerTest
     public async Task RemoveFavoriteAdvertisementReturnNotFound()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-
+        ConfigureHttpContext.UserGoodContext(_userController);
         User user = null;
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         
@@ -427,13 +322,7 @@ public class UserControllerTest
     public async Task RemoveFavoriteAdvertisementReturn500StatusCode()
     {
         // Arrange
-        var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Email, "test@test")
-        }));
-        _userController.ControllerContext.HttpContext = new DefaultHttpContext { User = claims };
-
-        var user = new User { IdentityUser = new IdentityUser { Email = "test@test" } };
+        var user = ConfigureHttpContext.UserGoodContext(_userController);
         _userRepository.Setup(x => x.GetByName(It.IsAny<string>())).ReturnsAsync(user);
         _userRepository.Setup(x => x.RemoveFavoriteAdvertisement(It.IsAny<string>(), It.IsAny<int>()))
             .ThrowsAsync(new Exception());
@@ -445,5 +334,161 @@ public class UserControllerTest
         var objectResult = result as ObjectResult;
         Assert.IsInstanceOf(typeof(ObjectResult), result);
         Assert.AreEqual(500, objectResult.StatusCode);
-    }   
+    }
+
+    [Test]
+    public async Task UpdateByIdReturnsOk()
+    {
+        // Arrange
+        var user = ConfigureHttpContext.IdentityUserGoodContext(_userController);
+        _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(user);
+
+        var regRequest = new RegistrationResponse("kdfng@sdfg", "kjbdfg");
+        _userRepository.Setup(x => x.UpdateById(It.IsAny<string>(), new DataChangeRequest("lknsdf", "dfg")))
+            .ReturnsAsync(regRequest);
+        
+        // Act
+        var result = await _userController.UpdateById("lknbdfg", new DataChangeRequest("lkndsfg", "kdsf"));
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(OkObjectResult), result.Result);
+    }
+
+    [Test]
+    public async Task UpdateByIdReturnsForbid()
+    {
+        // Arrange
+        var user = ConfigureHttpContext.IdentityUserBadContext(_userController);
+        _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(user);
+
+        var regRequest = new RegistrationResponse("kdfng@sdfg", "kjbdfg");
+        _userRepository.Setup(x => x.UpdateById(It.IsAny<string>(), new DataChangeRequest("lknsdf", "dfg")))
+            .ReturnsAsync(regRequest);
+        
+        // Act
+        var result = await _userController.UpdateById("lknbdfg", new DataChangeRequest("lkndsfg", "kdsf"));
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(ForbidResult), result.Result);
+    }
+
+    [Test]
+    public async Task UpdateByIdReturnsStatusCode500()
+    {
+        // Arrange
+        var identityUser = ConfigureHttpContext.IdentityUserGoodContext(_userController);
+        _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(identityUser);
+        
+        _userRepository.Setup(x => x.UpdateById(It.IsAny<string>(), It.IsAny<DataChangeRequest>()))
+            .ThrowsAsync(new Exception());
+        
+        // Act
+        var result = await _userController.UpdateById("lknbdfg", new DataChangeRequest("lkndsfg", "kdsf"));
+        
+        // Assert
+        var statusCodeResult = (StatusCodeResult)result.Result;
+        Assert.AreEqual(500, statusCodeResult.StatusCode);
+    }
+
+    [Test]
+    public async Task DeleteUserReturnsNoContent()
+    {
+        // Arrange
+        var user = ConfigureHttpContext.UserGoodContext(_userController);
+        _userRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(user);
+        
+        _userRepository.Setup(x => x.DeleteUser(user)).Returns(Task.CompletedTask);
+        
+        // Act
+        var result = await _userController.DeleteUserById(654);
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(NoContentResult), result);
+        
+    }
+
+    [Test]
+    public async Task DeleteUserReturnsForbid()
+    {
+        // Arrange
+        var user = ConfigureHttpContext.UserBadContext(_userController);
+        _userRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(user);
+        
+        // Act
+        var result = await _userController.DeleteUserById(54);
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(ForbidResult), result);
+    }
+
+    [Test]
+    public async Task DeleteUserReturnsNotFound()
+    {
+        // Arrange
+        ConfigureHttpContext.UserGoodContext(_userController);
+        User user = null;
+        _userRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(user);
+        
+        // Act
+        var result = await _userController.DeleteUserById(234);
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(NotFoundObjectResult), result);
+    }
+
+    [Test]
+    public async Task UpdatePasswordByIdReturnsOk()
+    {
+        // Arrange
+        var identityUser = ConfigureHttpContext.IdentityUserGoodContext(_userController);
+        _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(identityUser);
+
+        var registrationResponse = new RegistrationResponse("lksjdf", "kjdfg");
+        _userRepository.Setup(x => x.UpdatePasswordById(It.IsAny<IdentityUser>(), It.IsAny<PasswordChangeRequest>()))
+            .ReturnsAsync(registrationResponse);
+        
+        // Act
+        var result = await _userController.UpdatePasswordById("lskjdf", new PasswordChangeRequest("ksdfg", "sdfg"));
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(OkObjectResult), result.Result);
+    }
+    
+    [Test]
+    public async Task UpdatePasswordByIdReturnsForbid()
+    {
+        // Arrange
+        var identityUser = ConfigureHttpContext.IdentityUserBadContext(_userController);
+        _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(identityUser);
+
+        var registrationResponse = new RegistrationResponse("lksjdf", "kjdfg");
+        _userRepository.Setup(x => x.UpdatePasswordById(It.IsAny<IdentityUser>(), It.IsAny<PasswordChangeRequest>()))
+            .ReturnsAsync(registrationResponse);
+        
+        // Act
+        var result = await _userController.UpdatePasswordById("lskjdf", new PasswordChangeRequest("ksdfg", "sdfg"));
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(ForbidResult), result.Result);
+    }
+    
+    [Test]
+    public async Task UpdatePasswordByIdReturnsNoContent()
+    {
+        // Arrange
+        ConfigureHttpContext.IdentityUserBadContext(_userController);
+        IdentityUser identityUser = null;
+        _userRepository.Setup(x => x.GetIdentityUserById(It.IsAny<string>())).ReturnsAsync(identityUser);
+
+        var registrationResponse = new RegistrationResponse("lksjdf", "kjdfg");
+        _userRepository.Setup(x => x.UpdatePasswordById(It.IsAny<IdentityUser>(), It.IsAny<PasswordChangeRequest>()))
+            .ReturnsAsync(registrationResponse);
+        
+        // Act
+        var result = await _userController.UpdatePasswordById("lskjdf", new PasswordChangeRequest("ksdfg", "sdfg"));
+        
+        // Assert
+        Assert.IsInstanceOf(typeof(NotFoundObjectResult), result.Result);
+    }
+    
 }
