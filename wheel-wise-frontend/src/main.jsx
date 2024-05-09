@@ -11,13 +11,10 @@ import AdvertisementCarousel from "./Components/AdvertisementCarousel";
 import Advertisements, {loader as adsLoader} from "./Pages/Advertisements";
 import Profile, {loader as profileLoader} from "./Pages/Profile";
 import CreateAd from "./Pages/CreateAdvertisement/index.js";
-<<<<<<< HEAD
 import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
-=======
-import Registration, {action as registrationAction} from "./Components/Registration";
 import AdminEditor from "./Pages/AdminEditor/AdminEditor.jsx";
->>>>>>> admin_features
+
 
 
 const router = createBrowserRouter(
@@ -56,33 +53,17 @@ const router = createBrowserRouter(
                 } ,
                 {
                     path: "/register",
-                    element: <Registration />,
-<<<<<<< HEAD
-                },
-                {
-                    path: "/login",
-                    element: <Login />,
-=======
-                    action: registrationAction
+                    element: <Registration />
                 },
                 {
                     path: "/admineditor",
                     element: <AdminEditor />
->>>>>>> admin_features
-import Registration from "./Pages/Registration";
-import Login from "./Pages/Login";
-import Registration, {action as registrationAction} from "./Components/Registration";
-import AdminEditor from "./Pages/AdminEditor/AdminEditor.jsx";
+
                 },
                 {
                     path: "/login",
-                    element: <Login />,
-                    action: registrationAction
+                    element: <Login />
                 },
-                {
-                    path: "/admineditor",
-                    element: <AdminEditor />
-                }
             ],
         },
     ]);
