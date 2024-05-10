@@ -1,62 +1,21 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import CarTypeFormSelect from "../../Components/CarTypeFormSelect"
 import { AuthContext } from "../Layout/Layout";
 
 
+
 export default function AdminEditor() {
 
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [carTypes, setCarTypes] = useState(null);
-    const [carTypeModel, setCarTypeModel] = useState({  brand: "", model: "" })
-    const [formData, setFormData] = useState({
-        brand: "", model: ""
-    })
+    const [carTypeModel, setCarTypeModel] = useState({ brand: "", model: "" })
+    const [selectedBrand, setSelectedBrand] = useState(null)
+    const [selectedModels, setSelectedModels] = useState(null);
+    const [formData, setFormData] = useState({ brand: "", model: "" })
+
 
     const fetchCarTypeData = async () => {
-        try {
-            const response = await fetch("/api/CarType");
-            const data = await response.json();
-            setCarTypes(data);
-            console.log(data);
-        } catch (error) {
-            console.error("Error fetching car type data", error);
-        }
-    }
-    const handleInputChange = (e, setData) => {
-        const { name, value } = e.target;
-        setData((prevData) => ({
-          ...prevData, [name]: value
-        }))
-      }
-
-
-
-      //ADD
-    async function addCarType(){
-        console.log(carTypeModel.brand, carTypeModel.model)
-        try {
-            const response = await fetch(`/api/cartype`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`
-                },
-                body: JSON.stringify(carTypeModel) 
-            });
-    
-            if (!response.ok) {
-                throw new Error("Can't post cartype");
-            }
-    
-            console.log('New cartype added');
-        } catch (err) {
-            console.error(err);
-        }            
-    }
-
-    //DELETE
-
-    /*const fetchCarTypeData = async () => {
+        console.log("fetching")
         try {
             const response = await fetch("/api/CarType");
             const data = await response.json();
@@ -68,14 +27,45 @@ export default function AdminEditor() {
     }
     useEffect(() => {
         fetchCarTypeData();
-    }, []);*/
+    }, []);
 
+    const handleInputChange = (e, setData) => {
+        const { name, value } = e.target;
+        setData((prevData) => ({
+            ...prevData, [name]: value
+        }))
+    }
+
+    //ADD
+    async function addCarType() {
+        console.log(carTypeModel.brand, carTypeModel.model)
+        try {
+            const response = await fetch(`/api/cartype`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                body: JSON.stringify(carTypeModel)
+            });
+
+            if (!response.ok) {
+                throw new Error("Can't post cartype");
+            }
+
+            console.log('New cartype added');
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    //CARTYPE DELETE
 
     function getUniqueBrands() {
         let brands = [];
         carTypes.map(x => {
-            if (!brands.includes(x.brand)) {
-                brands.push(x.brand);
+            if (!brands.includes(x)) {
+                brands.push(x);
             }
         })
         return brands.sort();
@@ -91,6 +81,27 @@ export default function AdminEditor() {
         }
     }
 
+    function selectModel(e) {
+        console.log(e.target.value);
+        setFormData({...formData, model: e.target.value})
+    }
+
+    useEffect(() => {
+        console.log(`selected brand: ${selectedBrand}`);
+        if (selectedBrand != null) {
+            let modelsFilteredByBrands = [];
+            console.log(`selected brand: ${selectedBrand}`);
+            carTypes.forEach(c => {
+                if (c.brand === selectedBrand) {
+                    modelsFilteredByBrands.push(c);
+                }
+            });
+            modelsFilteredByBrands.sort(c => c.model);
+            setSelectedModels(modelsFilteredByBrands);
+        }
+    }, [selectedBrand])
+
+
 
     return (
         <div id="simple-filter-wrapper">
@@ -102,16 +113,35 @@ export default function AdminEditor() {
                         <span>Add </span>
                         <label>
                             <span>Brand: </span>
-                            <input required name="brand" value={carTypeModel.brand} onChange={(e)=>handleInputChange(e, setCarTypeModel)}></input>
+                            <input required name="brand" value={carTypeModel.brand} onChange={(e) => handleInputChange(e, setCarTypeModel)}></input>
                         </label>
                         <label>
                             <span>Model: </span>
-                            <input required name="model" value={carTypeModel.model} onChange={(e)=>handleInputChange(e, setCarTypeModel)}></input>
+                            <input required name="model" value={carTypeModel.model} onChange={(e) => handleInputChange(e, setCarTypeModel)}></input>
                         </label>
                     </label>
                     <button>Add CarType</button>
                 </form>
-              {/*<CarTypeFormSelect formData={formData} selectBrand={selectBrand} selectedBrand={selectBrand} getUniqueBrands={getUniqueBrands} ></CarTypeFormSelect>*/}
+                <form>
+                    {carTypes ?<>
+                <label className="simple-filter-label simple-filter-items">
+                <span>Brand</span>
+                <select name="brand" placeholder="Brand" onChange={(e) => selectBrand(e)}>
+                    <option>Select Brand</option>
+                    {getUniqueBrands().map(b => (<option key={b.id} value={b.brand}>{b.brand}</option>))}
+                </select>
+            </label>
+            <label className="simple-filter-label simple-filter-items">
+            <span>Model</span>
+            <select name="model" placeholder="Model" onChange={(e) => selectModel(e)}>
+                <option>Select Brand</option>
+                {selectedModels.map(b => (<option key={b.id} value={b.model}>{b.model}</option>))}
+            </select>
+        </label> </>:
+                        <select name="brand" placeholder="Brand" onChange={(e) => selectBrand(e)}>
+                            <option>Loading Brands</option>
+                        </select>}
+                </form>
             </div>
         </div>
     )

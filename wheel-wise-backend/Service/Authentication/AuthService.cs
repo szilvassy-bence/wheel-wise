@@ -31,7 +31,7 @@ public class AuthService : IAuthService
         await _userManager.AddToRoleAsync(user, role);
         
         var registeringUser = await _userManager.FindByEmailAsync(email);
-        _dbContext.Add(new User { IdentityUser = registeringUser, Email = email, UserName = userName, ZipCode = zipCode});
+        _dbContext.Users.Add(new User { IdentityUser = registeringUser, Email = email, UserName = userName, ZipCode = zipCode});
         await _dbContext.SaveChangesAsync();
         
         return new AuthResult(true, email, userName, "");

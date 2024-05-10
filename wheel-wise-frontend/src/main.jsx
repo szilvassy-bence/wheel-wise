@@ -44,7 +44,7 @@ const router = createBrowserRouter(
                 }
                 ,{
                     path: "/users/:name",
-                    element: <Profile/>,
+                    element:( <Profile/>),
                     loader: ({params}) => profileLoader(params.name)
                 },
                 {

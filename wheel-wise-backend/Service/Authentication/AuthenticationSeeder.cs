@@ -51,7 +51,7 @@ public class AuthenticationSeeder
             if (adminCreated.Succeeded)
             {
                 await userManager.AddToRoleAsync(admin, "Admin");
-                _context.Users.Add(new User { IdentityUser = admin, Email = admin.Email, UserName = admin.UserName, ZipCode = 0});
+                _context.Users.Add(new User { IdentityUser = admin, Email = admin.Email, UserName = admin.UserName, ZipCode = 0, Advertisements = new List<Advertisement>(), FavoriteAdvertisements = new List<Advertisement>()});
                 await _context.SaveChangesAsync();
             }
         }

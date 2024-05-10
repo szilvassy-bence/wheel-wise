@@ -88,7 +88,7 @@ public class UserController : ControllerBase
         return Ok(await _userRepository.GetFavoriteAdsByUserName(userName));
     }
 
-    [HttpGet("{userName}/ads")]
+    [HttpGet("{userName}/ads"), Authorize]
     public async Task<ActionResult<IEnumerable<AdvertisementDTO?>>> GetAdsByUserName(string userName)
     {
         var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;

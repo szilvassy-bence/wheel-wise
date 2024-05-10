@@ -1,8 +1,9 @@
 import "./Layout.css"
 import {Outlet, useNavigate} from "react-router-dom"
 import MainNav from "../../Components/MainNav"
-import {createContext, useMemo, useEffect, useState} from "react";
+import {createContext, useMemo, useEffect, useState, useContext} from "react";
 import {useLocalStorage} from "../../Hooks/useLocalStorage.jsx";
+
 
 export const AuthContext = createContext(null);
 export const FavoriteContext = createContext(null);
@@ -104,3 +105,7 @@ export default function Layout() {
         </AuthContext.Provider>
     )
 }
+
+export const useAuth = () => {
+    return useContext(AuthContext);
+  };
