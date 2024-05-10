@@ -173,12 +173,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult<RegistrationResponse>> UpdateById(string id,
         [FromBody] DataChangeRequest dataChangeRequest)
     {
-        
         var authenticatedUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-        _logger.LogInformation(authenticatedUserEmail);
-        _logger.LogInformation(id);
-        Console.WriteLine(authenticatedUserEmail);
-        Console.WriteLine(id);
         var user = await _userRepository.GetIdentityUserById(id);
         if (user == null)
         {
@@ -254,8 +249,19 @@ public class UserController : ControllerBase
                     return Forbid();
                 }
             }
-
-            return Ok(await _userRepository.UpdatePasswordById(identityUser, passwordChangeRequest));
+            
+            try
+            {
+                // Attempt to update the password
+                return Ok(await _userRepository.UpdatePasswordById(identityUser, passwordChangeRequest));
+            }
+            catch (InvalidOperationException ex) // Catch specific exception thrown when password change fails
+            {
+                // Handle the case where the existing password provided by the user is incorrect
+                // Return a 401 Unauthorized status code along with an error message
+                return StatusCode(401, new { Error = ex.Message });
+            }
+            
         }
         catch (Exception e)
         {

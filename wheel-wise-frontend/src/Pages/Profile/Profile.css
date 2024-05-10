@@ -108,6 +108,17 @@
     margin-bottom: 40px;
 }
 
+#password-warning{
+    color:#df3a2e;
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+
+fieldset {
+    border: 0;
+    border-top: 1px solid grey;
+}
+
 @media screen and (max-width: 500px){
     #profile-content {
         display: block;
