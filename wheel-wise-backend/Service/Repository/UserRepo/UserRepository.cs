@@ -113,7 +113,7 @@ public class UserRepository : IUserRepository
                 UserName = x.User.UserName,
                 CarId = x.CarId,
                 Car = x.Car
-            }).Include(x => x.Car).ToListAsync();
+            }).ToListAsync();
         
         
         //var adList = user.Advertisements.ToList();

@@ -10,12 +10,14 @@ export default function Profile() {
     const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
     const profileMenuLiRef = useRef([]);
     const navigate = useNavigate();
-
+    const [incorrectPass, setIncorrectPass] = useState(false);
+    const [badPassword, setBadPassword] = useState(false);
     const [profileState, setProfileState] = useState({
         userName: profile.identityUser.userName,
         email: profile.identityUser.email,
-        password: "",
-        passwordAgain: ""
+        existingPassword: "",
+        newPassword: "",
+        confirmPassword: ""
     });
     const [profileTab, setProfileTab] = useState("details");
 
@@ -23,32 +25,61 @@ export default function Profile() {
         e.preventDefault();
         
         // check the password equality, and validity
-        if (profileState.password === profileState.passwordAgain){
+        try {
+            const res = await fetch(`/api/user/update/${profile.identityUser.id}`,{
+                method: "PATCH",
+                headers: { "Content-Type": "application/json",
+                            "Authorization": `Bearer ${user.token}`
+                    },
+                body: JSON.stringify({
+                    email: profileState.email,
+                    userName: profileState.userName,
+                })
+            });
+            if (res.ok){
+                const data = await res.json();
+                //console.log(data);
+                logout();
+                navigate("/login");
+            }
+        } catch(e){
+            console.log(e);
+        }
+        
+    }
+
+    const handlePasswordChange = async (e) => {
+        e.preventDefault();
+        // check the password equality, and validity
+        if (profileState.newPassword === profileState.confirmPassword){
             try {
-                const res = await fetch(`/api/user/update/${profile.identityUser.id}`,{
+                setIncorrectPass(false);
+                const res = await fetch(`/api/user/update-pass/${profile.identityUser.id}`,{
                     method: "PATCH",
                     headers: { "Content-Type": "application/json",
                                 "Authorization": `Bearer ${user.token}`
-                     },
+                        },
                     body: JSON.stringify({
-                        email: profileState.email,
-                        userName: profileState.userName,
+                        existingPassword: profileState.existingPassword,
+                        newPassword: profileState.newPassword,
                     })
                 });
+                console.log(res);
                 if (res.ok){
                     const data = await res.json();
-                    //console.log(data);
+                    console.log(data);
                     logout();
                     navigate("/login");
+                } else if (res.status === 401) {
+                    setBadPassword(true);
                 }
             } catch(e){
                 console.log(e);
             }
+        } else {
+            // set an informational tab to passwords
+            setIncorrectPass(true);
         }
-    }
-
-    const handlePasswordChange = async (e) => {
-        
     }
 
     function changeTab(e) {
@@ -107,43 +138,91 @@ export default function Profile() {
                         <>
                             <h2>Profile details</h2>
                             <form id="user-data-update-form" className="user-update-form" onSubmit={handleUserDataChange}>
-                                <div className="user-update-form-group">
-                                    <label htmlFor="profile-user-name">
-                                        <span>User name</span>
-                                        <input type="text" id="profile-user-name" value={profileState.userName} onChange={e => {
-                                            setProfileState({...profileState, 
-                                                userName: e.target.value});
-                                        }}/>
-                                    </label>
-                                    <label htmlFor="profile-email">
-                                        <span>Email</span>
-                                        <input type="text" id="profile-email" value={profileState.email} onChange={e => {
-                                            setProfileState({...profileState, 
-                                                email: e.target.value});
-                                        }}/>
-                                    </label>
-
-                                </div>
-                                <button id="profile-form-submit-btn">Submit</button>
+                                <fieldset><legend>Edit user name and email</legend>
+                                    <div className="user-update-form-group">
+                                        <label htmlFor="profile-user-name">
+                                            <span>User name</span>
+                                            <input 
+                                                type="text" id="profile-user-name" 
+                                                value={profileState.userName} 
+                                                onChange={e => {
+                                                    setProfileState({...profileState, 
+                                                        userName: e.target.value});
+                                                }}
+                                            />
+                                        </label>
+                                        <label htmlFor="profile-email">
+                                            <span>Email</span>
+                                            <input 
+                                                type="text" 
+                                                id="profile-email" 
+                                                value={profileState.email} 
+                                                onChange={e => {
+                                                setProfileState({...profileState, 
+                                                    email: e.target.value});
+                                                }}
+                                            />
+                                        </label>
+                                    </div>
+                                    <button id="data-form-submit-btn">Submit</button>
+                                </fieldset>
                             </form>
                             <form id="password-update-form" className="user-update-form" onSubmit={handlePasswordChange}>   
-                                <div className="user-update-form-group">
-                                    <label htmlFor="profile-password">
-                                        <span>Password</span>
-                                        <input type="password" id="profile-password" value={profileState.password} onChange={e => {
-                                            setProfileState({...profileState, 
-                                                password: e.target.value});
-                                        }}/>
-                                    </label>
-                                    <label htmlFor="profile-password-again">
-                                        <span>Password again</span>
-                                        <input type="password" id="profile-password-again" value={profileState.passwordAgain} onChange={e => {
-                                            setProfileState({...profileState, 
-                                                passwordAgain: e.target.value});
-                                        }}/>
-                                    </label>
-                                </div>
-                                <button id="profile-form-submit-btn">Submit</button>
+                                <fieldset><legend>Edit your password</legend>
+                                    <div className="user-update-form-group">
+                                        <label htmlFor="existing-profile-password">
+                                            <span>Current password</span>
+                                            <input 
+                                                type="password" 
+                                                id="existing-password" 
+                                                value={profileState.existingPassword} 
+                                                onChange={e => {
+                                                    setProfileState({...profileState, 
+                                                        existingPassword: e.target.value});
+                                                }}
+                                            />
+                                        </label>
+                                        <label htmlFor="new-profile-password">
+                                            <span>New password</span>
+                                            <input 
+                                                type="password" 
+                                                id="new-password" 
+                                                value={profileState.newPassword} 
+                                                onChange={e => {
+                                                    setProfileState({...profileState, 
+                                                        newPassword: e.target.value});
+                                                }}
+                                            />
+                                        </label>
+                                        <label htmlFor="confirm-profile-password">
+                                            <span>Confirm password</span>
+                                            <input 
+                                                type="password" 
+                                                id="confirm-password" 
+                                                value={profileState.confirmPassword} 
+                                                onChange={e => {
+                                                    setProfileState({...profileState, 
+                                                        confirmPassword: e.target.value});
+                                                }}
+                                            />
+                                        </label>
+                                    </div>
+                                    {
+                                        incorrectPass && (
+                                            <div>
+                                                <span id="password-warning">The new and confirmed password do not match!</span>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        badPassword && (
+                                            <div>
+                                                <span id="password-warning">The current password is incorrect!</span>
+                                            </div>
+                                        )
+                                    }
+                                    <button id="password-form-submit-btn">Submit</button>
+                                </fieldset>
                             </form>
                         </>
                     ) : profileTab === "ads" ? (
