@@ -63,7 +63,7 @@ public class ColorController : ControllerBase
             {
                 return Forbid();
             }
-            _colorRepository.Add(color);
+            await _colorRepository.Add(color);
 
             return CreatedAtAction(nameof(GetAll), new { id = color.Id }, color);
         }
@@ -90,7 +90,7 @@ public class ColorController : ControllerBase
                 return NotFound("Can't find the color to delete");
             }
 
-            _colorRepository.Delete(color);
+            await _colorRepository.Delete(color);
             return NoContent();
 
         }

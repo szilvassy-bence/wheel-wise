@@ -1,0 +1,108 @@
+#adminedit-wrapper {
+    background-color: #ecf7ff;
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    justify-content: center;
+}
+
+#adminedit-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.editor-toolbar {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the right */
+    margin-bottom: 20px; /* Add some space between the label and buttons */
+}
+
+.editor-toolbar button {
+    background-color: #DD5746;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-left: 10px; /* Add some space between the buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editor-toolbar button:hover {
+    background-color: #8B322C;
+}
+
+.adminedit-form {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.adminedit-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.adminedit-label {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Rest of the CSS... */
+
+
+.adminedit-label > select {
+    border: none;
+    border-radius: 5px;
+    border-bottom: 2px solid grey;
+    transition: border-bottom-color 0.7s ease;
+    padding: 5px;
+}
+
+.adminedit-label > select:hover {
+    border-bottom: 2px solid #FFC470;
+}
+
+.adminedit-label > select:focus {
+    border-bottom: 2px solid #DD5746;
+}
+
+.adminedit-items {
+    flex: 1 1 200px;
+}
+
+.adminedit-label:disabled {
+    opacity: 0.1;
+}
+
+#select-disabled {
+    opacity: 0.5;
+}
+
+#select-disabled:hover {
+    border-bottom: 2px solid grey;
+}
+
+.adminedit-items span,
+#price-range-label {
+    font-weight: bold;
+    font-size: small;
+    margin-bottom: 20px;
+}
+
+.form-submit-btn {
+    color: aliceblue;
+    font-weight: bold;
+    margin-top: 20px;
+    background-color: #DD5746;
+    border-radius: 10px}
