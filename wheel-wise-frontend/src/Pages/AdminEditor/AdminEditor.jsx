@@ -6,36 +6,31 @@ import "./AdminEditor.css";
 export default function AdminEditor() {
 
     //ALL
+
     const { user } = useContext(AuthContext);
+
+    //CURRENT ACTIVE TABS NAME
     const [activeTab, setActiveTab] = useState('cartype');
 
-    //CARTYPE
-    const [carTypes, setCarTypes] = useState([]);
-    const [carTypeModel, setCarTypeModel] = useState({ brand: "", model: "" });
-    const [selectedBrand, setSelectedBrand] = useState(null);
-    const [selectedModel, setSelectedModel] = useState(null);
-    const [selectedCarTypeModels, setSelectedCarTypeModels] = useState(null);
-
-    //COLOR
-    const [colors, setColors] = useState([]);
-    const [colorModel, setColorModel] = useState({ name: "" });
+    //THE CURRENTLY SELECTED OPTION IN THE SELECT INPUT
     const [selectedCarProperty, setSelectedCarProperty] = useState(null);
 
-    //EQUIPMENT
-    const [equipments, setEquipments] = useState([]);
-
-    //ALL
+    //THE CURRENT PROPERTYMODEL
     const [propModel, setPropModel] = useState(
         activeTab === 'cartype' ? { brand: "", model: "" } :
             activeTab === 'color' ? { name: "" } :
                 activeTab === 'equipment' ? { type: "", name: "" } :
                     {}
     );
+    //THE CURRENT GETALL LIST OF THE CHOSEN TAB
     const [propertyList, setPropertyList] = useState([]);
+    //IF THERE IS A PROPERTY WITH MULTIPLE ITERATIONS FOR SUBTYPES
     const [uniqueProperty, setUniqueProperty] = useState(null);
+    //SELECTED OPTIONS ACCORDING TO THE UNIQUE PROPERTY
     const [selectedOptions, setSelectedOptions] = useState(null);
 
-    // METHOD FOR ALL CAR PROPERTIES (FETCH, ADD, SELECT INPUT, DELETE, TAB SWITCH)
+
+    //CHANGING TEXT INPUTS
     const handleInputChange = (e, setData) => {
 
         const { name, value } = e.target;
@@ -46,7 +41,7 @@ export default function AdminEditor() {
 
     }
 
-
+    //FETCH ALL DATA FOR CURRENT TAB
     const fetchCarProperties = async (property, setPropList) => {
         try {
             const response = await fetch(`/api/${property}`);
@@ -65,16 +60,16 @@ export default function AdminEditor() {
     useEffect(() => {
 
         if (activeTab === 'cartype') {
-            fetchCarProperties('cartype', setCarTypes);
+            fetchCarProperties('cartype', setPropertyList);
             setUniqueProperty("brand");
         }
 
         if (activeTab === 'color') {
-            fetchCarProperties('color', setColors);
+            fetchCarProperties('color', setPropertyList);
             setUniqueProperty(null);
         }
 
-        if(activeTab === 'equipment') {
+        if (activeTab === 'equipment') {
             fetchCarProperties('equipment', setPropertyList);
             setUniqueProperty("type");
         }
@@ -106,6 +101,13 @@ export default function AdminEditor() {
 
             await fetchCarProperties(carProperty, setPropList);
 
+            const newPropModel = activeTab === 'cartype' ? { brand: "", model: "" } :
+                activeTab === 'color' ? { name: "" } :
+                    activeTab === 'equipment' ? { type: "", name: "" } :
+                        {};
+
+            setPropModel(newPropModel);
+
         } catch (err) {
 
             console.error(err);
@@ -113,8 +115,7 @@ export default function AdminEditor() {
         }
     }
 
-
-    //SELECT FOR ALL
+    //SELECT INPUT FOR ALL
     function selectCarProperty(e) {
 
         const select = e.target.value;
@@ -169,77 +170,22 @@ export default function AdminEditor() {
     }
 
 
-    //SET TAB AND RESETING THE MODEL SO IT WILL TAKE ONLY THE CURRENT TABS MODEL VALUES
+    //SET ACTIVE TAB AND RESETING THE MODEL AND SELECTED INPUT
     function setTab(e, tabName) {
 
         e.preventDefault();
 
         setActiveTab(tabName);
 
-        setCarTypeModel((prevData) => ({
-            ...prevData, brand: "", model: ""
-        }));
+        const newPropModel = tabName === 'cartype' ? { brand: "", model: "" } :
+            tabName === 'color' ? { name: "" } :
+                tabName === 'equipment' ? { type: "", name: "" } :
+                    {};
 
-        setColorModel((prevData) => ({
-            ...prevData, name: ""
-        }));
-
-        setPropModel(activeTab === 'cartype' ? { brand: "", model: "" } :
-        activeTab === 'color' ? { name: "" } :
-            activeTab === 'equipment' ? { type: "", name: "" } :
-                {});
+        setPropModel(newPropModel);
 
         setSelectedCarProperty("");
     }
-
-    //METHODS NECESSARY ONLY FOR CARTYPE
-
-    function getUniqueBrands() {
-
-        let brands = [];
-
-        carTypes.map(x => {
-            if (!brands.includes(x.brand)) {
-                brands.push(x.brand);
-            }
-        })
-
-        return brands.sort();
-    }
-
-    useEffect(() => {
-
-        getUniqueBrands();
-
-    }, [carTypes])
-
-    function selectBrand(e) {
-
-        console.log(e.target.value);
-
-        setSelectedBrand(e.target.value);
-    }
-
-    useEffect(() => {
-
-        if (selectedBrand != null) {
-
-            let modelsFilteredByBrands = [];
-
-            carTypes.forEach(c => {
-                if (c.brand === selectedBrand) {
-                    modelsFilteredByBrands.push(c);
-                }
-            });
-
-            modelsFilteredByBrands.sort();
-
-            setSelectedCarTypeModels(modelsFilteredByBrands);
-        }
-    }, [selectedBrand, carTypes])
-
-
-    //EQUIPMENT 
 
     //GET MULTIPLE TYPES WITH THE SAME NAME ONLY ONCE IN THE SELECTION OPTIONS
     //(need the list of the car property and the name of the multiple type)
@@ -262,7 +208,7 @@ export default function AdminEditor() {
             getUniqueSelectionTypes(propertyList, uniqueProperty);
         }
 
-    }, [propertyList])
+    }, [propertyList, selectedOptions])
 
     useEffect(() => {
 
@@ -283,14 +229,6 @@ export default function AdminEditor() {
     }, [selectedCarProperty, propertyList])
 
 
-    function selectModel(e) {
-
-        setSelectedModel(e.target.value);
-
-    }
-
-
-
     return (
         <div id="adminedit-wrapper">
             <div id="adminedit-content">
@@ -302,16 +240,16 @@ export default function AdminEditor() {
                 </div>
                 {activeTab === 'cartype' && (
                     <>
-                        <form className="adminedit-form" onSubmit={(e) => addCarProperty(e, "cartype", carTypeModel, setCarTypes)}>
+                        <form className="adminedit-form" onSubmit={(e) => addCarProperty(e, "cartype", propModel, setPropertyList)}>
                             <h3>Add CarType</h3>
                             <div className="adminedit-input-group">
                                 <label>
                                     <span>Brand: </span>
-                                    <input required name="brand" value={carTypeModel.brand} onChange={(e) => handleInputChange(e, setCarTypeModel)} />
+                                    <input required name="brand" value={propModel.brand} onChange={(e) => handleInputChange(e, setPropModel)} />
                                 </label>
                                 <label>
                                     <span>Model: </span>
-                                    <input required name="model" value={carTypeModel.model} onChange={(e) => handleInputChange(e, setCarTypeModel)} />
+                                    <input required name="model" value={propModel.model} onChange={(e) => handleInputChange(e, setPropModel)} />
                                 </label>
                             </div>
                             <button className="form-submit-btn">Add Cartype</button>
@@ -319,22 +257,22 @@ export default function AdminEditor() {
 
                         <div className="form-separator"></div>
 
-                        <form className="adminedit-form" onSubmit={(e) => deleteCarProperty(e, "cartype", "model", setCarTypes)}>
+                        <form className="adminedit-form" onSubmit={(e) => deleteCarProperty(e, "cartype", "model", setPropertyList)}>
                             <h3>Delete CarType</h3>
                             <div className="adminedit-input-group">
                                 <label className="adminedit-label adminedit-items">
                                     <span>Brand</span>
-                                    <select name="brand" placeholder="Brand" onChange={selectBrand}>
+                                    <select name="brand" placeholder="Brand" onChange={(e) =>selectCarProperty(e)}>
                                         <option>Select Brand</option>
-                                        {getUniqueBrands().map(b => (<option key={b} value={b}>{b}</option>))}
+                                        {getUniqueSelectionTypes(propertyList, uniqueProperty).map(b => (<option key={b} value={b}>{b}</option>))}
                                     </select>
                                 </label>
                                 <label className="adminedit-label adminedit-items">
                                     <span>Model</span>
-                                    {(selectedBrand != null && selectedBrand !== "Select Brand") && selectedCarTypeModels != null ? (
-                                        <select name="model" placeholder="Model" onChange={selectModel}>
+                                    {(selectedCarProperty != null && selectedCarProperty !== "Select Brand") && selectedOptions != null ? (
+                                        <select name="model" placeholder="Model" onChange={(e) =>selectCarProperty(e)}>
                                             <option>Select Model</option>
-                                            {selectedCarTypeModels.map(m => (<option key={m.id} id={m.id} value={m.model}>{m.model}</option>))}
+                                            {selectedOptions.map(m => (<option key={m.id} id={m.id} value={m.model}>{m.model}</option>))}
                                         </select>) : (
                                         <select id="select-disabled" name="model" placeholder="Model" disabled={true}>
                                             <option>Select Model</option>
@@ -349,25 +287,25 @@ export default function AdminEditor() {
                 {activeTab === 'color' && (
                     <div>
 
-                        <form className="adminedit-form" onSubmit={(e) => addCarProperty(e, "color", colorModel, setColors)}>
+                        <form className="adminedit-form" onSubmit={(e) => addCarProperty(e, "color", propModel, setPropertyList)}>
                             <h3>Add Color</h3>
                             <div className="adminedit-input-group">
                                 <label>
                                     <span>Color </span>
-                                    <input required name="name" value={colorModel.name} onChange={(e) => handleInputChange(e, setColorModel)} />
+                                    <input required name="name" value={propModel.name} onChange={(e) => handleInputChange(e, setPropModel)} />
                                 </label>
                             </div>
                             <button className="form-submit-btn">Add Color</button>
                         </form>
 
-                        <form className="adminedit-form" onSubmit={(e) => deleteCarProperty(e, "color", "color", setColors)}>
+                        <form className="adminedit-form" onSubmit={(e) => deleteCarProperty(e, "color", "name", setPropertyList)}>
                             <h3>Delete Color</h3>
                             <div className="adminedit-input-group">
                                 <label className="adminedit-label adminedit-items">
                                     <span>Color</span>
-                                    <select name="color" placeholder="Color" onChange={(e) => selectCarProperty(e, "color")}>
+                                    <select name="name" placeholder="Color" onChange={(e) => selectCarProperty(e)}>
                                         <option>Select Color</option>
-                                        {colors.map(c => (<option key={c.id} id={c.id} value={c.name}>{c.name}</option>))}
+                                        {propertyList.map(c => (<option key={c.id} id={c.id} value={c.name}>{c.name}</option>))}
                                     </select>
                                 </label>
                             </div>
@@ -411,7 +349,7 @@ export default function AdminEditor() {
                                             <option>Select Equipment</option>
                                             {selectedOptions.map(x => (<option key={x.id} id={x.id} value={x.name}>{x.name}</option>))}
                                         </select>) : (
-                                        <select id="select-disabled" name="model" placeholder="Model" disabled={true}>
+                                        <select id="select-disabled" name="name" placeholder="Equipment" disabled={true}>
                                             <option>Select Equipment</option>
                                         </select>
                                     )}
