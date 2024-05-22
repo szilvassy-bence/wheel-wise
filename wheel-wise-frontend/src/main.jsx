@@ -10,10 +10,11 @@ import AdvertisementDetail, {loader as adLoader} from "./Pages/AdvertisementDeta
 import AdvertisementCarousel from "./Components/AdvertisementCarousel";
 import Advertisements, {loader as adsLoader} from "./Pages/Advertisements";
 import Profile, {loader as profileLoader} from "./Pages/Profile";
-import CreateAd from "./Pages/CreateAdvertisement/index.js";
+//import CreateAd, {loader as createAdLoader} from "./Pages/CreateAdvertisement/index.js";
 import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
 import AdminEditor from "./Pages/AdminEditor/AdminEditor.jsx";
+import CreateOrModifyAd, {loader as createAdLoader} from "./Pages/CreateAdvertisement/index.js";
 
 
 
@@ -49,7 +50,13 @@ const router = createBrowserRouter(
                 },
                 {
                     path: "/users/:name/createad",
-                    element: <CreateAd/>
+                    element: <CreateOrModifyAd/>,
+                    loader: createAdLoader
+                } ,
+                {
+                    path: "/users/:name/update/:adid",
+                    element: <CreateOrModifyAd/>,
+                    loader: createAdLoader
                 } ,
                 {
                     path: "/register",

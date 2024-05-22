@@ -1,45 +1,30 @@
-import { useEffect, useState, useContext } from "react"; 
-import { useLoaderData, useParams, useNavigate } from "react-router-dom";
-import { AuthContext, FavoriteContext } from "../Layout/Layout";
-import "./CreateAd.css"
-import Modal from "../../Components/AdSuccessfulModal/AdModal";
-import { yearCounter } from "./service";
+import { useEffect, useState, useContext, useCallback } from "react";
+import { yearCounter } from "../../Pages/CreateAdvertisement/service";
 
-export default function CreateAd(){
+export default function AdvertisementForm({ adProps, handleSubmit, updateData, equipmentsToUpdate }){
 
-    const params = useParams();
-    const navigate = useNavigate();
-    const adProps = useLoaderData();
-
-    const { user } = useContext(AuthContext);
-    const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
-
-    const [selectedBrand, setSelectedBrand] = useState(null);
+    const [selectedBrand, setSelectedBrand] = useState(updateData? updateData.brand : null);
     const [carTypeModels, setCarTypeModels] = useState(null);
 
     const [formData, setFormData] = useState({
-        brand: "", model: "", color:"", fuelType:"", transmission:"", status:"New", year: 2024, price: 0, mileage: 0, power: 0, title: "", description: ""
+        brand: updateData ? updateData.brand : "", 
+        model: updateData ? updateData.model : "", 
+        color: updateData ? updateData.color : adProps ? adProps.colors[0].name : "", 
+        fuelType: updateData ? updateData.fuelType : adProps ? adProps.fuelTypes[0].name : "", 
+        transmission: updateData ? updateData.transmission : adProps ? adProps.transmissionTypes[0].name : "", 
+        status: updateData ? updateData.status : "New", 
+        year: updateData ? updateData.year : 2024, 
+        price: updateData ? updateData.price : 0, 
+        mileage: updateData ? updateData.mileage :0, 
+        power: updateData ? updateData.power: 0, 
+        title: updateData ? updateData.title: "", 
+        description: updateData ? updateData.description: ""
     })
+    console.log(equipmentsToUpdate)
 
-    const [checkedItems, setCheckedItems] = useState({});
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setFormData({
-                    ...formData, color: adProps.colors[0].name, fuelType: adProps.fuelTypes[0].name, transmission: adProps.transmissionTypes[0].name
-                })
-            } catch (error) {
-                console.error("Error fetching data", error);
-            }
-        };
-    
-        fetchData();
-    }, [adProps]);
-    
+    const [checkedItems, setCheckedItems] = useState(equipmentsToUpdate ? equipmentsToUpdate : {});
 
-    function getUniqueBrands() {
+    const getUniqueBrands = useCallback(() => {
         let brands = [];
         adProps.carTypes.map(x => {
             if (!brands.includes(x.brand)) {
@@ -47,7 +32,8 @@ export default function CreateAd(){
             }
         })
         return brands.sort();
-    }
+    },[adProps.carTypes]);
+
 
     function selectBrand(e) {
         console.log(e.target.value);
@@ -58,7 +44,6 @@ export default function CreateAd(){
             setFormData({...formData, brand: e.target.value})
         }
     }
-
 
     useEffect(() => {
         console.log(`selected brand: ${selectedBrand}`);
@@ -73,6 +58,10 @@ export default function CreateAd(){
             console.log(modelsFilteredByBrands)
             modelsFilteredByBrands.sort();
             setCarTypeModels(modelsFilteredByBrands);
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                model: modelsFilteredByBrands[0]
+            }))
         }
     }, [adProps.carTypes, selectedBrand])
 
@@ -95,44 +84,18 @@ export default function CreateAd(){
         }));
     }
 
-    async function onSubmit(e) {
+    function onSubmit(e) {
         e.preventDefault();
-    
-        console.log(formData);
-        console.log(user);
-        let dataTosend = {...formData,
+
+        let data = {...formData,
             Equipments: checkedItems,
-            UserName: user.userName
         }
-        console.log(dataTosend)
-
-        const response = await fetch("/api/Ads", {
-            method: "POST", headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${user.token}`}, body: JSON.stringify(dataTosend)
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            console.log(userAds)
-            setUserAds([...userAds, data]);
-            setIsModalOpen(true);
-        } else { 
-            console.error("Problem fetching data from server")
-        }
-      }
-
-      const closeModal = () => {
-        setIsModalOpen(false);
-        console.log(params)
-        console.log(user)
-        console.log(user.userName)
-        navigate(`/users/${user.userName}`)
-    };
-    
+        console.log(data)
+        handleSubmit(data)        
+    }
 
     return (
         <>
-        {Object.keys(adProps).length === 0 && <div>Loading</div>}
         {Object.keys(adProps).length !== 0 &&
             <form className="create-ad-form" onSubmit={onSubmit}>
                  <fieldset><legend>Title</legend>
@@ -321,8 +284,6 @@ export default function CreateAd(){
 
             </form>
             }
-             {/* Modal */}
-             <Modal isOpen={isModalOpen} onClose={closeModal} />
         </>
     )
 }

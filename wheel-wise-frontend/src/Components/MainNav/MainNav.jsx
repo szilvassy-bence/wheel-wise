@@ -36,6 +36,11 @@ export default function MainNav() {
         setIsLoginOpen(prevState => !prevState);
     }
 
+    function handleAccountClick() {
+        setIsLoginOpen(false);
+        navigate(`/users/${user.userName}`)
+    }
+
     async function onHeaderLogin(e){
         e.preventDefault();
         const userToLogin = {
@@ -118,7 +123,7 @@ export default function MainNav() {
                                     <>
                                         <h4>Welcome, {user.userName}</h4>
                                         <ul>
-                                            <li onClick={() => navigate(`/users/${user.userName}`)}>Account</li>
+                                            <li onClick={handleAccountClick}>Account</li>
                                             <li onClick={handleLogout}>Logout</li>
                                         </ul>
                                     </>
