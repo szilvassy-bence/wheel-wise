@@ -4,6 +4,7 @@ import {useLoaderData, useNavigate} from "react-router-dom";
 import {AuthContext, FavoriteContext} from "../../Pages/Layout/Layout";
 import CardAd from "../../Components/CardAd";
 
+
 export default function Profile() {
     const profile = useLoaderData();
     const {user, logout} = useContext(AuthContext);
@@ -19,6 +20,7 @@ export default function Profile() {
         newPassword: "",
         confirmPassword: ""
     });
+
     const [profileTab, setProfileTab] = useState("details");
 
     const handleUserDataChange = async (e) => {
@@ -131,6 +133,12 @@ export default function Profile() {
                                 Create Advertisment
                             </p>
                         </li>
+                        {/*admin role check needs to be implemented later*/}
+                        {user.email === "admin@admin.com" &&<li>
+                            <p onClick={() => navigate('/admineditor')}>
+                                Edit Content
+                            </p>
+                        </li>}
                     </ul>
                 </div>
                 <div id="menu-content">

@@ -47,7 +47,7 @@ public class TransmissionController : ControllerBase
                 return Forbid();
             }
             
-            _transmissionRepository.Add(transmission);
+            await _transmissionRepository.Add(transmission);
             return CreatedAtAction(nameof(GetAll), new { id = transmission.Id }, transmission);
         }
         catch(Exception e)

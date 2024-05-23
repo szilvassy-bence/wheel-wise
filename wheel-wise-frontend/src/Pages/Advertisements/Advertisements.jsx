@@ -42,7 +42,7 @@ export default function Advertisements(){
                 adsMinPrice={adsMinPrice}
                 adsMaxPrice={adsMaxPrice}
             />
-            <AdvertisementList allAdData={allAdData} favorites={favorites} setFavorites={setFavorites} user={user}  title={"Advertisement"}/>
+            <AdvertisementList allAdData={allAdData} favorites={favorites} setFavorites={setFavorites} user={user} title={"Advertisement"}/>
         </>
     )
 }
