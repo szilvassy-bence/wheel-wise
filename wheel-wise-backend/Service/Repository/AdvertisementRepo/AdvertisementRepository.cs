@@ -93,17 +93,19 @@ public class AdvertisementRepository : IAdvertisementRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateById(int id, Advertisement advertisement)
+    public async Task<Advertisement?> UpdateById(int id, Advertisement advertisement)
     {
         var ad = await _dbContext.Advertisements.Include(c=>c.Car)
             .FirstOrDefaultAsync(a => a.Id == id);
         if (ad != null)
         {
             ad.Highlighted = advertisement.Highlighted;
-            _dbContext.ChangeTracker.DetectChanges();
+            //_dbContext.ChangeTracker.DetectChanges();
             Console.WriteLine(_dbContext.ChangeTracker.DebugView.LongView);
             await _dbContext.SaveChangesAsync();
         }
+
+        return ad;
     }
 
     private ISpecification<Advertisement> GetSpecification(SimpleFilter simpleFilter)

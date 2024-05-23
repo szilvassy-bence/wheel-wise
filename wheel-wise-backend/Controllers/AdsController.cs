@@ -206,6 +206,7 @@ public class AdsController : ControllerBase
                 return NotFound();
             }
             car.FuelType = fuel;
+            car.Color = color;
             car.Year = ad.Year;
             car.Price = ad.Price;
             car.Mileage = ad.Mileage;
@@ -220,8 +221,9 @@ public class AdsController : ControllerBase
             adToUpdate.Title = ad.Title;
             adToUpdate.Description = ad.Description;
             
-            await _advertisementRepository.UpdateById(id, adToUpdate);
-            return CreatedAtAction(nameof(GetAll), new { id = adToUpdate.Id }, adToUpdate);
+            var updatedAd = await _advertisementRepository.UpdateById(id, adToUpdate);
+            //return CreatedAtAction(nameof(GetAll), new { id = adToUpdate.Id }, adToUpdate);
+            return Ok(updatedAd);
         }
         catch (Exception e)
         {

@@ -216,7 +216,7 @@ public class AdsControllerTest : IClassFixture<WheelWiseFactory>
         var updateResponseString = await updateResponse.Content.ReadAsStringAsync();
         var updateResponseDeserialized = JsonSerializer.Deserialize<Advertisement>(updateResponseString, options);
         
-        Assert.Equal( HttpStatusCode.Created, updateResponse.StatusCode);
+        Assert.Equal( HttpStatusCode.OK, updateResponse.StatusCode);
         Assert.Equal( 21, updateResponseDeserialized.Id);
         Assert.Equal( "Title2", updateResponseDeserialized.Title);
         Assert.Equal( modifiedProperties.Brand, updateResponseDeserialized.Car.CarType.Brand);

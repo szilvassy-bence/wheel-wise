@@ -12,6 +12,6 @@ public interface IAdvertisementRepository
     Task Add(Advertisement advertisement);
     Task Delete(Advertisement advertisement);
     Task Update(Advertisement advertisement);
-    Task UpdateById(int id, Advertisement ad);
+    Task<Advertisement?> UpdateById(int id, Advertisement ad);
     
 }
