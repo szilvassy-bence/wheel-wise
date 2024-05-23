@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../Layout/Layout";
+import { AuthContext,FavoriteContext } from "../Layout/Layout";
 import "./AdminEditor.css";
+import AdvertisementList from "../../Components/AdvertisementList";
 
 
 export default function AdminEditor() {
@@ -8,6 +9,7 @@ export default function AdminEditor() {
     //ALL
 
     const { user } = useContext(AuthContext);
+    const [favorites, setFavorites, userAds, setUserAds] = useContext(FavoriteContext);
 
     //CURRENT ACTIVE TABS NAME
     const [activeTab, setActiveTab] = useState('cartype');
@@ -22,6 +24,7 @@ export default function AdminEditor() {
                 activeTab === 'equipment' ? { type: "", name: "" } :
                     activeTab === 'fueltype' ? { name: "" } :
                         activeTab === 'transmission' ? { name: "" } :
+                        activeTab === 'advertisements' ? {} :
                             {}
     );
 
@@ -31,7 +34,6 @@ export default function AdminEditor() {
     const [uniqueProperty, setUniqueProperty] = useState(null);
     //SELECTED OPTIONS ACCORDING TO THE UNIQUE PROPERTY
     const [selectedOptions, setSelectedOptions] = useState(null);
-
 
     //CHANGING TEXT INPUTS
     const handleInputChange = (e, setData) => {
@@ -90,6 +92,11 @@ export default function AdminEditor() {
             setUniqueProperty(null);
         }
 
+        if (activeTab === 'advertisements') {
+            fetchCarProperties('advertisement', setPropertyList);
+            setUniqueProperty(null);
+        }
+
     }, [activeTab]);
 
 
@@ -122,6 +129,7 @@ export default function AdminEditor() {
                     activeTab === 'equipment' ? { type: "", name: "" } :
                         activeTab === 'fueltype' ? { name: "" } :
                             activeTab === 'transmission' ? { name: "" } :
+                            activeTab === 'advertisements' ? {} :
                                 {};
 
             setPropModel(newPropModel);
@@ -204,6 +212,7 @@ export default function AdminEditor() {
                 tabName === 'equipment' ? { type: "", name: "" } :
                     tabName === 'fueltype' ? { name: "" } :
                         tabName === 'transmission' ? { name: "" } :
+                        tabName === 'advertisements' ? {} :
                             {};
 
         setPropModel(newPropModel);
@@ -265,6 +274,7 @@ export default function AdminEditor() {
                     <button onClick={(e) => setTab(e, 'equipment')}>Equipment</button>
                     <button onClick={(e) => setTab(e, 'fueltype')}>Fueltype</button>
                     <button onClick={(e) => setTab(e, 'transmission')}>Transmission</button>
+                    <button onClick={(e) => setTab(e, 'advertisements')}>Advertisements</button>
                 </div>
                 {activeTab === 'cartype' && (
                     <>
@@ -450,6 +460,9 @@ export default function AdminEditor() {
 
                     </div>
                 )}
+                {activeTab === 'advertisements' &&
+                <div>Work In Progress</div>
+                }
             </div>
         </div>
     );
