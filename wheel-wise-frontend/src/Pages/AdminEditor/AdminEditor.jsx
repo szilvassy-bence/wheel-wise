@@ -20,8 +20,11 @@ export default function AdminEditor() {
         activeTab === 'cartype' ? { brand: "", model: "" } :
             activeTab === 'color' ? { name: "" } :
                 activeTab === 'equipment' ? { type: "", name: "" } :
-                    {}
+                    activeTab === 'fueltype' ? { name: "" } :
+                        activeTab === 'transmission' ? { name: "" } :
+                            {}
     );
+
     //THE CURRENT GETALL LIST OF THE CHOSEN TAB
     const [propertyList, setPropertyList] = useState([]);
     //IF THERE IS A PROPERTY WITH MULTIPLE ITERATIONS FOR SUBTYPES
@@ -49,7 +52,10 @@ export default function AdminEditor() {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
+
             setPropList(data);
+
+            setSelectedCarProperty(null);
 
         } catch (error) {
             console.error(`Error fetching ${property} data`, error);
@@ -72,6 +78,16 @@ export default function AdminEditor() {
         if (activeTab === 'equipment') {
             fetchCarProperties('equipment', setPropertyList);
             setUniqueProperty("type");
+        }
+
+        if (activeTab === 'fueltype') {
+            fetchCarProperties('fueltype', setPropertyList);
+            setUniqueProperty(null);
+        }
+
+        if (activeTab === 'transmission') {
+            fetchCarProperties('transmission', setPropertyList);
+            setUniqueProperty(null);
         }
 
     }, [activeTab]);
@@ -104,7 +120,9 @@ export default function AdminEditor() {
             const newPropModel = activeTab === 'cartype' ? { brand: "", model: "" } :
                 activeTab === 'color' ? { name: "" } :
                     activeTab === 'equipment' ? { type: "", name: "" } :
-                        {};
+                        activeTab === 'fueltype' ? { name: "" } :
+                            activeTab === 'transmission' ? { name: "" } :
+                                {};
 
             setPropModel(newPropModel);
 
@@ -117,6 +135,8 @@ export default function AdminEditor() {
 
     //SELECT INPUT FOR ALL
     function selectCarProperty(e) {
+
+        e.preventDefault();
 
         const select = e.target.value;
 
@@ -162,13 +182,15 @@ export default function AdminEditor() {
 
             await fetchCarProperties(propertyName, setPropList);
 
+            setSelectedCarProperty(null);
+            setSelectedOptions(null);
+
         } catch (err) {
             console.error('Error:', err);
             alert(`Failed to delete ${propertyName}: ${err.message}`);
         }
 
     }
-
 
     //SET ACTIVE TAB AND RESETING THE MODEL AND SELECTED INPUT
     function setTab(e, tabName) {
@@ -180,11 +202,14 @@ export default function AdminEditor() {
         const newPropModel = tabName === 'cartype' ? { brand: "", model: "" } :
             tabName === 'color' ? { name: "" } :
                 tabName === 'equipment' ? { type: "", name: "" } :
-                    {};
+                    tabName === 'fueltype' ? { name: "" } :
+                        tabName === 'transmission' ? { name: "" } :
+                            {};
 
         setPropModel(newPropModel);
 
-        setSelectedCarProperty("");
+        setSelectedCarProperty(null);
+
     }
 
     //GET MULTIPLE TYPES WITH THE SAME NAME ONLY ONCE IN THE SELECTION OPTIONS
@@ -207,12 +232,13 @@ export default function AdminEditor() {
         if (uniqueProperty !== null) {
             getUniqueSelectionTypes(propertyList, uniqueProperty);
         }
+        setSelectedOptions(null);
 
-    }, [propertyList, selectedOptions])
+    }, [propertyList])
 
     useEffect(() => {
 
-        if (selectedCarProperty !== null && uniqueProperty !== null) {
+        if (getUniqueSelectionTypes(propertyList, uniqueProperty).includes(selectedCarProperty) && uniqueProperty !== null) {
 
             let filteredSelection = [];
 
@@ -237,6 +263,8 @@ export default function AdminEditor() {
                     <button onClick={(e) => setTab(e, 'cartype')}>CarType</button>
                     <button onClick={(e) => setTab(e, 'color')}>Color</button>
                     <button onClick={(e) => setTab(e, 'equipment')}>Equipment</button>
+                    <button onClick={(e) => setTab(e, 'fueltype')}>Fueltype</button>
+                    <button onClick={(e) => setTab(e, 'transmission')}>Transmission</button>
                 </div>
                 {activeTab === 'cartype' && (
                     <>
@@ -262,15 +290,16 @@ export default function AdminEditor() {
                             <div className="adminedit-input-group">
                                 <label className="adminedit-label adminedit-items">
                                     <span>Brand</span>
-                                    <select name="brand" placeholder="Brand" onChange={(e) =>selectCarProperty(e)}>
-                                        <option>Select Brand</option>
+                                    <select name="brand" placeholder="Brand" onChange={(e) => selectCarProperty(e)}>
+                                        {selectedCarProperty === null && selectedOptions === null &&
+                                            <option>Select Brand</option>}
                                         {getUniqueSelectionTypes(propertyList, uniqueProperty).map(b => (<option key={b} value={b}>{b}</option>))}
                                     </select>
                                 </label>
                                 <label className="adminedit-label adminedit-items">
                                     <span>Model</span>
-                                    {(selectedCarProperty != null && selectedCarProperty !== "Select Brand") && selectedOptions != null ? (
-                                        <select name="model" placeholder="Model" onChange={(e) =>selectCarProperty(e)}>
+                                    {(selectedCarProperty != null || selectedCarProperty !== "Select Brand") && selectedOptions != null ? (
+                                        <select name="model" placeholder="Model" onChange={(e) => selectCarProperty(e)}>
                                             <option>Select Model</option>
                                             {selectedOptions.map(m => (<option key={m.id} id={m.id} value={m.model}>{m.model}</option>))}
                                         </select>) : (
@@ -338,7 +367,8 @@ export default function AdminEditor() {
                                 <label className="adminedit-label adminedit-items">
                                     <span>Type</span>
                                     <select name="type" placeholder="Type" onChange={selectCarProperty}>
-                                        <option>Select Type</option>
+                                        {selectedCarProperty === null &&
+                                            <option>Select Type</option>}
                                         {getUniqueSelectionTypes(propertyList, uniqueProperty).map(b => (<option key={b} value={b}>{b}</option>))}
                                     </select>
                                 </label>
@@ -356,6 +386,66 @@ export default function AdminEditor() {
                                 </label>
                             </div>
                             <button className="form-submit-btn">Delete Equipment</button>
+                        </form>
+
+                    </div>
+                )}
+                {activeTab === 'fueltype' && (
+                    <div>
+
+                        <form className="adminedit-form" onSubmit={(e) => addCarProperty(e, "fueltype", propModel, setPropertyList)}>
+                            <h3>Add Fueltype</h3>
+                            <div className="adminedit-input-group">
+                                <label>
+                                    <span>Fueltype </span>
+                                    <input required name="name" value={propModel.name} onChange={(e) => handleInputChange(e, setPropModel)} />
+                                </label>
+                            </div>
+                            <button className="form-submit-btn">Add Fueltype</button>
+                        </form>
+
+                        <form className="adminedit-form" onSubmit={(e) => deleteCarProperty(e, "fueltype", "name", setPropertyList)}>
+                            <h3>Delete Fueltype</h3>
+                            <div className="adminedit-input-group">
+                                <label className="adminedit-label adminedit-items">
+                                    <span>Fueltype</span>
+                                    <select name="name" placeholder="Fueltype" onChange={(e) => selectCarProperty(e)}>
+                                        <option>Select Fueltype</option>
+                                        {propertyList.map(c => (<option key={c.id} id={c.id} value={c.name}>{c.name}</option>))}
+                                    </select>
+                                </label>
+                            </div>
+                            <button className="form-submit-btn">Delete Fueltype</button>
+                        </form>
+
+                    </div>
+                )}
+                {activeTab === 'transmission' && (
+                    <div>
+
+                        <form className="adminedit-form" onSubmit={(e) => addCarProperty(e, "transmission", propModel, setPropertyList)}>
+                            <h3>Add Transmission</h3>
+                            <div className="adminedit-input-group">
+                                <label>
+                                    <span>Transmission</span>
+                                    <input required name="name" value={propModel.name} onChange={(e) => handleInputChange(e, setPropModel)} />
+                                </label>
+                            </div>
+                            <button className="form-submit-btn">Add Transmission</button>
+                        </form>
+
+                        <form className="adminedit-form" onSubmit={(e) => deleteCarProperty(e, "transmission", "name", setPropertyList)}>
+                            <h3>Delete Fueltype</h3>
+                            <div className="adminedit-input-group">
+                                <label className="adminedit-label adminedit-items">
+                                    <span>Transmission</span>
+                                    <select name="name" placeholder="Transmission" onChange={(e) => selectCarProperty(e)}>
+                                        <option>Select Transmission</option>
+                                        {propertyList.map(c => (<option key={c.id} id={c.id} value={c.name}>{c.name}</option>))}
+                                    </select>
+                                </label>
+                            </div>
+                            <button className="form-submit-btn">Delete Transmission</button>
                         </form>
 
                     </div>
